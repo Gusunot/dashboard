@@ -57,7 +57,7 @@ document.getElementById('inputFoto');
 
 nomeUsuario.value =
 localStorage.getItem('nomeUsuario')
-|| 'gusta_ig';
+|| 'digite seu nome aqui';
 
 nomeUsuario.addEventListener('input', ()=>{
 
