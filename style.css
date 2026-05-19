@@ -709,7 +709,7 @@ tbody tr:hover{
 }
 
 /* ==========================================================================
-   SUBSTITUA TODA A SUA PARTE RESPONSIVA POR ESTE BLOCO (DAQUI ATÉ O FINAL)
+   SUBSTITUA COMPLETAMENTE DAQUI ATÉ O FINAL DO SEU ARQUIVO
    ========================================================================== */
 
 @media (max-width: 900px) {
@@ -728,179 +728,81 @@ tbody tr:hover{
   }
 }
 
-/* MOBILE DESIGN - ESTILO APP PREMIUM */
 @media (max-width: 768px) {
-  .sidebar {
-    padding: 15px;
-    gap: 12px;
-  }
-
-  .logo {
-    justify-content: center;
-    margin-bottom: 10px;
-    font-size: 20px; /* Reduz o tamanho do título principal */
-  }
-
-  #toggleTema {
-    margin-bottom: 10px;
-    padding: 10px;
-    font-size: 14px;
-  }
-
-  .perfil-box {
-    gap: 8px;
-    margin-bottom: 15px;
-  }
-
-  .foto {
-    width: 55px;
-    height: 55px;
-    border-width: 2px;
-  }
-
-  #nomeUsuario {
-    font-size: 14px;
-    padding: 8px;
-    max-width: 200px;
-  }
-
-  .ano-box {
-    margin-top: 5px;
-    margin-bottom: 12px;
-    justify-content: center;
-    gap: 20px;
-  }
-
-  .ano-box button {
-    width: 32px;
-    height: 32px;
-    font-size: 12px;
-  }
-
-  .ano-box h3 {
-    font-size: 16px;
-  }
-  
-  /* GRID DOS MESES SUPER COMPACTO */
-  .meses {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4 colunas economizam muito espaço vertical */
-    gap: 4px; /* Junta bem os botões */
-    margin-top: 5px;
-  }
-
-  .meses button {
-    font-size: 11px; /* Texto menor para não quebrar linha */
-    padding: 6px 2px;
-    border-radius: 6px;
-    text-align: center;
-  }
-  
-  .meses button:hover {
-    transform: none; /* Remove o empurrão lateral no mobile que quebra o layout */
-  }
-
-  /* AJUSTE DE CONTEÚDO E CARDS */
-  .conteudo {
-    padding: 15px;
-  }
-
-  .topo h1 {
-    font-size: 22px; /* Diminui o "Janeiro / 2026" para não sumir na tela */
-  }
-
-  .topo p {
-    font-size: 13px;
-  }
-
-  .cards {
-    grid-template-columns: repeat(2, 1fr); /* Exibe em 2 colunas em vez de uma lista gigante */
-    gap: 10px;
-  }
-
-  .card {
-    padding: 15px;
-    border-radius: 12px;
-  }
-
-  .card h2 {
-    font-size: 18px; /* Ajusta o tamanho dos valores em R$ para caber nos cards menores */
-    margin-top: 5px;
-  }
-
-  .card span {
-    font-size: 12px;
-  }
-
-  /* FILTROS E FORMULÁRIO */
-  .filtros {
-    grid-template-columns: 1fr; /* Filtro ocupa largura total para melhor leitura */
-    gap: 10px;
-  }
-
-  .formulario {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-
-  .formulario input,
-  .formulario select {
-    font-size: 14px; /* Ajustado de 16px para não ficar grosseiro */
-    padding: 12px;
-  }
-
-  .formulario button {
-    padding: 12px;
-    font-size: 15px;
-  }
-
-  /* GRÁFICOS */
-  .grafico-card {
-    height: 220px; /* Um pouco menor para dar mais rolagem fluida */
-    padding: 10px;
-  }
-
-  /* FOOTER */
-  .footer-sidebar {
-    margin-top: 10px;
-    padding-top: 10px;
-    font-size: 12px;
-  }
-  /* ==========================================================================
-   COLE ESTE BLOCO EXATAMENTE NA ÚLTIMA LINHA DO SEU FILE STYLE.CSS
-   ========================================================================== */
-
-@media (max-width: 768px) {
-  
-  /* Forçar a Sidebar a virar topo */
+  /* Forçar a Sidebar a virar topo e reduzir espaços vazios */
   .sidebar {
     width: 100% !important;
-    padding: 12px !important;
-    gap: 8px !important;
+    padding: 10px !important;
+    gap: 5px !important;
     border-right: none !important;
     border-bottom: 1px solid var(--border) !important;
   }
 
   .logo {
     justify-content: center !important;
-    margin-bottom: 8px !important;
-    font-size: 18px !important;
+    margin-bottom: 5px !important;
+    font-size: 16px !important;
   }
 
-  /* GRADE DOS MESES - SUPER JUNTO E COMPACTO */
+  #toggleTema {
+    margin-bottom: 8px !important;
+    padding: 8px !important;
+    font-size: 12px !important;
+  }
+
+  .perfil-box {
+    gap: 5px !important;
+    margin-bottom: 10px !important;
+  }
+
+  .foto {
+    width: 45px !important;
+    height: 45px !important;
+    border-width: 2px !important;
+  }
+
+  #nomeUsuario {
+    font-size: 12px !important;
+    padding: 6px !important;
+    max-width: 150px !important;
+  }
+
+  .ano-box {
+    margin-top: 2px !important;
+    margin-bottom: 6px !important;
+    justify-content: center !important;
+    gap: 15px !important;
+  }
+
+  .ano-box button {
+    width: 28px !important;
+    height: 28px !important;
+    font-size: 10px !important;
+  }
+
+  .ano-box h3 {
+    font-size: 14px !important;
+  }
+  
+  /* ==========================================
+     AQUI ESTÁ A CORREÇÃO CRÍTICA PARA OS MESES
+     ========================================== */
   .meses {
     display: grid !important;
-    grid-template-columns: repeat(4, 1fr) !important; 
-    gap: 4px !important; /* Cola os botões um no outro */
-    margin-top: 8px !important;
+    grid-template-columns: repeat(4, 1fr) !important; /* Força 4 colunas */
+    gap: 3px !important; /* Reduz o espaço ao mínimo para colá-los */
+    margin-top: 4px !important;
+    width: 100% !important;
   }
 
   .meses button {
-    font-size: 11px !important; /* Texto pequeno para não quebrar */
-    padding: 6px 2px !important;
-    border-radius: 6px !important;
-    transform: none !important; /* Bloqueia o empurrão lateral */
+    font-size: 10px !important; /* Fonte pequena para caber em telas estreitas */
+    padding: 5px 2px !important; /* Reduz o enchimento interno do botão */
+    border-radius: 5px !important;
+    transform: none !important; /* Cancela qualquer empurrão lateral anterior */
     text-align: center !important;
+    width: 100% !important;
+    margin: 0 !important; /* Garante que nenhuma margem invisível os separe */
   }
 
   /* AJUSTE DOS TEXTOS GRANDES NOS CARDS */
@@ -909,22 +811,27 @@ tbody tr:hover{
   }
 
   .topo h1 {
-    font-size: 20px !important;
+    font-size: 18px !important;
+    text-align: center !important;
+  }
+  
+  .topo p {
+    font-size: 12px !important;
     text-align: center !important;
   }
 
   .cards {
-    grid-template-columns: repeat(2, 1fr) !important; /* Divide em duas colunas elegantes */
+    grid-template-columns: repeat(2, 1fr) !important; 
     gap: 8px !important;
   }
 
   .card {
-    padding: 12px !important;
+    padding: 10px !important;
     border-radius: 10px !important;
   }
 
   .card h2 {
-    font-size: 16px !important; /* Diminui o R$ 0 para caber na tela pequena */
+    font-size: 15px !important; 
     margin-top: 4px !important;
   }
 
@@ -936,7 +843,7 @@ tbody tr:hover{
   .formulario input,
   .formulario select,
   .formulario button {
-    font-size: 14px !important;
+    font-size: 13px !important;
     padding: 10px !important;
   }
 
@@ -945,7 +852,10 @@ tbody tr:hover{
   }
 
   .grafico-card {
-    height: 200px !important;
+    height: 190px !important;
   }
-}
+  
+  .footer-sidebar {
+    display: none !important; /* Oculta o rodapé no mobile para economizar tela */
+  }
 }
