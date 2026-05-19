@@ -138,7 +138,7 @@ function deletar(index) {
   }
 }
 
-// Controla o Gráfico (Respeitando a altura máxima do CSS)
+// Controla o Gráfico
 function atualizarGrafico(entradas = 0, saidas = 0) {
   const ctx = document.getElementById('graficoFinanceiro').getContext('2d');
   const corTexto = document.body.classList.contains('dark-theme') ? '#e1e1e6' : '#363f5f';
@@ -159,7 +159,7 @@ function atualizarGrafico(entradas = 0, saidas = 0) {
     },
     options: {
       responsive: true,
-      maintainAspectRatio: false, // Fundamental para obedecer a altura limite do CSS
+      maintainAspectRatio: false,
       plugins: {
         legend: { labels: { color: corTexto, font: { family: 'Poppins' } } }
       }
@@ -167,7 +167,7 @@ function atualizarGrafico(entradas = 0, saidas = 0) {
   });
 }
 
-// Carrega e manipula os dados do Perfil (Nome e Foto)
+// Carrega e manipula os dados do Perfil
 function carregarPerfil() {
   const nomeSalvo = localStorage.getItem('user_name');
   const fotoSalva = localStorage.getItem('user_photo');
@@ -193,7 +193,7 @@ function carregarPerfil() {
   });
 }
 
-// GESTÃO COMPLETA PWA (Correção Absoluta Mobile)
+// GESTÃO COMPLETA PWA
 let deferredPrompt;
 function inicializarPWA() {
   if ('serviceWorker' in navigator) {
@@ -208,13 +208,13 @@ function inicializarPWA() {
     e.preventDefault();
     deferredPrompt = e;
     
-    // Só exibe se não tiver sido ocultado manualmente nesta sessão
+    // Só exibe se não foi ocultado na sessão atual
     if (!sessionStorage.getItem('pwa_banner_oculto')) {
-      if (banner) banner.style.display = 'flex';
+      if (banner) banner.style.setProperty('display', 'flex', 'important');
     }
   });
 
-  // Ação do Botão de Instalar
+  // Ação de Instalação
   const btnInstalar = document.getElementById('btn-instalar-app');
   if (btnInstalar) {
     btnInstalar.addEventListener('click', () => {
@@ -222,28 +222,27 @@ function inicializarPWA() {
         deferredPrompt.prompt();
         deferredPrompt.userChoice.then((choiceResult) => {
           if (choiceResult.outcome === 'accepted') {
-            console.log('App Instalado pelo usuário.');
+            console.log('App instalado.');
           }
-          if (banner) banner.style.display = 'none';
+          if (banner) banner.style.setProperty('display', 'none', 'important');
           deferredPrompt = null;
         });
       }
     });
   }
 
-  // Função interna unificada para fechar e sumir com o banner
+  // Função estrita de Fechamento do Banner
   function fecharBannerPWA(e) {
     if (e) {
       e.preventDefault();
-      e.stopPropagation(); // Impede o clique de se espalhar para o botão de baixo
-    }
-    if (banner) {
-      banner.style.display = 'none';
+      e.stopPropagation();
     }
     sessionStorage.setItem('pwa_banner_oculto', 'true');
+    if (banner) {
+      banner.style.setProperty('display', 'none', 'important');
+    }
   }
 
-  // Captura o fechamento manual aplicando tanto em cliques quanto em toques de tela diretos
   const btnFechar = document.getElementById('btn-fechar-pwa');
   if (btnFechar) {
     btnFechar.addEventListener('click', fecharBannerPWA, { passive: false });
