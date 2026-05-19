@@ -9,7 +9,7 @@ let mes=new Date().getMonth();
 let dados=JSON.parse(localStorage.getItem("fin"))||{};
 
 /* PERFIL */
-const nome=document.getElementById("nomeUsuario");
+const nome=document.getElementById("nome");
 
 nome.value=localStorage.getItem("nome")||"";
 
@@ -18,10 +18,10 @@ localStorage.setItem("nome",nome.value);
 };
 
 /* FOTO */
-document.getElementById("inputFoto").onchange=(e)=>{
+document.getElementById("fotoInput").onchange=(e)=>{
 let r=new FileReader();
 r.onload=()=>{
-document.getElementById("fotoPerfil").src=r.result;
+fotoPerfil.src=r.result;
 localStorage.setItem("foto",r.result);
 };
 r.readAsDataURL(e.target.files[0]);
@@ -35,12 +35,12 @@ return dados[ano][mes];
 }
 
 /* ADD */
-function adicionarTransacao(){
+function add(){
 get().push({
-desc:descricao.value,
-valor:+valor.value,
-tipo:tipo.value,
-cat:categoria.value
+d:desc.value,
+v:+valor.value,
+t:tipo.value,
+c:cat.value
 });
 save();
 update();
@@ -61,25 +61,23 @@ update();
 /* UPDATE */
 function update(){
 
-let lista=get();
+let l=get();
 
-let ent=0,sai=0,maior=0;
+let ent=0,sai=0;
 
-tabela.innerHTML="";
+table.innerHTML="";
 
-lista.forEach((x,i)=>{
+l.forEach((x,i)=>{
 
-if(x.tipo=="entrada")ent+=x.valor;
-else sai+=x.valor;
+if(x.t=="entrada")ent+=x.v;
+else sai+=x.v;
 
-if(x.valor>maior)maior=x.valor;
-
-tabela.innerHTML+=`
+table.innerHTML+=`
 <tr>
-<td>${x.desc}</td>
-<td>${x.cat}</td>
-<td>${x.tipo}</td>
-<td>${x.valor}</td>
+<td>${x.d}</td>
+<td>${x.c}</td>
+<td>${x.t}</td>
+<td>${x.v}</td>
 <td><button onclick="del(${i})">X</button></td>
 </tr>`;
 });
@@ -87,17 +85,49 @@ tabela.innerHTML+=`
 receitas.innerText=ent;
 despesas.innerText=sai;
 saldo.innerText=ent-sai;
-quantidade.innerText=lista.length;
-maiorGasto.innerText=maior;
+qtd.innerText=l.length;
+
+graf(ent,sai);
 }
 
-update();
+/* GRAFICO */
+let p,l;
 
-/* BACKUP */
-function exportarDados(){
+function graf(ent,sai){
+
+if(p)p.destroy();
+if(l)l.destroy();
+
+p=new Chart(pizza,{
+type:'doughnut',
+data:{labels:['E','S'],datasets:[{data:[ent,sai]}]}
+});
+
+l=new Chart(linha,{
+type:'line',
+data:{labels:meses,
+datasets:[{data:Array(12).fill(0)}]}
+});
+}
+
+/* EXPORT */
+function exportar(){
 let blob=new Blob([JSON.stringify(dados)],{type:"application/json"});
 let a=document.createElement("a");
 a.href=URL.createObjectURL(blob);
 a.download="backup.json";
 a.click();
 }
+
+/* IMPORT */
+document.getElementById("importar").onchange=(e)=>{
+let r=new FileReader();
+r.onload=()=>{
+dados=JSON.parse(r.result);
+save();
+update();
+};
+r.readAsText(e.target.files[0]);
+};
+
+update();
