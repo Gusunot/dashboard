@@ -2,105 +2,253 @@
 <html lang="pt-BR">
 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Finance Dashboard</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet" href="style.css">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <title>Finance Dashboard Pro</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 
 <body>
 
-<aside class="sidebar">
+  <!-- SIDEBAR -->
 
-  <div>
+  <aside class="sidebar">
 
-    <h2 class="logo">FinancePro</h2>
+    <div>
 
-    <button id="temaBtn">Tema</button>
+      <h2 class="logo">
+        <i class="fa-solid fa-chart-line"></i>
+        FinancePro
+      </h2>
 
-    <div class="perfil">
-      <label>
-        <img id="fotoPerfil" src="https://i.imgur.com/2DhmtJ4.png">
-        <input type="file" id="fotoInput" hidden>
-      </label>
+      <button id="toggleTema">
+        <i class="fa-solid fa-moon"></i>
+        Tema
+      </button>
 
-      <input id="nome" placeholder="Digite seu nome aqui">
+      <!-- PERFIL -->
+
+      <div class="perfil-box">
+
+        <label for="inputFoto" class="foto">
+
+          <img id="fotoPerfil"
+          src="https://i.imgur.com/2DhmtJ4.png">
+
+        </label>
+
+        <input
+        type="file"
+        id="inputFoto"
+        accept="image/*">
+
+        <input
+        type="text"
+        id="nomeUsuario"
+       placeholder="Digite seu nome aqui"
+
+      </div>
+
+      <!-- ANO -->
+
+      <div class="ano-box">
+
+        <button onclick="trocarAno(-1)">
+          ◀
+        </button>
+
+        <h3 id="anoAtual"></h3>
+
+        <button onclick="trocarAno(1)">
+          ▶
+        </button>
+
+      </div>
+
+      <!-- MESES -->
+
+      <div class="meses" id="listaMeses"></div>
+
     </div>
 
-    <div class="meses" id="meses"></div>
+    <footer class="footer-sidebar">
 
-    <button onclick="exportar()">Exportar</button>
-    <button onclick="document.getElementById('importar').click()">Importar</button>
-    <input type="file" id="importar" hidden>
+      Desenvolvido por
+      <strong>gusta_ig</strong>
 
-  </div>
+    </footer>
 
-  <footer>gusta_ig</footer>
+  </aside>
 
-</aside>
+  <!-- CONTEUDO -->
 
-<main class="main">
+  <main class="conteudo">
 
-<h1 id="titulo"></h1>
+    <header class="topo">
 
-<div class="cards">
+      <div>
 
-  <div class="card"><p>Receitas</p><h2 id="receitas">0</h2></div>
-  <div class="card"><p>Despesas</p><h2 id="despesas">0</h2></div>
-  <div class="card"><p>Saldo</p><h2 id="saldo">0</h2></div>
-  <div class="card"><p>Qtd</p><h2 id="qtd">0</h2></div>
+        <h1 id="tituloMes"></h1>
 
-</div>
+        <p>
+          Controle financeiro inteligente
+        </p>
 
-<div class="form">
+      </div>
 
-<input id="desc" placeholder="Descrição">
-<input id="valor" type="number" placeholder="Valor">
+    </header>
 
-<select id="tipo">
-<option value="entrada">Entrada</option>
-<option value="saida">Saída</option>
-</select>
+    <!-- CARDS -->
 
-<select id="cat">
-<option>Alimentação</option>
-<option>Transporte</option>
-<option>Outros</option>
-</select>
+    <section class="cards">
 
-<button onclick="add()">Adicionar</button>
+      <div class="card">
+        <span>Receitas</span>
+        <h2 id="receitas">R$ 0</h2>
+      </div>
 
-</div>
+      <div class="card">
+        <span>Despesas</span>
+        <h2 id="despesas">R$ 0</h2>
+      </div>
 
-<div class="graficos">
+      <div class="card">
+        <span>Saldo</span>
+        <h2 id="saldo">R$ 0</h2>
+      </div>
 
-<canvas id="pizza"></canvas>
-<canvas id="linha"></canvas>
+      <div class="card">
+        <span>Transações</span>
+        <h2 id="quantidade">0</h2>
+      </div>
 
-</div>
+    </section>
 
-<table>
+    <!-- FILTROS -->
 
-<thead>
-<tr>
-<th>Desc</th>
-<th>Cat</th>
-<th>Tipo</th>
-<th>Valor</th>
-<th>Ação</th>
-</tr>
-</thead>
+    <section class="filtros">
 
-<tbody id="table"></tbody>
+      <input
+      type="text"
+      id="pesquisa"
+      placeholder="Pesquisar">
 
-</table>
+      <select id="filtroCategoria">
 
-</main>
+        <option value="todos">
+          Todas Categorias
+        </option>
 
-<script src="script.js"></script>
+        <option>Alimentação</option>
+        <option>Transporte</option>
+        <option>Salário</option>
+        <option>Lazer</option>
+        <option>Estudos</option>
+        <option>Igreja</option>
+        <option>Outros</option>
+
+      </select>
+
+    </section>
+
+    <!-- FORM -->
+
+    <section class="formulario">
+
+      <input
+      type="text"
+      id="descricao"
+      placeholder="Descrição">
+
+      <input
+      type="number"
+      id="valor"
+      placeholder="Valor">
+
+      <select id="tipo">
+
+        <option value="entrada">
+          Receita
+        </option>
+
+        <option value="saida">
+          Despesa
+        </option>
+
+      </select>
+
+      <select id="categoria">
+
+        <option>Alimentação</option>
+        <option>Transporte</option>
+        <option>Salário</option>
+        <option>Lazer</option>
+        <option>Estudos</option>
+        <option>Igreja</option>
+        <option>Outros</option>
+
+      </select>
+
+      <button onclick="adicionarTransacao()">
+        Adicionar
+      </button>
+
+    </section>
+
+    <!-- GRAFICOS -->
+
+    <section class="graficos">
+
+      <div class="grafico-card">
+        <canvas id="graficoPizza"></canvas>
+      </div>
+
+      <div class="grafico-card">
+        <canvas id="graficoLinha"></canvas>
+      </div>
+
+    </section>
+
+    <!-- TABELA -->
+
+    <section class="tabela-box">
+
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>Descrição</th>
+            <th>Categoria</th>
+            <th>Tipo</th>
+            <th>Valor</th>
+            <th>Ações</th>
+          </tr>
+
+        </thead>
+
+        <tbody id="tabela"></tbody>
+
+      </table>
+
+    </section>
+
+  </main>
+
+  <!-- TOAST -->
+
+  <div id="toast"></div>
+
+  <script src="script.js"></script>
 
 </body>
 </html>
