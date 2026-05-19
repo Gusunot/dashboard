@@ -54,13 +54,30 @@ if (!dados[anoAtual][mesAtual]) dados[anoAtual][mesAtual] = [];
 document.getElementById('labelPeriodo').innerText = `${mesesNome[mesAtual]} ${anoAtual}`;
 }
 
-// Navegação entre meses
+// Navegação entre meses (Limitada de 2026 até 2035)
 function mudarMes(direcao) {
-mesAtual += direcao;
-if (mesAtual > 11) { mesAtual = 0; anoAtual++; }
-if (mesAtual < 0) { mesAtual = 11; anoAtual--; }
-inicializarPeriodo();
-atualizarTela();
+  // Calcula o que seria o próximo mês e ano antes de aplicar a mudança
+  let proximoMes = mesAtual + direcao;
+  let proximoAno = anoAtual;
+
+  if (proximoMes > 11) { 
+    proximoMes = 0; 
+    proximoAno++; 
+  }
+  if (proximoMes < 0) { 
+    proximoMes = 11; 
+    proximoAno--; 
+  }
+
+  // Bloqueio estrito: Só atualiza se estiver entre 2026 e 2035
+  if (proximoAno >= 2026 && proximoAno <= 2035) {
+    mesAtual = proximoMes;
+    anoAtual = proximoAno;
+    inicializarPeriodo();
+    atualizarTela();
+  } else {
+    console.log("Limite de data atingido (2026 - 2035)");
+  }
 }
 
 // Adiciona uma nova transação
