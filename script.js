@@ -235,16 +235,15 @@ function inicializarPWA() {
   function fecharBannerPWA(e) {
     if (e) {
       e.preventDefault();
-      e.stopPropagation(); // Trava a propagação do clique/toque no mobile
+      e.stopPropagation(); // Impede o clique de se espalhar para o botão de baixo
     }
     if (banner) {
       banner.style.display = 'none';
     }
     sessionStorage.setItem('pwa_banner_oculto', 'true');
-    console.log('Banner PWA rejeitado e ocultado nesta sessão.');
   }
 
-  // Captura o fechamento manual aplicando tanto em cliques quanto em toques de tela
+  // Captura o fechamento manual aplicando tanto em cliques quanto em toques de tela diretos
   const btnFechar = document.getElementById('btn-fechar-pwa');
   if (btnFechar) {
     btnFechar.addEventListener('click', fecharBannerPWA, { passive: false });
