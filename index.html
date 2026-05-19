@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Finance Dashboard Pro</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+  <!-- SIDEBAR -->
+
+  <aside class="sidebar">
+
+    <div>
+
+      <h2 class="logo">
+        <i class="fa-solid fa-chart-line"></i>
+        Meus gastos
+      </h2>
+
+      <button id="toggleTema">
+        <i class="fa-solid fa-moon"></i>
+        Tema
+      </button>
+
+      <div class="meses" id="listaMeses"></div>
+
+    </div>
+
+    <div class="perfil">
+
+      <div class="foto">
+        <img src="sua-foto2.jpg">
+      </div>
+
+      <div>
+        <h3>GUSTA_IG</h3>
+        <p>Dashboard Financeiro</p>
+      </div>
+
+    </div>
+
+  </aside>
+
+  <!-- CONTEÚDO -->
+
+  <main class="conteudo">
+
+    <header class="topo">
+
+      <div>
+        <h1 id="tituloMes"></h1>
+        <p>Controle financeiro inteligente</p>
+      </div>
+
+    </header>
+
+    <!-- CARDS -->
+
+    <section class="cards">
+
+      <div class="card">
+        <span>Receitas</span>
+        <h2 id="receitas">R$ 0</h2>
+      </div>
+
+      <div class="card">
+        <span>Despesas</span>
+        <h2 id="despesas">R$ 0</h2>
+      </div>
+
+      <div class="card">
+        <span>Saldo</span>
+        <h2 id="saldo">R$ 0</h2>
+      </div>
+
+      <div class="card">
+        <span>Transações</span>
+        <h2 id="quantidade">0</h2>
+      </div>
+
+    </section>
+
+    <!-- FILTROS -->
+
+    <section class="filtros">
+
+      <input
+      type="text"
+      id="pesquisa"
+      placeholder="Pesquisar...">
+
+      <select id="filtroCategoria">
+
+        <option value="todos">
+          Todas Categorias
+        </option>
+
+        <option>Alimentação</option>
+        <option>Transporte</option>
+        <option>Salário</option>
+        <option>Lazer</option>
+        <option>Estudos</option>
+        <option>Igreja</option>
+        <option>Outros</option>
+
+      </select>
+
+    </section>
+
+    <!-- FORM -->
+
+    <section class="formulario">
+
+      <input
+      type="text"
+      id="descricao"
+      placeholder="Descrição">
+
+      <input
+      type="number"
+      id="valor"
+      placeholder="Valor">
+
+      <select id="tipo">
+        <option value="entrada">Receita</option>
+        <option value="saida">Despesa</option>
+      </select>
+
+      <select id="categoria">
+
+        <option>Alimentação</option>
+        <option>Transporte</option>
+        <option>Salário</option>
+        <option>Lazer</option>
+        <option>Estudos</option>
+        <option>Igreja</option>
+        <option>Outros</option>
+
+      </select>
+
+      <button onclick="adicionarTransacao()">
+        Adicionar
+      </button>
+
+    </section>
+
+    <!-- GRAFICOS -->
+
+    <section class="graficos">
+
+      <div class="grafico-card">
+        <canvas id="graficoPizza"></canvas>
+      </div>
+
+      <div class="grafico-card">
+        <canvas id="graficoLinha"></canvas>
+      </div>
+
+    </section>
+
+    <!-- TABELA -->
+
+    <section class="tabela-box">
+
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>Descrição</th>
+            <th>Categoria</th>
+            <th>Tipo</th>
+            <th>Valor</th>
+            <th>Ações</th>
+          </tr>
+
+        </thead>
+
+        <tbody id="tabela"></tbody>
+
+      </table>
+
+    </section>
+
+    <!-- FOOTER -->
+
+    <footer>
+
+      Desenvolvido por
+      <strong>Gustavo</strong>
+
+    </footer>
+
+  </main>
+
+  <div id="toast"></div>
+
+  <script src="script.js"></script>
+
+</body>
+</html>

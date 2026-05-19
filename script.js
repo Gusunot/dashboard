@@ -1,0 +1,440 @@
+const meses = [
+
+  'Janeiro','Fevereiro','Março','Abril',
+  'Maio','Junho','Julho','Agosto',
+  'Setembro','Outubro','Novembro','Dezembro'
+
+];
+
+let mesAtual = new Date().getMonth();
+
+let dados =
+JSON.parse(localStorage.getItem('financePro')) || {};
+
+const tabela =
+document.getElementById('tabela');
+
+const receitas =
+document.getElementById('receitas');
+
+const despesas =
+document.getElementById('despesas');
+
+const saldo =
+document.getElementById('saldo');
+
+const quantidade =
+document.getElementById('quantidade');
+
+const tituloMes =
+document.getElementById('tituloMes');
+
+const toast =
+document.getElementById('toast');
+
+/* INICIAR MESES */
+
+function iniciarMeses(){
+
+  const lista =
+  document.getElementById('listaMeses');
+
+  lista.innerHTML = '';
+
+  meses.forEach((mes,index)=>{
+
+    const botao =
+    document.createElement('button');
+
+    botao.innerHTML = mes;
+
+    if(index === mesAtual){
+      botao.classList.add('ativo');
+    }
+
+    botao.onclick = () => trocarMes(index);
+
+    lista.appendChild(botao);
+  });
+}
+
+/* TROCAR MES */
+
+function trocarMes(mes){
+
+  mesAtual = mes;
+
+  iniciarMeses();
+
+  atualizarTela();
+}
+
+/* SALVAR */
+
+function salvar(){
+
+  localStorage.setItem(
+    'financePro',
+    JSON.stringify(dados)
+  );
+}
+
+/* TOAST */
+
+function mostrarToast(texto){
+
+  toast.innerHTML = texto;
+
+  toast.classList.add('show');
+
+  setTimeout(()=>{
+
+    toast.classList.remove('show');
+
+  },2500);
+}
+
+/* ADICIONAR */
+
+function adicionarTransacao(){
+
+  const descricao =
+  document.getElementById('descricao').value;
+
+  const valor = parseFloat(
+    document.getElementById('valor').value
+  );
+
+  const tipo =
+  document.getElementById('tipo').value;
+
+  const categoria =
+  document.getElementById('categoria').value;
+
+  if(descricao === '' || isNaN(valor)){
+
+    mostrarToast('Preencha os campos');
+
+    return;
+  }
+
+  if(!dados[mesAtual]){
+    dados[mesAtual] = [];
+  }
+
+  dados[mesAtual].push({
+
+    descricao,
+    valor,
+    tipo,
+    categoria
+  });
+
+  salvar();
+
+  document.getElementById('descricao').value = '';
+
+  document.getElementById('valor').value = '';
+
+  mostrarToast('Transação adicionada');
+
+  atualizarTela();
+}
+
+/* REMOVER */
+
+function remover(index){
+
+  dados[mesAtual].splice(index,1);
+
+  salvar();
+
+  mostrarToast('Transação removida');
+
+  atualizarTela();
+}
+
+/* EDITAR */
+
+function editar(index){
+
+  const item = dados[mesAtual][index];
+
+  const novaDescricao =
+  prompt('Editar descrição', item.descricao);
+
+  if(novaDescricao !== null){
+
+    item.descricao = novaDescricao;
+  }
+
+  salvar();
+
+  mostrarToast('Transação editada');
+
+  atualizarTela();
+}
+
+/* TEMA */
+
+const botaoTema =
+document.getElementById('toggleTema');
+
+botaoTema.onclick = ()=>{
+
+  document.body.classList.toggle('light');
+
+  localStorage.setItem(
+    'temaClaro',
+    document.body.classList.contains('light')
+  );
+};
+
+if(localStorage.getItem('temaClaro') === 'true'){
+
+  document.body.classList.add('light');
+}
+
+/* GRAFICOS */
+
+let pizza;
+let linha;
+
+function atualizarGraficos(entrada,saida){
+
+  if(pizza) pizza.destroy();
+  if(linha) linha.destroy();
+
+  /* PIZZA */
+
+  pizza = new Chart(
+
+    document.getElementById('graficoPizza'),
+
+    {
+      type:'doughnut',
+
+      data:{
+
+        labels:['Receitas','Despesas'],
+
+        datasets:[{
+
+          data:[entrada,saida],
+
+          backgroundColor:[
+            '#22c55e',
+            '#ef4444'
+          ],
+
+          borderWidth:0
+        }]
+      },
+
+      options:{
+
+        responsive:true,
+
+        maintainAspectRatio:false,
+
+        plugins:{
+          legend:{
+            labels:{
+              color:'#94a3b8'
+            }
+          }
+        }
+      }
+    }
+  );
+
+  /* LINHA */
+
+  const saldoMeses = [];
+
+  for(let i = 0; i < 12; i++){
+
+    let saldoMes = 0;
+
+    if(dados[i]){
+
+      dados[i].forEach(item=>{
+
+        if(item.tipo === 'entrada'){
+          saldoMes += item.valor;
+        }else{
+          saldoMes -= item.valor;
+        }
+      });
+    }
+
+    saldoMeses.push(saldoMes);
+  }
+
+  linha = new Chart(
+
+    document.getElementById('graficoLinha'),
+
+    {
+      type:'line',
+
+      data:{
+
+        labels:meses,
+
+        datasets:[{
+
+          label:'Saldo',
+
+          data:saldoMeses,
+
+          borderColor:'#38bdf8',
+
+          backgroundColor:'rgba(56,189,248,0.1)',
+
+          fill:true,
+
+          tension:0.4
+        }]
+      },
+
+      options:{
+
+        responsive:true,
+
+        maintainAspectRatio:false,
+
+        plugins:{
+          legend:{
+            labels:{
+              color:'#94a3b8'
+            }
+          }
+        },
+
+        scales:{
+
+          x:{
+            ticks:{
+              color:'#94a3b8'
+            }
+          },
+
+          y:{
+            ticks:{
+              color:'#94a3b8'
+            }
+          }
+        }
+      }
+    }
+  );
+}
+
+/* ATUALIZAR */
+
+function atualizarTela(){
+
+  tabela.innerHTML = '';
+
+  tituloMes.innerHTML =
+  `Dashboard - ${meses[mesAtual]}`;
+
+  let entrada = 0;
+  let saida = 0;
+
+  const pesquisa =
+  document.getElementById('pesquisa')
+  .value.toLowerCase();
+
+  const filtroCategoria =
+  document.getElementById('filtroCategoria')
+  .value;
+
+  const lista = (dados[mesAtual] || [])
+  .filter(item=>{
+
+    const pesquisaOk =
+    item.descricao.toLowerCase()
+    .includes(pesquisa);
+
+    const categoriaOk =
+    filtroCategoria === 'todos' ||
+    item.categoria === filtroCategoria;
+
+    return pesquisaOk && categoriaOk;
+  });
+
+  lista.forEach((item,index)=>{
+
+    const linha =
+    document.createElement('tr');
+
+    linha.innerHTML = `
+
+      <td>${item.descricao}</td>
+
+      <td>${item.categoria}</td>
+
+      <td>${item.tipo}</td>
+
+      <td>
+        R$ ${item.valor.toFixed(2)}
+      </td>
+
+      <td>
+
+        <button class="editar"
+        onclick="editar(${index})">
+
+          Editar
+
+        </button>
+
+        <button class="excluir"
+        onclick="remover(${index})">
+
+          Excluir
+
+        </button>
+
+      </td>
+    `;
+
+    tabela.appendChild(linha);
+
+    if(item.tipo === 'entrada'){
+      entrada += item.valor;
+    }else{
+      saida += item.valor;
+    }
+  });
+
+  receitas.innerHTML =
+  `R$ ${entrada.toFixed(2)}`;
+
+  despesas.innerHTML =
+  `R$ ${saida.toFixed(2)}`;
+
+  saldo.innerHTML =
+  `R$ ${(entrada - saida).toFixed(2)}`;
+
+  quantidade.innerHTML =
+  lista.length;
+
+  atualizarGraficos(entrada,saida);
+}
+
+/* EVENTOS */
+
+document.getElementById('pesquisa')
+.addEventListener('input', atualizarTela);
+
+document.getElementById('filtroCategoria')
+.addEventListener('change', atualizarTela);
+
+/* INICIAR */
+
+iniciarMeses();
+
+atualizarTela();

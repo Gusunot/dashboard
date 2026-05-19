@@ -1,0 +1,416 @@
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial,sans-serif;
+}
+
+:root{
+
+  --bg:#0f172a;
+  --sidebar:#111827;
+  --card:#1e293b;
+  --card2:#0f172a;
+
+  --text:#f8fafc;
+  --text2:#94a3b8;
+
+  --primary:#38bdf8;
+  --green:#22c55e;
+  --red:#ef4444;
+
+  --border:#334155;
+}
+
+.light{
+
+  --bg:#f1f5f9;
+  --sidebar:#ffffff;
+  --card:#ffffff;
+  --card2:#e2e8f0;
+
+  --text:#0f172a;
+  --text2:#475569;
+
+  --primary:#2563eb;
+
+  --border:#cbd5e1;
+}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  display:flex;
+  min-height:100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+
+  width:260px;
+  background:var(--sidebar);
+
+  border-right:1px solid var(--border);
+
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+
+  padding:25px;
+}
+
+.logo{
+
+  display:flex;
+  align-items:center;
+  gap:10px;
+
+  margin-bottom:30px;
+}
+
+.logo i{
+  color:var(--primary);
+}
+
+#toggleTema{
+
+  width:100%;
+
+  padding:14px;
+
+  border:none;
+  border-radius:12px;
+
+  background:var(--primary);
+
+  color:white;
+
+  cursor:pointer;
+
+  margin-bottom:25px;
+}
+
+/* MESES */
+
+.meses{
+
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.meses button{
+
+  background:transparent;
+
+  border:1px solid var(--border);
+
+  color:var(--text);
+
+  padding:12px;
+
+  border-radius:10px;
+
+  cursor:pointer;
+
+  transition:0.3s;
+}
+
+.meses button:hover{
+  background:var(--card);
+}
+
+.meses .ativo{
+
+  background:var(--primary);
+  color:white;
+}
+
+/* PERFIL */
+
+.perfil{
+
+  display:flex;
+  align-items:center;
+  gap:15px;
+
+  margin-top:30px;
+}
+
+.foto{
+
+  width:50px;
+  height:50px;
+
+  border-radius:50%;
+
+  background:var(--primary);
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  color:white;
+}
+
+/* CONTEUDO */
+
+.conteudo{
+
+  flex:1;
+
+  padding:30px;
+}
+
+.topo{
+
+  margin-bottom:30px;
+}
+
+.topo p{
+  color:var(--text2);
+}
+
+/* CARDS */
+
+.cards{
+
+  display:grid;
+
+  grid-template-columns:
+  repeat(auto-fit,minmax(220px,1fr));
+
+  gap:20px;
+}
+
+.card{
+
+  background:var(--card);
+
+  border:1px solid var(--border);
+
+  padding:25px;
+
+  border-radius:18px;
+}
+
+.card span{
+
+  color:var(--text2);
+  font-size:14px;
+}
+
+.card h2{
+
+  margin-top:10px;
+  font-size:28px;
+}
+
+/* FILTROS */
+
+.filtros,
+.formulario{
+
+  margin-top:25px;
+
+  display:grid;
+
+  grid-template-columns:
+  repeat(auto-fit,minmax(180px,1fr));
+
+  gap:15px;
+}
+
+.filtros input,
+.filtros select,
+.formulario input,
+.formulario select{
+
+  background:var(--card);
+
+  border:1px solid var(--border);
+
+  color:var(--text);
+
+  padding:14px;
+
+  border-radius:12px;
+}
+
+.formulario button{
+
+  border:none;
+
+  background:var(--primary);
+
+  color:white;
+
+  border-radius:12px;
+
+  cursor:pointer;
+}
+
+/* GRAFICOS */
+
+.graficos{
+
+  margin-top:30px;
+
+  display:grid;
+
+  grid-template-columns:1fr 1fr;
+
+  gap:20px;
+}
+
+.grafico-card{
+
+  background:var(--card);
+
+  border:1px solid var(--border);
+
+  border-radius:18px;
+
+  padding:15px;
+
+  height:280px;
+}
+
+/* TABELA */
+
+.tabela-box{
+
+  margin-top:30px;
+
+  background:var(--card);
+
+  border:1px solid var(--border);
+
+  border-radius:18px;
+
+  overflow:auto;
+}
+
+table{
+
+  width:100%;
+  border-collapse:collapse;
+}
+
+th,td{
+
+  padding:16px;
+  text-align:center;
+}
+
+th{
+
+  background:var(--card2);
+}
+
+tr{
+
+  border-bottom:1px solid var(--border);
+}
+
+.editar{
+
+  background:var(--green);
+
+  border:none;
+
+  color:white;
+
+  padding:8px 12px;
+
+  border-radius:8px;
+
+  cursor:pointer;
+}
+
+.excluir{
+
+  background:var(--red);
+
+  border:none;
+
+  color:white;
+
+  padding:8px 12px;
+
+  border-radius:8px;
+
+  cursor:pointer;
+
+  margin-left:8px;
+}
+
+/* FOOTER */
+
+footer{
+
+  margin-top:40px;
+
+  text-align:center;
+
+  color:var(--text2);
+
+  padding-bottom:20px;
+}
+
+.foto img{
+
+  width:50px;
+  height:50px;
+
+  border-radius:50%;
+
+  object-fit:cover;
+
+  border:2px solid var(--primary);
+}
+
+/* TOAST */
+
+#toast{
+
+  position:fixed;
+
+  right:20px;
+  bottom:20px;
+
+  background:var(--primary);
+
+  color:white;
+
+  padding:15px 25px;
+
+  border-radius:12px;
+
+  opacity:0;
+
+  transition:0.4s;
+}
+
+#toast.show{
+  opacity:1;
+}
+
+/* RESPONSIVO */
+
+@media(max-width:900px){
+
+  body{
+    flex-direction:column;
+  }
+
+  .sidebar{
+    width:100%;
+  }
+
+  .graficos{
+    grid-template-columns:1fr;
+  }
+  
+}
