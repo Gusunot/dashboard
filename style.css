@@ -194,7 +194,7 @@ body {
 .card.saidas .icon-box { color: var(--danger); background: rgba(247, 90, 104, 0.1); }
 .card.saldo .icon-box { color: var(--text-main); background: rgba(141, 141, 153, 0.1); }
 
-/* CORPO DASHBOARD (Layout Desktop) */
+/* CORPO DASHBOARD */
 .dashboard-body {
   display: grid;
   grid-template-columns: 2fr 1fr;
@@ -261,9 +261,9 @@ td.saida { color: var(--danger); }
 .btn-acao.delete { color: var(--danger); }
 .btn-acao:hover { background: var(--bg-primary); }
 
-
-/* PWA BANNER (Estilo Compacto Superior para Desktop) */
+/* PWA BANNER (Inicia oculto por padrão no CSS) */
 .pwa-banner {
+  display: none; 
   position: fixed;
   top: 12px;
   left: 50%;
@@ -272,10 +272,9 @@ td.saida { color: var(--danger); }
   border: 1px solid var(--primary);
   padding: 0.6rem 1.2rem;
   border-radius: 30px;
-  display: flex;
   align-items: center;
   gap: 1.5rem;
-  z-index: 10000;
+  z-index: 10005;
   box-shadow: 0 8px 24px rgba(0,0,0,0.6);
   width: auto;
   max-width: 90%;
@@ -306,16 +305,15 @@ td.saida { color: var(--danger); }
   justify-content: center;
   padding: 6px;
   border-radius: 50%;
-  width: 28px;
-  height: 28px;
-  z-index: 10002; /* Mantém o X acima de tudo no mobile */
+  width: 32px;
+  height: 32px;
+  z-index: 10010;
 }
-.btn-pwa-fechar span { font-size: 1.1rem; pointer-events: none; } 
+.btn-pwa-fechar span { font-size: 1.2rem; pointer-events: none; } 
 .btn-pwa-fechar:hover { background: rgba(247, 90, 104, 0.2); }
 .btn-pwa-fechar:hover span { color: var(--danger); }
 
-
-/* RESPONSIVIDADE E RENOVAÇÃO DO FLUXO MOBILE */
+/* RESPONSIVIDADE MOBILE */
 @media (max-width: 768px) {
   .container { flex-direction: column; }
   
@@ -338,24 +336,28 @@ td.saida { color: var(--danger); }
   .menu { flex-direction: row; justify-content: space-around; }
   .menu button { justify-content: center; font-size: 0.9rem; padding: 0.6rem; }
 
-  /* GESTÃO DE ORDEM DE ELEMENTOS NO CELULAR (FORÇADA COMPLETA) */
-  .main-content { display: flex; flex-direction: column; }
-  
-  .top-bar { order: 1; }
-  .periodo-seletor-wrapper { order: 2; justify-content: center; width: 100%; }
+  .main-content {
+    padding: 1rem;
+  }
+
+  .periodo-seletor-wrapper { justify-content: center; width: 100%; }
   .periodo-seletor { width: 100%; justify-content: space-between; }
-  .cards-grid { order: 3; }
   
-  .dashboard-body { display: flex; flex-direction: column; gap: 1.5rem; } 
+  /* REORDENAÇÃO COMPLETA DOS BLOCOS PRINCIPAIS */
+  .dashboard-body { 
+    display: flex !important; 
+    flex-direction: column !important; 
+    gap: 1.5rem; 
+  } 
   
-  /* Ajuste preciso das posições solicitadas */
-  .form-container { order: 4 !important; }      /* 1º: Nova Transação */
-  .extrato-container { order: 5 !important; }   /* 2º: Histórico de Transações */
-  .grafico-container { order: 6 !important; }   /* 3º: Fluxo de Caixa no final de tudo */
+  /* Ordem estrita estabelecida aqui */
+  .form-container { order: 1 !important; }      /* 1. Nova Transação */
+  .extrato-container { order: 2 !important; }   /* 2. Histórico de Transações */
+  .grafico-container { order: 3 !important; }   /* 3. Fluxo de Caixa */
   
   .canvas-wrapper { max-height: 240px; }
 
-  /* BANNER FIXADO NO RODAPÉ NO MOBILE COM ISOLAMENTO DE TOQUE */
+  /* BANNER FIXO NO RODAPÉ NO MOBILE */
   .pwa-banner {
     top: auto;
     bottom: 0; 
@@ -366,14 +368,8 @@ td.saida { color: var(--danger); }
     border-radius: 0;
     border: none;
     border-top: 1px solid var(--primary);
-    padding: 0.9rem 1.2rem;
+    padding: 1rem 1.2rem;
     box-shadow: 0 -4px 15px rgba(0,0,0,0.5);
   }
   .pwa-banner p { font-size: 0.75rem; }
-  
-  .btn-pwa-fechar {
-    margin-left: 0.5rem;
-    width: 32px;
-    height: 32px;
-  }
 }
