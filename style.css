@@ -194,7 +194,7 @@ body {
 .card.saidas .icon-box { color: var(--danger); background: rgba(247, 90, 104, 0.1); }
 .card.saldo .icon-box { color: var(--text-main); background: rgba(141, 141, 153, 0.1); }
 
-/* CORPO DASHBOARD */
+/* CORPO DASHBOARD (Layout Desktop Padrão) */
 .dashboard-body {
   display: grid;
   grid-template-columns: 2fr 1fr;
@@ -261,7 +261,7 @@ td.saida { color: var(--danger); }
 .btn-acao.delete { color: var(--danger); }
 .btn-acao:hover { background: var(--bg-primary); }
 
-/* PWA BANNER (Inicia oculto por padrão no CSS) */
+/* PWA BANNER */
 .pwa-banner {
   display: none; 
   position: fixed;
@@ -343,17 +343,25 @@ td.saida { color: var(--danger); }
   .periodo-seletor-wrapper { justify-content: center; width: 100%; }
   .periodo-seletor { width: 100%; justify-content: space-between; }
   
-  /* REORDENAÇÃO COMPLETA DOS BLOCOS PRINCIPAIS */
+  /* FORÇANDO GRID DE COLUNA ÚNICA PARA CONTROLAR AS POSIÇÕES DAS LINHAS EXATAMENTE */
   .dashboard-body { 
-    display: flex !important; 
-    flex-direction: column !important; 
+    display: grid !important; 
+    grid-template-columns: 1fr !important;
     gap: 1.5rem; 
   } 
   
-  /* Ordem estrita estabelecida aqui */
-  .form-container { order: 1 !important; }      /* 1. Nova Transação */
-  .extrato-container { order: 2 !important; }   /* 2. Histórico de Transações */
-  .grafico-container { order: 3 !important; }   /* 3. Fluxo de Caixa */
+  /* Destruição de agrupamento herdado e reordenação absoluta */
+  .form-container { 
+    grid-row: 1 !important; 
+  }      /* 1. Nova Transação */
+  
+  .extrato-container { 
+    grid-row: 2 !important; 
+  }   /* 2. Histórico de Transações */
+  
+  .grafico-container { 
+    grid-row: 3 !important; 
+  }   /* 3. Fluxo de Caixa (Fica embaixo de tudo!) */
   
   .canvas-wrapper { max-height: 240px; }
 
