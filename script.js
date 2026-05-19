@@ -500,5 +500,10 @@ iniciarMeses();
 atualizarTela();
 
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("./sw.js");
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("/dashboard/sw.js", { scope: "/dashboard/" })
+      .then((reg) => console.log("Service Worker registrado com sucesso no escopo:", reg.scope))
+      .catch((err) => console.log("Erro ao registrar o Service Worker:", err));
+  });
 }
