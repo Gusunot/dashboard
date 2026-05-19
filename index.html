@@ -1,156 +1,155 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard+</title>
-<link rel="stylesheet" href="style.css">
-<link rel="manifest" href="manifest.json">
-<!-- Chart.js para os Gráficos -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<!-- Google Fonts & Icons -->
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
-<meta name="theme-color" content="#121214">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard+</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+  <!-- Chart.js para os Gráficos -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Google Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+  <meta name="theme-color" content="#121214">
 </head>
 <body class="dark-theme">
 
-<!-- AVISO DE INSTALAÇÃO PWA (Compacto e com Fechar) -->
-<div id="pwa-install-banner" class="pwa-banner" style="display: none;">
-<div class="pwa-conteudo">
-<span class="material-icons-round icon-pwa-mini">add_to_home_screen</span>
-<p>Instalar Dashboard+?</p>
-</div>
-<div class="pwa-acoes">
-<button id="btn-instalar-app" class="btn-pwa">Instalar</button>
-<button id="btn-fechar-pwa" class="btn-pwa-fechar"><span class="material-icons-round">close</span></button>
-</div>
-</div>
+  <!-- AVISO DE INSTALAÇÃO PWA (Compacto e com Fechar) -->
+  <div id="pwa-install-banner" class="pwa-banner" style="display: none;">
+    <div class="pwa-conteudo">
+      <span class="material-icons-round icon-pwa-mini">add_to_home_screen</span>
+      <p>Instalar Dashboard+?</p>
+    </div>
+    <div class="pwa-acoes">
+      <button id="btn-instalar-app" class="btn-pwa">Instalar</button>
+      <button id="btn-fechar-pwa" class="btn-pwa-fechar"><span class="material-icons-round">close</span></button>
+    </div>
+  </div>
 
-<div class="container">
-<!-- BARRA LATERAL (SIDEBAR) -->
-<aside class="sidebar">
-<div class="logo">
-<span class="material-icons-round">account_balance_wallet</span>
-        <h2>Dashboard<span>+</span></h2>
+  <div class="container">
+    <!-- BARRA LATERAL (SIDEBAR) -->
+    <aside class="sidebar">
+      <div class="logo">
+        <span class="material-icons-round">account_balance_wallet</span>
         <h2>Finance<span>dash</span></h2>
-</div>
+      </div>
 
-<div class="perfil-box">
-<label for="inputFoto" class="foto">
-<img id="fotoPerfil" src="https://i.imgur.com/2DhmtJ4.png" alt="Foto de Perfil">
-<div class="overlay-foto"><span class="material-icons-round">photo_camera</span></div>
-</label>
-<input type="file" id="inputFoto" accept="image/*" style="display: none;">
-<input type="text" id="nomeUsuario" placeholder="Seu Nome" value="Usuário"> 
-</div>
+      <div class="perfil-box">
+        <label for="inputFoto" class="foto">
+          <img id="fotoPerfil" src="https://i.imgur.com/2DhmtJ4.png" alt="Foto de Perfil">
+          <div class="overlay-foto"><span class="material-icons-round">photo_camera</span></div>
+        </label>
+        <input type="file" id="inputFoto" accept="image/*" style="display: none;">
+        <input type="text" id="nomeUsuario" placeholder="Seu Nome" value="Usuário"> 
+      </div>
 
-<nav class="menu">
-<button class="active" id="btn-dashboard">
-<span class="material-icons-round">dashboard</span> Dashboard
-</button>
-<button id="btn-tema">
-<span class="material-icons-round" id="icon-tema">light_mode</span> Alternar Tema
-</button>
-</nav>
-</aside>
+      <nav class="menu">
+        <button class="active" id="btn-dashboard">
+          <span class="material-icons-round">dashboard</span> Dashboard
+        </button>
+        <button id="btn-tema">
+          <span class="material-icons-round" id="icon-tema">light_mode</span> Alternar Tema
+        </button>
+      </nav>
+    </aside>
 
-<!-- CONTEÚDO PRINCIPAL -->
-<main class="main-content">
-<header class="top-bar">
-<h1>Visão Geral</h1>
-</header>
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="main-content">
+      <header class="top-bar">
+        <h1>Visão Geral</h1>
+      </header>
+      
+      <div class="periodo-seletor-wrapper">
+        <div class="periodo-seletor">
+          <button onclick="mudarMes(-1)"><span class="material-icons-round">chevron_left</span></button>
+          <span id="labelPeriodo">Janeiro 2026</span>
+          <button onclick="mudarMes(1)"><span class="material-icons-round">chevron_right</span></button>
+        </div>
+      </div>
 
-<div class="periodo-seletor-wrapper">
-<div class="periodo-seletor">
-<button onclick="mudarMes(-1)"><span class="material-icons-round">chevron_left</span></button>
-<span id="labelPeriodo">Janeiro 2026</span>
-<button onclick="mudarMes(1)"><span class="material-icons-round">chevron_right</span></button>
-</div>
-</div>
+      <!-- CARDS DE RESUMO -->
+      <section class="cards-grid">
+        <div class="card entradas">
+          <div class="card-info">
+            <h3>Receitas</h3>
+            <h2 id="totalEntradas">R$ 0,00</h2>
+          </div>
+          <span class="material-icons-round icon-box">arrow_upward</span>
+        </div>
 
-<!-- CARDS DE RESUMO -->
-<section class="cards-grid">
-<div class="card entradas">
-<div class="card-info">
-<h3>Receitas</h3>
-<h2 id="totalEntradas">R$ 0,00</h2>
-</div>
-<span class="material-icons-round icon-box">arrow_upward</span>
-</div>
+        <div class="card saidas">
+          <div class="card-info">
+            <h3>Despesas</h3>
+            <h2 id="totalSaidas">R$ 0,00</h2>
+          </div>
+          <span class="material-icons-round icon-box">arrow_downward</span>
+        </div>
 
-<div class="card saidas">
-<div class="card-info">
-<h3>Despesas</h3>
-<h2 id="totalSaidas">R$ 0,00</h2>
-</div>
-<span class="material-icons-round icon-box">arrow_downward</span>
-</div>
+        <div class="card saldo">
+          <div class="card-info">
+            <h3>Saldo Atual</h3>
+            <h2 id="totalSaldo">R$ 0,00</h2>
+          </div>
+          <span class="material-icons-round icon-box">attach_money</span>
+        </div>
+      </section>
 
-<div class="card saldo">
-<div class="card-info">
-<h3>Saldo Atual</h3>
-<h2 id="totalSaldo">R$ 0,00</h2>
-</div>
-<span class="material-icons-round icon-box">attach_money</span>
-</div>
-</section>
+      <!-- ÁREA DO GRÁFICO E FORMULÁRIO -->
+      <section class="dashboard-body">
+        <div class="grafico-container">
+          <h3>Fluxo de Caixa</h3>
+          <div class="canvas-wrapper">
+            <canvas id="graficoFinanceiro"></canvas>
+          </div>
+        </div>
 
-<!-- ÁREA DO GRÁFICO E FORMULÁRIO -->
-<section class="dashboard-body">
-<div class="grafico-container">
-<h3>Fluxo de Caixa</h3>
-<div class="canvas-wrapper">
-<canvas id="graficoFinanceiro"></canvas>
-</div>
-</div>
+        <div class="form-container">
+          <h3>Nova Transação</h3>
+          <form id="formTransacao" onsubmit="adicionarTransacao(event)">
+            <input type="text" id="descricao" placeholder="Descrição" required>
+            <input type="number" id="valor" step="0.01" placeholder="Valor (R$)" required>
+            
+            <select id="tipo" required>
+              <option value="entrada">Receita (+)</option>
+              <option value="saida">Despesa (-)</option>
+            </select>
 
-<div class="form-container">
-<h3>Nova Transação</h3>
-<form id="formTransacao" onsubmit="adicionarTransacao(event)">
-<input type="text" id="descricao" placeholder="Descrição" required>
-<input type="number" id="valor" step="0.01" placeholder="Valor (R$)" required>
+            <select id="categoria" required>
+              <option value="Salário">Salário</option>
+              <option value="Alimentação">Alimentação</option>
+              <option value="Transporte">Transporte</option>
+              <option value="Lazer">Lazer</option>
+              <option value="Outros">Outros</option>
+            </select>
 
-<select id="tipo" required>
-<option value="entrada">Receita (+)</option>
-<option value="saida">Despesa (-)</option>
-</select>
+            <button type="submit" class="btn-enviar">Adicionar</button>
+          </form>
+        </div>
+      </section>
 
-<select id="categoria" required>
-<option value="Salário">Salário</option>
-<option value="Alimentação">Alimentação</option>
-<option value="Transporte">Transporte</option>
-<option value="Lazer">Lazer</option>
-<option value="Outros">Outros</option>
-</select>
+      <!-- EXTRATO / TABELA -->
+      <section class="extrato-container">
+        <h3>Histórico de Transações</h3>
+        <div class="tabela-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Descrição</th>
+                <th>Categoria</th>
+                <th>Valor</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="tabelaCorpo">
+              <!-- Inserido via JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
 
-<button type="submit" class="btn-enviar">Adicionar</button>
-</form>
-</div>
-</section>
-
-<!-- EXTRATO / TABELA -->
-<section class="extrato-container">
-<h3>Histórico de Transações</h3>
-<div class="tabela-wrapper">
-<table>
-<thead>
-<tr>
-<th>Descrição</th>
-<th>Categoria</th>
-<th>Valor</th>
-<th>Ações</th>
-</tr>
-</thead>
-<tbody id="tabelaCorpo">
-<!-- Inserido via JavaScript -->
-</tbody>
-</table>
-</div>
-</section>
-</main>
-</div>
-
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
