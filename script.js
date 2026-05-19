@@ -1,159 +1,144 @@
-// CONFIGURAÇÃO DE DATA GLOBAL
-let dataAtual = new Date();
-let mesAtual = dataAtual.getMonth();
-let anoAtual = dataAtual.getFullYear();
+// ==========================================
+// ESTADO E VARIÁVEIS GLOBAIS DO SISTEMA
+// ==========================================
+let transacoes = JSON.parse(localStorage.getItem('transacoes')) || [];
+let dataAtual = new Date(); // Controla o período atual exibido
+let graficoInstancia = null; // Guarda a referência do Chart.js para destruição/recriação
 
-const mesesNome = [
-  "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
-  "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
-];
-
-let dados = JSON.parse(localStorage.getItem('finandash_dados')) || {};
-let graficoInstancia = null;
-
-// Inicialização do sistema
+// ==========================================
+// INICIALIZAÇÃO DA APLICAÇÃO
+// ==========================================
 window.addEventListener('DOMContentLoaded', () => {
-  inicializarPeriodo();
+  inicializarSeletorData();
   carregarPerfil();
-  atualizarTela();
-  configurarTema();
-  inicializarPWA();
+  atualizarDashboard();
 });
 
-// Configuração de Tema (Claro / Escuro)
-function configurarTema() {
-  const btnTema = document.getElementById('btn-tema');
-  const iconTema = document.getElementById('icon-tema');
+// Preenche e configura os seletores suspensos (Mês/Ano)
+function inicializarSeletorData() {
+  const selectMes = document.getElementById('selectMes');
+  const selectAno = document.getElementById('selectAno');
   
-  if(localStorage.getItem('theme') === 'light') {
-    document.body.classList.remove('dark-theme');
-    document.body.classList.add('light-theme');
-    iconTema.innerText = 'dark_mode';
+  if (!selectMes || !selectAno) return;
+
+  const anoCorrente = new Date().getFullYear();
+  
+  // Limpa o select de anos e cria opções (5 anos para trás, 2 para frente)
+  selectAno.innerHTML = '';
+  for (let i = anoCorrente - 5; i <= anoCorrente + 2; i++) {
+    let option = document.createElement('option');
+    option.value = i;
+    option.text = i;
+    selectAno.appendChild(option);
+  }
+  
+  // Sincroniza o valor visual dos seletores com o estado real do app
+  selectMes.value = dataAtual.getMonth();
+  selectAno.value = dataAtual.getFullYear();
+}
+
+// Disparado quando o usuário altera o Mês ou Ano nos menus suspensos
+function atualizarPeriodoPorSelect() {
+  const mesSelecionado = parseInt(document.getElementById('selectMes').value);
+  const anoSelecionado = parseInt(document.getElementById('selectAno').value);
+  
+  // Modifica nossa data global de controle
+  dataAtual.setMonth(mesSelecionado);
+  dataAtual.setFullYear(anoSelecionado);
+  
+  // Atualiza todo o painel com as novas datas
+  atualizarDashboard();
+}
+
+// Garante o alinhamento visual caso o sistema force mudanças externas
+function sincronizarSelectsVisuais() {
+  const selectMes = document.getElementById('selectMes');
+  const selectAno = document.getElementById('selectAno');
+  if (selectMes && selectAno) {
+    selectMes.value = dataAtual.getMonth();
+    selectAno.value = dataAtual.getFullYear();
+  }
+}
+
+// ==========================================
+// CONTROLADORES DA VISÃO (RENDERIZAÇÃO)
+// ==========================================
+function atualizarDashboard() {
+  sincronizarSelectsVisuais();
+
+  // Filtra transações correspondentes ao mês e ano selecionados
+  const transacoesFiltradas = transacoes.filter(t => {
+    const dataT = new Date(t.data);
+    return dataT.getMonth() === dataAtual.getMonth() && dataT.getFullYear() === dataAtual.getFullYear();
+  });
+
+  // Cálculos de Totais
+  let entradas = 0;
+  let saídas = 0;
+
+  transacoesFiltradas.forEach(t => {
+    const v = parseFloat(t.valor);
+    if (t.tipo === 'entrada') entradas += v;
+    else saídas += v;
+  });
+
+  const saldo = entradas - saídas;
+
+  // Renderiza valores na tela
+  document.getElementById('totalEntradas').innerText = entradas.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  document.getElementById('totalSaidas').innerText = saídas.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  document.getElementById('totalSaldo').innerText = saldo.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+  renderizarTabela(transacoesFiltradas);
+  renderizarGrafico(entradas, saídas);
+}
+
+function renderizarTabela(lista) {
+  const corpo = document.getElementById('corpoTabela');
+  corpo.innerHTML = '';
+
+  if (lista.length === 0) {
+    corpo.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-muted);">Nenhuma transação registrada neste período.</td></tr>`;
+    return;
   }
 
-  btnTema.addEventListener('click', () => {
-    if(document.body.classList.contains('dark-theme')) {
-      document.body.classList.remove('dark-theme');
-      document.body.classList.add('light-theme');
-      iconTema.innerText = 'dark_mode';
-      localStorage.setItem('theme', 'light');
-    } else {
-      document.body.classList.remove('light-theme');
-      document.body.classList.add('dark-theme');
-      iconTema.innerText = 'light_mode';
-      localStorage.setItem('theme', 'dark');
-    }
-    atualizarGrafico();
-  });
-}
-
-// Inicializa a estrutura de dados para o período atual
-function inicializarPeriodo() {
-  if (!dados[anoAtual]) dados[anoAtual] = {};
-  if (!dados[anoAtual][mesAtual]) dados[anoAtual][mesAtual] = [];
-  document.getElementById('labelPeriodo').innerText = `${mesesNome[mesAtual]} ${anoAtual}`;
-}
-
-// Navegação entre meses
-function mudarMes(direcao) {
-  mesAtual += direcao;
-  if (mesAtual > 11) { mesAtual = 0; anoAtual++; }
-  if (mesAtual < 0) { mesAtual = 11; anoAtual--; }
-  inicializarPeriodo();
-  atualizarTela();
-}
-
-// Adiciona uma nova transação
-function adicionarTransacao(e) {
-  e.preventDefault();
-  const descricao = document.getElementById('descricao').value;
-  const valor = parseFloat(document.getElementById('valor').value);
-  const tipo = document.getElementById('tipo').value;
-  const categoria = document.getElementById('categoria').value;
-
-  const novaTransacao = { descricao, valor, tipo, categoria, id: Date.now() };
-  dados[anoAtual][mesAtual].push(novaTransacao);
-
-  salvar();
-  atualizarTela();
-  document.getElementById('formTransacao').reset();
-}
-
-// Salva os dados no localStorage
-function salvar() {
-  localStorage.setItem('finandash_dados', JSON.stringify(dados));
-}
-
-// Renderiza a tabela e atualiza os cards de resumo
-function atualizarTela() {
-  const transacoes = dados[anoAtual][mesAtual] || [];
-  let entradas = 0;
-  let saidas = 0;
-  const tabelaCorpo = document.getElementById('tabelaCorpo');
-  tabelaCorpo.innerHTML = '';
-
-  transacoes.forEach((item, index) => {
-    if(item.tipo === 'entrada') entradas += item.valor;
-    else saidas += item.valor;
-
+  lista.forEach(t => {
     const tr = document.createElement('tr');
+    const valorFormatado = parseFloat(t.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    
     tr.innerHTML = `
-      <td>${item.descricao}</td>
-      <td><span class="tag-cat">${item.categoria}</span></td>
-      <td class="${item.tipo}">${item.tipo === 'entrada' ? '+' : '-'} R$ ${item.valor.toFixed(2)}</td>
+      <td>${t.descricao}</td>
+      <td class="${t.tipo}">${t.tipo === 'entrada' ? '+' : '-'} ${valorFormatado}</td>
+      <td>${t.categoria || 'Outros'}</td>
       <td>
-        <button class="btn-acao edit" onclick="editar(${index})"><span class="material-icons-round">edit</span></button>
-        <button class="btn-acao delete" onclick="deletar(${index})"><span class="material-icons-round">delete</span></button>
+        <button class="btn-acao delete" onclick="removerTransacao('${t.id}')">
+          <span class="material-symbols-outlined" style="font-size: 1.2rem;">delete</span>
+        </button>
       </td>
     `;
-    tabelaCorpo.appendChild(tr);
+    corpo.appendChild(tr);
   });
-
-  const saldo = entradas - saidas;
-  document.getElementById('totalEntradas').innerText = `R$ ${entradas.toFixed(2)}`;
-  document.getElementById('totalSaidas').innerText = `R$ ${saidas.toFixed(2)}`;
-  document.getElementById('totalSaldo').innerText = `R$ ${saldo.toFixed(2)}`;
-
-  atualizarGrafico(entradas, saidas);
 }
 
-// Edita o nome/descrição de uma transação
-function editar(index) {
-  const item = dados[anoAtual][mesAtual][index];
-  const novaDescricao = prompt('Editar descrição:', item.descricao);
+function renderizarGrafico(entradas, saidas) {
+  const ctx = document.getElementById('graficoFinancas');
+  if (!ctx) return;
 
-  if (novaDescricao !== null && novaDescricao.trim() !== "") {
-    item.descricao = novaDescricao;
-    salvar();
-    atualizarTela(); 
-  }
-}
-
-// Remove uma transação
-function deletar(index) {
-  if(confirm("Tem certeza que deseja apagar essa transação?")) {
-    dados[anoAtual][mesAtual].splice(index, 1);
-    salvar();
-    atualizarTela();
-  }
-}
-
-// Controla o Gráfico
-function atualizarGrafico(entradas = 0, saidas = 0) {
-  const ctx = document.getElementById('graficoFinanceiro').getContext('2d');
-  const corTexto = document.body.classList.contains('dark-theme') ? '#e1e1e6' : '#363f5f';
-
+  // Destrói gráfico existente para evitar fantasmas ou bugs visuais ao atualizar dados
   if (graficoInstancia) {
     graficoInstancia.destroy();
   }
 
+  // Se não houver dados, exibe um gráfico vazio equilibrado
+  const temDados = entradas > 0 || saidas > 0;
+
   graficoInstancia = new Chart(ctx, {
     type: 'doughnut',
     data: {
-      labels: ['Receitas', 'Despesas'],
+      labels: temDados ? ['Entradas', 'Saídas'] : ['Sem Dados'],
       datasets: [{
-        data: [entradas, saidas],
-        backgroundColor: ['#00b37e', '#f75a68'],
+        data: temDados ? [entradas, saidas] : [1, 0],
+        backgroundColor: temDados ? ['#00b37e', '#f75a68'] : ['#323238'],
         borderWidth: 0
       }]
     },
@@ -161,91 +146,88 @@ function atualizarGrafico(entradas = 0, saidas = 0) {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
-        legend: { labels: { color: corTexto, font: { family: 'Poppins' } } }
+        legend: {
+          position: 'bottom',
+          labels: { color: document.body.classList.contains('light-theme') ? '#363f5f' : '#e1e1e6' }
+        }
       }
     }
   });
 }
 
-// Carrega e manipula os dados do Perfil
-function carregarPerfil() {
-  const nomeSalvo = localStorage.getItem('user_name');
-  const fotoSalva = localStorage.getItem('user_photo');
-  const inputNome = document.getElementById('nomeUsuario');
-  const imgFoto = document.getElementById('fotoPerfil');
-  const inputFoto = document.getElementById('inputFoto');
+// ==========================================
+// OPERAÇÕES DO BANCO DE DADOS (LOCALSTORAGE)
+// ==========================================
+function adicionarTransacao(event) {
+  event.preventDefault();
 
-  if(nomeSalvo) inputNome.value = nomeSalvo;
-  if(fotoSalva) imgFoto.src = fotoSalva;
+  const descInput = document.getElementById('descTransacao');
+  const valorInput = document.getElementById('valorTransacao');
+  const tipoSelect = document.getElementById('tipoTransacao');
+  const catSelect = document.getElementById('categoriaTransacao');
 
-  inputNome.addEventListener('change', () => localStorage.setItem('user_name', inputNome.value));
+  // Cria o objeto da nova transação baseada estritamente no mês/ano do seletor ativo
+  const nova = {
+    id: String(Date.now()),
+    descricao: descInput.value,
+    valor: parseFloat(valorInput.value),
+    tipo: tipoSelect.value,
+    categoria: catSelect.value,
+    // Registra o dia de hoje caso coincida com o mês, se não, salva no dia 1º daquele mês selecionado
+    data: new Date(dataAtual.getFullYear(), dataAtual.getMonth(), new Date().getDate()).toISOString()
+  };
+
+  transacoes.push(nova);
+  localStorage.setItem('transacoes', JSON.stringify(transacoes));
   
-  inputFoto.addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if(file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        imgFoto.src = reader.result;
-        localStorage.setItem('user_photo', reader.result);
-      }
-      reader.readAsDataURL(file);
-    }
-  });
+  // Limpa inputs e atualiza a UI
+  descInput.value = '';
+  valorInput.value = '';
+  
+  atualizarDashboard();
 }
 
-// GESTÃO COMPLETA PWA
-let deferredPrompt;
-function inicializarPWA() {
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js')
-      .then(() => console.log('Service Worker Ativo'))
-      .catch(err => console.error('Erro SW:', err));
+function removerTransacao(id) {
+  transacoes = transacoes.filter(t => t.id !== id);
+  localStorage.setItem('transacoes', JSON.stringify(transacoes));
+  atualizarDashboard();
+}
+
+// ==========================================
+// TEMA E COSTUMIZAÇÃO DE PERFIL
+// ==========================================
+function alternarTema() {
+  document.body.classList.toggle('light-theme');
+  const temaSalvo = document.body.classList.contains('light-theme') ? 'light' : 'dark';
+  localStorage.setItem('temaFinanceiro', temaSalvo);
+  atualizarDashboard(); // Força o gráfico a adaptar as cores da legenda
+}
+
+function carregarPerfil() {
+  // Carrega Tema
+  if (localStorage.getItem('temaFinanceiro') === 'light') {
+    document.body.classList.add('light-theme');
   }
 
-  const banner = document.getElementById('pwa-install-banner');
+  // Carrega Usuário e Foto
+  const nome = localStorage.getItem('perfilNome') || 'Seu Nome';
+  const foto = localStorage.getItem('perfilFoto') || 'https://via.placeholder.com/90';
+  
+  document.getElementById('nomeUsuario').value = nome;
+  document.getElementById('fotoPerfil').src = foto;
+}
 
-  window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    
-    // Só exibe se não foi ocultado na sessão atual
-    if (!sessionStorage.getItem('pwa_banner_oculto')) {
-      if (banner) banner.style.setProperty('display', 'flex', 'important');
-    }
-  });
+function salvarNomeUsuario(nome) {
+  localStorage.setItem('perfilNome', nome);
+}
 
-  // Ação de Instalação
-  const btnInstalar = document.getElementById('btn-instalar-app');
-  if (btnInstalar) {
-    btnInstalar.addEventListener('click', () => {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then((choiceResult) => {
-          if (choiceResult.outcome === 'accepted') {
-            console.log('App instalado.');
-          }
-          if (banner) banner.style.setProperty('display', 'none', 'important');
-          deferredPrompt = null;
-        });
-      }
-    });
-  }
-
-  // Função estrita de Fechamento do Banner
-  function fecharBannerPWA(e) {
-    if (e) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-    sessionStorage.setItem('pwa_banner_oculto', 'true');
-    if (banner) {
-      banner.style.setProperty('display', 'none', 'important');
-    }
-  }
-
-  const btnFechar = document.getElementById('btn-fechar-pwa');
-  if (btnFechar) {
-    btnFechar.addEventListener('click', fecharBannerPWA, { passive: false });
-    btnFechar.addEventListener('touchstart', fecharBannerPWA, { passive: false });
+function atualizarFotoPerfil(input) {
+  if (input.files && input.files[0]) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      document.getElementById('fotoPerfil').src = e.target.result;
+      localStorage.setItem('perfilFoto', e.target.result);
+    };
+    reader.readAsDataURL(input.files[0]);
   }
 }
