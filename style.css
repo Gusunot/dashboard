@@ -14,7 +14,7 @@
   --text:#f8fafc;
   --text2:#94a3b8;
 
-  --primary:#38bdf8;
+  --primary:#3b82f6;
 
   --border:#334155;
 
@@ -38,13 +38,22 @@
 
 body{
 
-  background:var(--bg);
+  background:
+  linear-gradient(
+    135deg,
+    var(--bg),
+    #111827
+  );
 
   color:var(--text);
 
   display:flex;
 
   min-height:100vh;
+
+  transition:
+  background 0.4s ease,
+  color 0.4s ease;
 }
 
 /* SIDEBAR */
@@ -64,6 +73,11 @@ body{
   flex-direction:column;
 
   justify-content:space-between;
+
+  backdrop-filter:blur(18px);
+
+  animation:
+  aparecer 0.6s ease;
 }
 
 .logo{
@@ -129,6 +143,18 @@ body{
   cursor:pointer;
 
   border:3px solid var(--primary);
+
+  transition:
+  transform 0.25s ease,
+  box-shadow 0.25s ease;
+}
+
+.foto:hover{
+
+  transform:scale(1.06);
+
+  box-shadow:
+  0 0 25px rgba(56,189,248,0.35);
 }
 
 .foto img{
@@ -158,6 +184,28 @@ body{
   color:var(--text);
 
   text-align:center;
+}
+
+/* INPUTS */
+
+input,
+select{
+
+  transition:
+  border 0.2s ease,
+  transform 0.2s ease,
+  box-shadow 0.2s ease;
+}
+
+input:focus,
+select:focus{
+
+  outline:none;
+
+  transform:translateY(-2px);
+
+  box-shadow:
+  0 0 0 4px rgba(56,189,248,0.15);
 }
 
 /* ANO */
@@ -213,6 +261,46 @@ body{
   color:var(--text);
 
   cursor:pointer;
+
+  position:relative;
+
+  overflow:hidden;
+
+  transition:all 0.25s ease;
+}
+
+.meses button::before{
+
+  content:'';
+
+  position:absolute;
+
+  top:0;
+  left:-100%;
+
+  width:100%;
+  height:100%;
+
+  background:
+  linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,0.08),
+    transparent
+  );
+
+  transition:0.5s;
+}
+
+.meses button:hover::before{
+
+  left:100%;
+}
+
+.meses button:hover{
+
+  transform:
+  translateX(6px);
 }
 
 .meses .ativo{
@@ -236,6 +324,9 @@ body{
 .topo{
 
   margin-bottom:30px;
+
+  animation:
+  aparecer 0.6s ease;
 }
 
 .topo p{
@@ -256,6 +347,10 @@ body{
 
 .card{
 
+  position:relative;
+
+  overflow:hidden;
+
   background:var(--card);
 
   border:1px solid var(--border);
@@ -263,6 +358,45 @@ body{
   padding:25px;
 
   border-radius:18px;
+
+  transition:
+  transform 0.25s ease,
+  box-shadow 0.25s ease,
+  border 0.25s ease;
+
+  animation:
+  aparecer 0.6s ease;
+
+  box-shadow:
+  0 4px 20px rgba(0,0,0,0.15);
+}
+
+.card::before{
+
+  content:'';
+
+  position:absolute;
+
+  top:0;
+  left:0;
+
+  width:100%;
+  height:4px;
+
+  background:var(--primary);
+}
+
+.card:hover{
+
+  transform:
+  translateY(-6px)
+  scale(1.01);
+
+  box-shadow:
+  0 15px 35px rgba(0,0,0,0.25);
+
+  border-color:
+  rgba(56,189,248,0.4);
 }
 
 .card span{
@@ -320,6 +454,29 @@ body{
   cursor:pointer;
 }
 
+/* BOTÕES */
+
+button{
+
+  transition:
+  transform 0.18s ease,
+  opacity 0.18s ease,
+  box-shadow 0.18s ease;
+}
+
+button:hover{
+
+  transform:translateY(-2px);
+
+  box-shadow:
+  0 8px 20px rgba(0,0,0,0.2);
+}
+
+button:active{
+
+  transform:scale(0.97);
+}
+
 /* GRAFICOS */
 
 .graficos{
@@ -344,6 +501,29 @@ body{
   padding:15px;
 
   height:260px;
+
+  transition:
+  transform 0.25s ease,
+  box-shadow 0.25s ease,
+  border 0.25s ease;
+
+  animation:
+  aparecer 0.6s ease;
+
+  box-shadow:
+  0 4px 20px rgba(0,0,0,0.15);
+}
+
+.grafico-card:hover{
+
+  transform:
+  translateY(-5px);
+
+  box-shadow:
+  0 15px 35px rgba(0,0,0,0.22);
+
+  border-color:
+  rgba(56,189,248,0.35);
 }
 
 /* TABELA */
@@ -359,6 +539,22 @@ body{
   border-radius:18px;
 
   overflow:auto;
+
+  transition:
+  transform 0.25s ease,
+  box-shadow 0.25s ease;
+
+  animation:
+  aparecer 0.6s ease;
+
+  box-shadow:
+  0 4px 20px rgba(0,0,0,0.15);
+}
+
+.tabela-box:hover{
+
+  box-shadow:
+  0 15px 35px rgba(0,0,0,0.22);
 }
 
 table{
@@ -377,12 +573,34 @@ th,td{
 
 th{
 
-  background:rgba(255,255,255,0.05);
+  background:
+  rgba(255,255,255,0.03);
+
+  backdrop-filter:blur(10px);
+
+  position:sticky;
+
+  top:0;
 }
 
 tr{
 
   border-bottom:1px solid var(--border);
+}
+
+tbody tr{
+
+  transition:
+  background 0.2s ease,
+  transform 0.2s ease;
+}
+
+tbody tr:hover{
+
+  background:
+  rgba(255,255,255,0.03);
+
+  transform:scale(1.003);
 }
 
 /* BOTOES */
@@ -443,10 +661,51 @@ tr{
   opacity:0;
 
   transition:0.4s;
+
+  backdrop-filter:blur(12px);
+
+  box-shadow:
+  0 10px 30px rgba(0,0,0,0.25);
 }
 
 #toast.show{
   opacity:1;
+}
+
+/* SCROLL */
+
+::-webkit-scrollbar{
+
+  width:8px;
+  height:8px;
+}
+
+::-webkit-scrollbar-thumb{
+
+  background:var(--primary);
+
+  border-radius:10px;
+}
+
+/* ANIMAÇÃO */
+
+@keyframes aparecer{
+
+  from{
+
+    opacity:0;
+
+    transform:
+    translateY(18px);
+  }
+
+  to{
+
+    opacity:1;
+
+    transform:
+    translateY(0);
+  }
 }
 
 /* RESPONSIVO */
@@ -466,17 +725,13 @@ tr{
   }
 }
 
-/* ========================= */
 /* MOBILE PREMIUM */
-/* ========================= */
 
 @media(max-width:768px){
 
   body{
     flex-direction:column;
   }
-
-  /* SIDEBAR */
 
   .sidebar{
 
@@ -503,8 +758,6 @@ tr{
     margin-bottom:20px;
   }
 
-  /* PERFIL */
-
   .perfil-box{
 
     flex-direction:row;
@@ -529,14 +782,10 @@ tr{
     max-width:180px;
   }
 
-  /* ANO */
-
   .ano-box{
 
     margin-top:20px;
   }
-
-  /* MESES */
 
   .meses{
 
@@ -557,14 +806,10 @@ tr{
     padding:10px;
   }
 
-  /* CONTEUDO */
-
   .conteudo{
 
     padding:18px;
   }
-
-  /* TOPO */
 
   .topo{
 
@@ -578,8 +823,6 @@ tr{
     font-size:24px;
   }
 
-  /* CARDS */
-
   .cards{
 
     grid-template-columns:
@@ -591,15 +834,6 @@ tr{
   .card{
 
     padding:18px;
-
-    border-radius:16px;
-
-    transition:0.3s;
-  }
-
-  .card:hover{
-
-    transform:translateY(-3px);
   }
 
   .card h2{
@@ -607,16 +841,12 @@ tr{
     font-size:22px;
   }
 
-  /* FILTROS */
-
   .filtros{
 
     grid-template-columns:1fr;
 
     gap:12px;
   }
-
-  /* FORMULARIO */
 
   .formulario{
 
@@ -646,8 +876,6 @@ tr{
     font-weight:bold;
   }
 
-  /* GRAFICOS */
-
   .graficos{
 
     grid-template-columns:1fr;
@@ -660,97 +888,15 @@ tr{
     height:220px;
 
     padding:12px;
-
-    border-radius:16px;
-
-    transition:0.3s;
   }
-
-  .grafico-card:hover{
-
-    transform:translateY(-3px);
-  }
-
-  /* TABELA */
 
   .tabela-box{
 
     overflow-x:auto;
-
-    border-radius:16px;
   }
 
   table{
 
     min-width:650px;
   }
-
-  /* SCROLLBONITO */
-
-  ::-webkit-scrollbar{
-
-    height:6px;
-    width:6px;
-  }
-
-  ::-webkit-scrollbar-thumb{
-
-    background:var(--primary);
-
-    border-radius:10px;
-  }
-
-  /* ANIMAÃ‡Ã•ES */
-
-  .card,
-  .grafico-card,
-  .tabela-box,
-  .sidebar,
-  .meses button{
-
-    animation:fadeUp 0.5s ease;
-  }
-
-  @keyframes fadeUp{
-
-    from{
-
-      opacity:0;
-
-      transform:translateY(15px);
-    }
-
-    to{
-
-      opacity:1;
-
-      transform:translateY(0);
-    }
-  }
-
-  /* EFEITOS */
-
-  .card,
-  .grafico-card,
-  .tabela-box,
-  .meses button{
-
-    box-shadow:
-    0 4px 20px rgba(0,0,0,0.15);
-  }
-
-  /* BOTÃ•ES */
-
-  button{
-
-    transition:
-    transform 0.2s,
-    opacity 0.2s;
-  }
-
-  button:active{
-
-    transform:scale(0.97);
-  }
-
 }
