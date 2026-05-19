@@ -752,14 +752,14 @@ tbody tr:hover{
 }
 
 .foto{
-  width:70px;
-  height:70px;
+  width:60px;
+  height:60px;
 }
 
 #nomeUsuario{
-  font-size:14px;
-  padding:10px;
-  max-width:200px;
+  font-size:13px;
+  padding:8px;
+  max-width:180px;
 }
 
  .ano-box{
@@ -767,29 +767,26 @@ tbody tr:hover{
   gap:15px;
 }
 
-.ano-box h3{
-  font-size:18px;
+.ano-box button{
+  width:32px;
+  height:32px;
 }
 
-.ano-box button{
-  width:34px;
-  height:34px;
+.ano-box h3{
+  font-size:16px;
 }
+  
 .meses{
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
-  gap:4px;
-  margin-top:8px;
+  display:grid;
+  grid-template-columns:repeat(4, 1fr);
+  gap:6px;
+  margin-top:10px;
 }
 
 .meses button{
-  font-size:9px;
-  padding:4px 6px;
-  border-radius:6px;
-  width:auto;
-  min-width:unset;
-  flex:0 0 auto;
+  font-size:10px;
+  padding:6px 4px;
+  border-radius:8px;
 }
 
   .conteudo{
@@ -803,14 +800,13 @@ tbody tr:hover{
 
 .formulario input,
 .formulario select{
-  font-size:14px;
-  padding:14px;
+  font-size:16px;
+  padding:16px;
 }
 
 .formulario button{
-  padding:14px;
-  font-size:16px;
-  font-weight:bold;
+  padding:16px;
+  font-size:18px;
 }
 
   .topo{
