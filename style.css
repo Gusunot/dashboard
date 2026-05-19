@@ -754,3 +754,104 @@ tr{
   }
 
 }
+
+#loginTela{
+
+  position:fixed;
+
+  inset:0;
+
+  background:
+  linear-gradient(
+    135deg,
+    #0f172a,
+    #1e293b
+  );
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  z-index:9999;
+}
+
+.login-box{
+
+  width:350px;
+
+  background:rgba(255,255,255,0.08);
+
+  backdrop-filter:blur(20px);
+
+  padding:40px;
+
+  border-radius:24px;
+
+  border:1px solid rgba(255,255,255,0.1);
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:15px;
+
+  animation:fadeLogin 0.6s ease;
+}
+
+.login-box h1{
+
+  text-align:center;
+
+  color:white;
+
+  margin-bottom:10px;
+}
+
+.login-box input{
+
+  padding:14px;
+
+  border:none;
+
+  border-radius:12px;
+
+  background:rgba(255,255,255,0.1);
+
+  color:white;
+}
+
+.login-box button{
+
+  padding:14px;
+
+  border:none;
+
+  border-radius:12px;
+
+  background:#38bdf8;
+
+  color:white;
+
+  font-weight:bold;
+
+  cursor:pointer;
+}
+
+@keyframes fadeLogin{
+
+  from{
+
+    opacity:0;
+
+    transform:translateY(20px);
+  }
+
+  to{
+
+    opacity:1;
+
+    transform:translateY(0);
+  }
+}
