@@ -1,6 +1,6 @@
 {
-  "name": "FinanDash Controler Financeiro",
-  "short_name": "FinanDash",
+  "name": "Dashboard+",
+  "short_name": "Dashboard+",
   "description": "Seu Dashboard de controle financeiro pessoal moderno e intuitivo.",
   "start_url": "./index.html",
   "display": "standalone",
@@ -9,12 +9,12 @@
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "https://i.imgur.com/2DhmtJ4.png",
+      "src": "https://tse3.mm.bing.net/th/id/OIP.XBXD4LaOs3vznWbN0sI3WQHaHa?rs=1&pid=ImgDetMain&o=7&rm=3",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "https://i.imgur.com/2DhmtJ4.png",
+      "src": "https://tse3.mm.bing.net/th/id/OIP.XBXD4LaOs3vznWbN0sI3WQHaHa?rs=1&pid=ImgDetMain&o=7&rm=3",
       "sizes": "512x512",
       "type": "image/png"
     }
