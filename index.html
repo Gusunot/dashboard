@@ -61,12 +61,36 @@
       </header>
       
       <div class="periodo-seletor-wrapper">
-        <div class="periodo-seletor">
-          <button onclick="mudarMes(-1)"><span class="material-icons-round">chevron_left</span></button>
-          <span id="labelPeriodo">Janeiro 2026</span>
-          <button onclick="mudarMes(1)"><span class="material-icons-round">chevron_right</span></button>
-        </div>
-      </div>
+  <div class="periodo-seletor">
+    <select id="selectMes" onchange="atualizarPeriodoPorSelect()">
+      <option value="0">Janeiro</option>
+      <option value="1">Fevereiro</option>
+      <option value="2">Março</option>
+      <option value="3">Abril</option>
+      <option value="4">Maio</option>
+      <option value="5">Junho</option>
+      <option value="6">Julho</option>
+      <option value="7">Agosto</option>
+      <option value="8">Setembro</option>
+      <option value="9">Outubro</option>
+      <option value="10">Novembro</option>
+      <option value="11">Dezembro</option>
+    </select>
+
+    <select id="selectAno" onchange="atualizarPeriodoPorSelect()">
+      <option value="2026">2026</option>
+      <option value="2027">2027</option>
+      <option value="2028">2028</option>
+      <option value="2029">2029</option>
+      <option value="2030">2030</option>
+      <option value="2031">2031</option>
+      <option value="2032">2032</option>
+      <option value="2033">2033</option>
+      <option value="2034">2034</option>
+      <option value="2035">2035</option>
+    </select>
+  </div>
+</div>
 
       <!-- CARDS DE RESUMO -->
       <section class="cards-grid">
