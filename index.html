@@ -15,10 +15,16 @@
 </head>
 <body class="dark-theme">
 
-  <!-- AVISO DE INSTALAÇÃO PWA -->
+  <!-- AVISO DE INSTALAÇÃO PWA (Compacto e com Fechar) -->
   <div id="pwa-install-banner" class="pwa-banner" style="display: none;">
-    <p>Instale nosso app para acessar offline!</p>
-    <button id="btn-instalar-app" class="btn-pwa">Instalar</button>
+    <div class="pwa-conteudo">
+      <span class="material-icons-round icon-pwa-mini">add_to_home_screen</span>
+      <p>Instalar FinanDash?</p>
+    </div>
+    <div class="pwa-acoes">
+      <button id="btn-instalar-app" class="btn-pwa">Instalar</button>
+      <button id="btn-fechar-pwa" class="btn-pwa-fechar"><span class="material-icons-round">close</span></button>
+    </div>
   </div>
 
   <div class="container">
@@ -32,6 +38,7 @@
       <div class="perfil-box">
         <label for="inputFoto" class="foto">
           <img id="fotoPerfil" src="https://i.imgur.com/2DhmtJ4.png" alt="Foto de Perfil">
+          <div class="overlay-foto"><span class="material-icons-round">photo_camera</span></div>
         </label>
         <input type="file" id="inputFoto" accept="image/*" style="display: none;">
         <input type="text" id="nomeUsuario" placeholder="Seu Nome" value="Usuário"> 
@@ -51,13 +58,15 @@
     <main class="main-content">
       <header class="top-bar">
         <h1>Visão Geral</h1>
-        <!-- SELETOR DE MÊS/ANO -->
+      </header>
+      
+      <div class="periodo-seletor-wrapper">
         <div class="periodo-seletor">
           <button onclick="mudarMes(-1)"><span class="material-icons-round">chevron_left</span></button>
           <span id="labelPeriodo">Janeiro 2026</span>
           <button onclick="mudarMes(1)"><span class="material-icons-round">chevron_right</span></button>
         </div>
-      </header>
+      </div>
 
       <!-- CARDS DE RESUMO -->
       <section class="cards-grid">
@@ -90,7 +99,9 @@
       <section class="dashboard-body">
         <div class="grafico-container">
           <h3>Fluxo de Caixa</h3>
-          <canvas id="graficoFinanceiro"></canvas>
+          <div class="canvas-wrapper">
+            <canvas id="graficoFinanceiro"></canvas>
+          </div>
         </div>
 
         <div class="form-container">
