@@ -194,11 +194,23 @@ body {
 .card.saidas .icon-box { color: var(--danger); background: rgba(247, 90, 104, 0.1); }
 .card.saldo .icon-box { color: var(--text-main); background: rgba(141, 141, 153, 0.1); }
 
-/* CORPO DASHBOARD (Layout Desktop Padrão) */
+/* ESTRUTURA DO CORPO (Layout Desktop) */
 .dashboard-body {
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 1.5rem;
+  align-items: start;
+}
+
+.coluna-principal {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.coluna-lateral {
+  position: sticky;
+  top: 2rem;
 }
 
 .grafico-container, .form-container, .extrato-container {
@@ -343,25 +355,24 @@ td.saida { color: var(--danger); }
   .periodo-seletor-wrapper { justify-content: center; width: 100%; }
   .periodo-seletor { width: 100%; justify-content: space-between; }
   
-  /* FORÇANDO GRID DE COLUNA ÚNICA PARA CONTROLAR AS POSIÇÕES DAS LINHAS EXATAMENTE */
+  /* Quebra o grid em fluxo linear de uma coluna */
   .dashboard-body { 
-    display: grid !important; 
-    grid-template-columns: 1fr !important;
+    display: flex !important;
+    flex-direction: column !important;
     gap: 1.5rem; 
   } 
-  
-  /* Destruição de agrupamento herdado e reordenação absoluta */
-  .form-container { 
-    grid-row: 1 !important; 
-  }      /* 1. Nova Transação */
-  
-  .extrato-container { 
-    grid-row: 2 !important; 
-  }   /* 2. Histórico de Transações */
-  
-  .grafico-container { 
-    grid-row: 3 !important; 
-  }   /* 3. Fluxo de Caixa (Fica embaixo de tudo!) */
+
+  .coluna-principal {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  /* Organização visual mobile nativa via CSS Flex Order */
+  .coluna-lateral { order: 1; position: static; }   /* 1º Nova Transação */
+  .coluna-principal { order: 2; }                   /* Próximos elementos */
+  .extrato-container { order: 1; }                  /* 2º Histórico */
+  .grafico-container { order: 2; }                  /* 3º Fluxo de Caixa (Embaixo de tudo!) */
   
   .canvas-wrapper { max-height: 240px; }
 
