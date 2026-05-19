@@ -507,3 +507,49 @@ if ("serviceWorker" in navigator) {
       .catch((err) => console.log("Erro ao registrar o Service Worker:", err));
   });
 }
+
+// ==========================================
+// LÓGICA DE INSTALAÇÃO DO PWA (BOTÃO MANUAL)
+// ==========================================
+let deferredPrompt;
+const btnInstalar = document.getElementById("btnInstalar");
+
+// O navegador avisa o código que o app cumpre os requisitos e pode ser instalado
+window.addEventListener("beforeinstallprompt", (e) => {
+  // Impede que o pop-up automático feio do navegador apareça sozinho
+  e.preventDefault();
+  // Guarda o evento para ser disparado no clique do botão
+  deferredPrompt = e;
+  // Mostra o seu botão customizado de download
+  if (btnInstalar) {
+    btnInstalar.style.display = "block";
+  }
+});
+
+// Quando o usuário clica no seu botão de download
+if (btnInstalar) {
+  btnInstalar.addEventListener("click", async () => {
+    if (!deferredPrompt) return;
+    
+    // Mostra o prompt de instalação nativo
+    deferredPrompt.prompt();
+    
+    // Aguarda a escolha do usuário (Se aceitou ou cancelou)
+    const { outcome } = await deferredPrompt.userChoice;
+    console.log(`Usuário escolheu a instalação: ${outcome}`);
+    
+    // Limpa a variável, já que o prompt só pode ser usado uma vez por gatilho
+    deferredPrompt = null;
+    // Esconde o botão novamente
+    btnInstalar.style.display = "none";
+  });
+}
+
+// Se o aplicativo já foi instalado com sucesso, esconde o botão
+window.addEventListener("appinstalled", () => {
+  console.log("PWA instalado com sucesso!");
+  if (btnInstalar) {
+    btnInstalar.style.display = "none";
+  }
+  deferredPrompt = null;
+});
