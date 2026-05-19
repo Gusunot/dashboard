@@ -1,555 +1,223 @@
-const meses = [
+// CONFIGURAÇÃO DE DATA GLOBAL
+let dataAtual = new Date();
+let mesAtual = dataAtual.getMonth();
+let anoAtual = dataAtual.getFullYear();
 
-  'Janeiro','Fevereiro','Março','Abril',
-  'Maio','Junho','Julho','Agosto',
-  'Setembro','Outubro','Novembro','Dezembro'
+const mesesNome = [
+  "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+  "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
 ];
 
-/* DATA */
+// ESTRUTURA DOS DADOS NA MEMÓRIA
+let dados = JSON.parse(localStorage.getItem('finandash_dados')) || {};
+let graficoInstancia = null;
 
-let anoAtual = new Date().getFullYear();
-
-let mesAtual = new Date().getMonth();
-
-/* DADOS */
-
-let dados =
-JSON.parse(localStorage.getItem('financePro')) || {};
-
-/* ELEMENTOS */
-
-const tabela =
-document.getElementById('tabela');
-
-const receitas =
-document.getElementById('receitas');
-
-const despesas =
-document.getElementById('despesas');
-
-const saldo =
-document.getElementById('saldo');
-
-const quantidade =
-document.getElementById('quantidade');
-
-const tituloMes =
-document.getElementById('tituloMes');
-
-const anoTexto =
-document.getElementById('anoAtual');
-
-const toast =
-document.getElementById('toast');
-
-/* PERFIL */
-
-const nomeUsuario =
-document.getElementById('nomeUsuario');
-
-const fotoPerfil =
-document.getElementById('fotoPerfil');
-
-const inputFoto =
-document.getElementById('inputFoto');
-
-/* CARREGAR PERFIL */
-
-nomeUsuario.value =
-localStorage.getItem('nomeUsuario')
-|| '';
-
-nomeUsuario.addEventListener('input', ()=>{
-
-  localStorage.setItem(
-    'nomeUsuario',
-    nomeUsuario.value
-  );
+// INICIALIZADOR DO APP
+window.addEventListener('DOMContentLoaded', () => {
+  inicializarPeriodo();
+  carregarPerfil();
+  atualizarTela();
+  configurarTema();
+  inicializarPWA();
 });
 
-const fotoSalva =
-localStorage.getItem('fotoPerfil');
+// ALTERNAR TEMA (DARK / LIGHT)
+function configurarTema() {
+  const btnTema = document.getElementById('btn-tema');
+  const iconTema = document.getElementById('icon-tema');
+  
+  if(localStorage.getItem('theme') === 'light') {
+    document.body.classList.remove('dark-theme');
+    document.body.classList.add('light-theme');
+    iconTema.innerText = 'dark_mode';
+  }
 
-if(fotoSalva){
-
-  fotoPerfil.src = fotoSalva;
-}
-
-inputFoto.addEventListener('change',(e)=>{
-
-  const arquivo = e.target.files[0];
-
-  const leitor = new FileReader();
-
-  leitor.onload = ()=>{
-
-    fotoPerfil.src = leitor.result;
-
-    localStorage.setItem(
-      'fotoPerfil',
-      leitor.result
-    );
-  };
-
-  leitor.readAsDataURL(arquivo);
-});
-
-/* MESES */
-
-function iniciarMeses(){
-
-  const lista =
-  document.getElementById('listaMeses');
-
-  lista.innerHTML = '';
-
-  meses.forEach((mes,index)=>{
-
-    const botao =
-    document.createElement('button');
-
-    botao.innerHTML = mes;
-
-    if(index === mesAtual){
-
-      botao.classList.add('ativo');
+  btnTema.addEventListener('click', () => {
+    if(document.body.classList.contains('dark-theme')) {
+      document.body.classList.remove('dark-theme');
+      document.body.classList.add('light-theme');
+      iconTema.innerText = 'dark_mode';
+      localStorage.setItem('theme', 'light');
+    } else {
+      document.body.classList.remove('light-theme');
+      document.body.classList.add('dark-theme');
+      iconTema.innerText = 'light_mode';
+      localStorage.setItem('theme', 'dark');
     }
-
-    botao.onclick = ()=>{
-
-      mesAtual = index;
-
-      iniciarMeses();
-
-      atualizarTela();
-    };
-
-    lista.appendChild(botao);
+    atualizarGrafico(); // Redesenha o gráfico para ajustar cores de linhas guia
   });
 }
 
-/* TROCAR ANO */
+// CONTROLE DO PERÍODO (MÊS/ANO)
+function inicializarPeriodo() {
+  if (!dados[anoAtual]) dados[anoAtual] = {};
+  if (!dados[anoAtual][mesAtual]) dados[anoAtual][mesAtual] = [];
+  document.getElementById('labelPeriodo').innerText = `${mesesNome[mesAtual]} ${anoAtual}`;
+}
 
-function trocarAno(valor){
-
-  anoAtual += valor;
-
+function mudarMes(direcao) {
+  mesAtual += direcao;
+  if (mesAtual > 11) { mesAtual = 0; anoAtual++; }
+  if (mesAtual < 0) { mesAtual = 11; anoAtual--; }
+  inicializarPeriodo();
   atualizarTela();
 }
 
-/* SALVAR */
+// ADICIONAR TRANSAÇÃO
+function adicionarTransacao(e) {
+  e.preventDefault();
+  const descricao = document.getElementById('descricao').value;
+  const valor = parseFloat(document.getElementById('valor').value);
+  const tipo = document.getElementById('tipo').value;
+  const categoria = document.getElementById('categoria').value;
 
-function salvar(){
-
-  localStorage.setItem(
-    'financePro',
-    JSON.stringify(dados)
-  );
-}
-
-/* TOAST */
-
-function mostrarToast(texto){
-
-  toast.innerHTML = texto;
-
-  toast.classList.add('show');
-
-  setTimeout(()=>{
-
-    toast.classList.remove('show');
-
-  },2500);
-}
-
-/* GARANTIR ANO/MES */
-
-function garantirEstrutura(){
-
-  if(!dados[anoAtual]){
-
-    dados[anoAtual] = {};
-  }
-
-  if(!dados[anoAtual][mesAtual]){
-
-    dados[anoAtual][mesAtual] = [];
-  }
-}
-
-/* ADICIONAR */
-
-function adicionarTransacao(){
-
-  garantirEstrutura();
-
-  const descricao =
-  document.getElementById('descricao').value;
-
-  const valor = parseFloat(
-    document.getElementById('valor').value
-  );
-
-  const tipo =
-  document.getElementById('tipo').value;
-
-  const categoria =
-  document.getElementById('categoria').value;
-
-  if(descricao === '' || isNaN(valor)){
-
-    mostrarToast('Preencha os campos');
-
-    return;
-  }
-
-  dados[anoAtual][mesAtual].push({
-
-    descricao,
-    valor,
-    tipo,
-    categoria
-  });
+  const novaTransacao = { descricao, valor, tipo, categoria, id: Date.now() };
+  dados[anoAtual][mesAtual].push(novaTransacao);
 
   salvar();
-
-  document.getElementById('descricao').value = '';
-
-  document.getElementById('valor').value = '';
-
-  mostrarToast('Transação adicionada');
-
   atualizarTela();
+  document.getElementById('formTransacao').reset();
 }
 
-/* REMOVER */
-
-function remover(index){
-
-  dados[anoAtual][mesAtual]
-  .splice(index,1);
-
-  salvar();
-
-  mostrarToast('Transação removida');
-
-  atualizarTela();
+// SALVAR NO LOCALSTORAGE
+function salvar() {
+  localStorage.setItem('finandash_dados', JSON.stringify(dados));
 }
 
-/* EDITAR */
-
-function editar(index){
-
-  const item =
-  dados[anoAtual][mesAtual][index];
-
-  const novaDescricao =
-  prompt('Editar descrição',item.descricao);
-
-  if(novaDescricao !== null){
-
-    item.descricao = novaDescricao;
-  }
-
-  salvar();
-
-  atualizarTela();
-}
-
-/* TEMA */
-
-document.getElementById('toggleTema')
-.onclick = ()=>{
-
-  document.body.classList.toggle('light');
-
-  localStorage.setItem(
-    'temaClaro',
-    document.body.classList.contains('light')
-  );
-};
-
-if(localStorage.getItem('temaClaro') === 'true'){
-
-  document.body.classList.add('light');
-}
-
-/* GRAFICOS */
-
-let pizza;
-let linha;
-
-function atualizarGraficos(entrada,saida){
-
-  if(pizza) pizza.destroy();
-  if(linha) linha.destroy();
-
-  pizza = new Chart(
-
-    document.getElementById('graficoPizza'),
-
-    {
-      type:'doughnut',
-
-      data:{
-
-        labels:['Receitas','Despesas'],
-
-        datasets:[{
-
-          data:[entrada,saida],
-
-          backgroundColor:[
-            '#22c55e',
-            '#ef4444'
-          ],
-
-          borderWidth:0
-        }]
-      },
-
-      options:{
-
-        responsive:true,
-
-        maintainAspectRatio:false
-      }
-    }
-  );
-
-  const saldoAnual = [];
-
-  for(let i=0;i<12;i++){
-
-    let saldoMes = 0;
-
-    if(
-      dados[anoAtual] &&
-      dados[anoAtual][i]
-    ){
-
-      dados[anoAtual][i]
-      .forEach(item=>{
-
-        if(item.tipo === 'entrada'){
-
-          saldoMes += item.valor;
-
-        }else{
-
-          saldoMes -= item.valor;
-        }
-      });
-    }
-
-    saldoAnual.push(saldoMes);
-  }
-
-  linha = new Chart(
-
-    document.getElementById('graficoLinha'),
-
-    {
-      type:'line',
-
-      data:{
-
-        labels:meses,
-
-        datasets:[{
-
-          label:'Saldo',
-
-          data:saldoAnual,
-
-          borderColor:'#38bdf8',
-
-          backgroundColor:
-          'rgba(56,189,248,0.1)',
-
-          fill:true,
-
-          tension:0.4
-        }]
-      },
-
-      options:{
-
-        responsive:true,
-
-        maintainAspectRatio:false
-      }
-    }
-  );
-}
-
-/* ATUALIZAR */
-
-function atualizarTela(){
-
-  garantirEstrutura();
-
-  tabela.innerHTML = '';
-
-  anoTexto.innerHTML = anoAtual;
-
-  tituloMes.innerHTML =
-  `${meses[mesAtual]} / ${anoAtual}`;
-
-  let entrada = 0;
-  let saida = 0;
-
-  const pesquisa =
-  document.getElementById('pesquisa')
-  .value.toLowerCase();
-
-  const filtroCategoria =
-  document.getElementById('filtroCategoria')
-  .value;
-
-  const lista =
-  dados[anoAtual][mesAtual]
-  .filter(item=>{
-
-    const pesquisaOk =
-    item.descricao.toLowerCase()
-    .includes(pesquisa);
-
-    const categoriaOk =
-    filtroCategoria === 'todos' ||
-    item.categoria === filtroCategoria;
-
-    return pesquisaOk && categoriaOk;
-  });
-
-  lista.forEach((item,index)=>{
-
-    const linha =
-    document.createElement('tr');
-
-    linha.innerHTML = `
-
+// REFRESH TOTAL DA TELA (CALCULOS, TABELA E GRÁFICO)
+function atualizarTela() {
+  const transacoes = dados[anoAtual][mesAtual] || [];
+  let entradas = 0;
+  let saidas = 0;
+  const tabelaCorpo = document.getElementById('tabelaCorpo');
+  tabelaCorpo.innerHTML = '';
+
+  transacoes.forEach((item, index) => {
+    if(item.tipo === 'entrada') entradas += item.valor;
+    else saidas += item.valor;
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
       <td>${item.descricao}</td>
-
-      <td>${item.categoria}</td>
-
-      <td>${item.tipo}</td>
-
+      <td><span class="tag-cat">${item.categoria}</span></td>
+      <td class="${item.tipo}">${item.tipo === 'entrada' ? '+' : '-'} R$ ${item.valor.toFixed(2)}</td>
       <td>
-        R$ ${item.valor.toFixed(2)}
-      </td>
-
-      <td>
-
-        <button class="editar"
-        onclick="editar(${index})">
-
-          Editar
-
-        </button>
-
-        <button class="excluir"
-        onclick="remover(${index})">
-
-          Excluir
-
-        </button>
-
+        <button class="btn-acao edit" onclick="editar(${index})"><span class="material-icons-round">edit</span></button>
+        <button class="btn-acao delete" onclick="deletar(${index})"><span class="material-icons-round">delete</span></button>
       </td>
     `;
+    tabelaCorpo.appendChild(tr);
+  });
 
-    tabela.appendChild(linha);
+  const saldo = entradas - saidas;
+  document.getElementById('totalEntradas').innerText = `R$ ${entradas.toFixed(2)}`;
+  document.getElementById('totalSaidas').innerText = `R$ ${saidas.toFixed(2)}`;
+  document.getElementById('totalSaldo').innerText = `R$ ${saldo.toFixed(2)}`;
 
-    if(item.tipo === 'entrada'){
+  atualizarGrafico(entradas, saidas);
+}
 
-      entrada += item.valor;
+// CORRIGIDO: FUNÇÃO EDITAR COM FEEDBACK EM TEMPO REAL
+function editar(index) {
+  const item = dados[anoAtual][mesAtual][index];
+  const novaDescricao = prompt('Editar descrição:', item.descricao);
 
-    }else{
+  if (novaDescricao !== null && novaDescricao.trim() !== "") {
+    item.descricao = novaDescricao;
+    salvar();
+    atualizarTela(); 
+  }
+}
 
-      saida += item.valor;
+// EXCLUIR TRANSAÇÃO
+function deletar(index) {
+  if(confirm("Tem certeza que deseja apagar essa transação?")) {
+    dados[anoAtual][mesAtual].splice(index, 1);
+    salvar();
+    atualizarTela();
+  }
+}
+
+// ATUALIZAR GRÁFICO (CHART.JS)
+function atualizarGrafico(entradas = 0, saidas = 0) {
+  const ctx = document.getElementById('graficoFinanceiro').getContext('2d');
+  const corTexto = document.body.classList.contains('dark-theme') ? '#e1e1e6' : '#363f5f';
+
+  if (graficoInstancia) {
+    graficoInstancia.destroy();
+  }
+
+  graficoInstancia = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Receitas', 'Despesas'],
+      datasets: [{
+        data: [entradas, saidas],
+        backgroundColor: ['#00b37e', '#f75a68'],
+        borderWidth: 0
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { labels: { color: corTexto, font: { family: 'Poppins' } } }
+      }
     }
   });
-
-  receitas.innerHTML =
-  `R$ ${entrada.toFixed(2)}`;
-
-  despesas.innerHTML =
-  `R$ ${saida.toFixed(2)}`;
-
-  saldo.innerHTML =
-  `R$ ${(entrada - saida).toFixed(2)}`;
-
-  quantidade.innerHTML =
-  lista.length;
-
-  atualizarGraficos(entrada,saida);
 }
 
-/* EVENTOS */
+// GESTÃO DO PERFIL
+function carregarPerfil() {
+  const nomeSalvo = localStorage.getItem('user_name');
+  const fotoSalva = localStorage.getItem('user_photo');
+  const inputNome = document.getElementById('nomeUsuario');
+  const imgFoto = document.getElementById('fotoPerfil');
+  const inputFoto = document.getElementById('inputFoto');
 
-document.getElementById('pesquisa')
-.addEventListener('input', atualizarTela);
+  if(nomeSalvo) inputNome.value = nomeSalvo;
+  if(fotoSalva) imgFoto.src = fotoSalva;
 
-document.getElementById('filtroCategoria')
-.addEventListener('change', atualizarTela);
-
-/* INICIAR */
-
-iniciarMeses();
-
-atualizarTela();
-
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker
-      .register("/dashboard/sw.js", { scope: "/dashboard/" })
-      .then((reg) => console.log("Service Worker registrado com sucesso no escopo:", reg.scope))
-      .catch((err) => console.log("Erro ao registrar o Service Worker:", err));
+  inputNome.addEventListener('change', () => localStorage.setItem('user_name', inputNome.value));
+  
+  inputFoto.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if(file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        imgFoto.src = reader.result;
+        localStorage.setItem('user_photo', reader.result);
+      }
+      reader.readAsDataURL(file);
+    }
   });
 }
 
-// ==========================================
-// LÓGICA DE INSTALAÇÃO DO PWA (BOTÃO MANUAL)
-// ==========================================
+// INSTALAÇÃO E REGISTRO DO SERVICE WORKER (PWA)
 let deferredPrompt;
-const btnInstalar = document.getElementById("btnInstalar");
-
-// O navegador avisa o código que o app cumpre os requisitos e pode ser instalado
-window.addEventListener("beforeinstallprompt", (e) => {
-  // Impede que o pop-up automático feio do navegador apareça sozinho
-  e.preventDefault();
-  // Guarda o evento para ser disparado no clique do botão
-  deferredPrompt = e;
-  // Mostra o seu botão customizado de download
-  if (btnInstalar) {
-    btnInstalar.style.display = "block";
+function inicializarPWA() {
+  if ('serviceWorker' in navigator) {
+    // Registra o Service Worker assumindo que ele está na mesma pasta raiz do projeto
+    navigator.serviceWorker.register('sw.js')
+      .then(() => console.log('Service Worker Registrado com Sucesso!'))
+      .catch(err => console.error('Falha ao registrar Service Worker:', err));
   }
-});
 
-// Quando o usuário clica no seu botão de download
-if (btnInstalar) {
-  btnInstalar.addEventListener("click", async () => {
-    if (!deferredPrompt) return;
-    
-    // Mostra o prompt de instalação nativo
-    deferredPrompt.prompt();
-    
-    // Aguarda a escolha do usuário (Se aceitou ou cancelou)
-    const { outcome } = await deferredPrompt.userChoice;
-    console.log(`Usuário escolheu a instalação: ${outcome}`);
-    
-    // Limpa a variável, já que o prompt só pode ser usado uma vez por gatilho
-    deferredPrompt = null;
-    // Esconde o botão novamente
-    btnInstalar.style.display = "none";
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    document.getElementById('pwa-install-banner').style.display = 'flex';
+  });
+
+  document.getElementById('btn-instalar-app').addEventListener('click', () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('Usuário aceitou a instalação do App');
+        }
+        document.getElementById('pwa-install-banner').style.display = 'none';
+        deferredPrompt = null;
+      });
+    }
   });
 }
-
-// Se o aplicativo já foi instalado com sucesso, esconde o botão
-window.addEventListener("appinstalled", () => {
-  console.log("PWA instalado com sucesso!");
-  if (btnInstalar) {
-    btnInstalar.style.display = "none";
-  }
-  deferredPrompt = null;
-});
