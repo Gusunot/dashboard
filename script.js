@@ -1,3 +1,168 @@
+const meses=[
+'Janeiro','Fevereiro','Março','Abril',
+'Maio','Junho','Julho','Agosto',
+'Setembro','Outubro','Novembro','Dezembro'
+];
+
+let anoAtual=new Date().getFullYear();
+let mesAtual=new Date().getMonth();
+
+let dados=JSON.parse(localStorage.getItem('financePro'))||{};
+
+/* AUTO BACKUP */
+setInterval(()=>{
+localStorage.setItem('finance_backup',JSON.stringify(dados));
+},5000);
+
+/* PERFIL */
+const nomeUsuario=document.getElementById('nomeUsuario');
+nomeUsuario.value=localStorage.getItem('nomeUsuario')||'';
+
+nomeUsuario.oninput=()=>{
+localStorage.setItem('nomeUsuario',nomeUsuario.value);
+};
+
+/* FOTO */
+inputFoto.onchange=(e)=>{
+let r=new FileReader();
+r.onload=()=>{
+fotoPerfil.src=r.result;
+localStorage.setItem('fotoPerfil',r.result);
+};
+r.readAsDataURL(e.target.files[0]);
+};
+
+/* BASE */
+function getMes(){
+if(!dados[anoAtual])dados[anoAtual]={};
+if(!dados[anoAtual][mesAtual])dados[anoAtual][mesAtual]=[];
+return dados[anoAtual][mesAtual];
+}
+
+/* SAVE */
+function save(){
+localStorage.setItem('financePro',JSON.stringify(dados));
+}
+
+/* ADD */
+function adicionarTransacao(){
+let lista=getMes();
+
+lista.push({
+descricao:descricao.value,
+valor:+valor.value,
+tipo:tipo.value,
+categoria:categoria.value
+});
+
+save();
+render();
+}
+
+/* DELETE */
+function remover(i){
+getMes().splice(i,1);
+save();
+render();
+}
+
+/* RENDER OTIMIZADO */
+function render(){
+
+let lista=getMes();
+
+let entrada=0,saida=0;
+
+tabela.innerHTML='';
+
+lista.forEach((t,i)=>{
+
+if(t.tipo==='entrada')entrada+=t.valor;
+else saida+=t.valor;
+
+tabela.innerHTML+=`
+<tr>
+<td>${t.descricao}</td>
+<td>${t.categoria}</td>
+<td>${t.tipo}</td>
+<td>R$ ${t.valor.toFixed(2)}</td>
+<td><button onclick="remover(${i})">X</button></td>
+</tr>`;
+});
+
+receitas.innerText=`R$ ${entrada.toFixed(2)}`;
+despesas.innerText=`R$ ${saida.toFixed(2)}`;
+saldo.innerText=`R$ ${(entrada-saida).toFixed(2)}`;
+quantidade.innerText=lista.length;
+
+updateCharts(entrada,saida);
+}
+
+/* CHARTS (SEM RECRIAR DESNECESSÁRIO) */
+let pizza,linha;
+
+function updateCharts(a,b){
+
+if(!pizza){
+
+pizza=new Chart(graficoPizza,{
+type:'doughnut',
+data:{labels:['Receitas','Despesas'],datasets:[{data:[a,b]}]},
+options:{responsive:true,maintainAspectRatio:false}
+});
+
+}else{
+pizza.data.datasets[0].data=[a,b];
+pizza.update();
+}
+
+let saldoMensal=Array(12).fill(0);
+
+for(let i=0;i<12;i++){
+if(dados[anoAtual] && dados[anoAtual][i]){
+dados[anoAtual][i].forEach(t=>{
+saldoMensal[i]+=t.tipo==='entrada'?t.valor:-t.valor;
+});
+}
+}
+
+if(!linha){
+
+linha=new Chart(graficoLinha,{
+type:'line',
+data:{labels:meses,datasets:[{data:saldoMensal}]},
+options:{responsive:true,maintainAspectRatio:false}
+});
+
+}else{
+linha.data.datasets[0].data=saldoMensal;
+linha.update();
+}
+}
+
+/* EXPORT */
+function exportarDados(){
+let blob=new Blob([JSON.stringify(dados)],{type:'application/json'});
+let a=document.createElement('a');
+a.href=URL.createObjectURL(blob);
+a.download='backup-finance.json';
+a.click();
+}
+
+/* IMPORT */
+importar.onchange=(e)=>{
+let r=new FileReader();
+r.onload=()=>{
+dados=JSON.parse(r.result);
+save();
+render();
+};
+r.readAsText(e.target.files[0]);
+};
+
+/* INIT */
+render();
+
 const meses = [
 
   'Janeiro','Fevereiro','Março','Abril',
