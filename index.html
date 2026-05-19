@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
 
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0">
-
-  <title>FinancePro</title>
+  <title>Finance Dashboard Pro</title>
 
   <link rel="stylesheet" href="style.css">
 
@@ -18,37 +16,8 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
+
 <body>
-
-  <!-- LOGIN -->
-
-  <div id="loginTela">
-
-    <div class="login-box">
-
-      <h1>FinancePro</h1>
-
-      <input
-      type="email"
-      id="email"
-      placeholder="Email">
-
-      <input
-      type="password"
-      id="senha"
-      placeholder="Senha">
-
-      <button onclick="registrar()">
-        Criar Conta
-      </button>
-
-      <button onclick="login()">
-        Entrar
-      </button>
-
-    </div>
-
-  </div>
 
   <!-- SIDEBAR -->
 
@@ -57,19 +26,13 @@
     <div>
 
       <h2 class="logo">
-
         <i class="fa-solid fa-chart-line"></i>
-
         FinancePro
-
       </h2>
 
       <button id="toggleTema">
-
         <i class="fa-solid fa-moon"></i>
-
         Tema
-
       </button>
 
       <!-- PERFIL -->
@@ -78,6 +41,214 @@
 
         <label for="inputFoto" class="foto">
 
-          <img
-          id="fotoPerfil"
+          <img id="fotoPerfil"
+          src="https://i.imgur.com/2DhmtJ4.png">
+
+        </label>
+
+        <input
+        type="file"
+        id="inputFoto"
+        accept="image/*">
+
+        <input
+        type="text"
+        id="nomeUsuario"
+        placeholder="Seu nome">
+
+      </div>
+
+      <!-- ANO -->
+
+      <div class="ano-box">
+
+        <button onclick="trocarAno(-1)">
+          ◀
+        </button>
+
+        <h3 id="anoAtual"></h3>
+
+        <button onclick="trocarAno(1)">
+          ▶
+        </button>
+
+      </div>
+
+      <!-- MESES -->
+
+      <div class="meses" id="listaMeses"></div>
+
+    </div>
+
+    <footer class="footer-sidebar">
+
+      Desenvolvido por
+      <strong>gusta_ig</strong>
+
+    </footer>
+
+  </aside>
+
+  <!-- CONTEUDO -->
+
+  <main class="conteudo">
+
+    <header class="topo">
+
+      <div>
+
+        <h1 id="tituloMes"></h1>
+
+        <p>
+          Controle financeiro inteligente
+        </p>
+
+      </div>
+
+    </header>
+
+    <!-- CARDS -->
+
+    <section class="cards">
+
+      <div class="card">
+        <span>Receitas</span>
+        <h2 id="receitas">R$ 0</h2>
+      </div>
+
+      <div class="card">
+        <span>Despesas</span>
+        <h2 id="despesas">R$ 0</h2>
+      </div>
+
+      <div class="card">
+        <span>Saldo</span>
+        <h2 id="saldo">R$ 0</h2>
+      </div>
+
+      <div class="card">
+        <span>Transações</span>
+        <h2 id="quantidade">0</h2>
+      </div>
+
+    </section>
+
+    <!-- FILTROS -->
+
+    <section class="filtros">
+
+      <input
+      type="text"
+      id="pesquisa"
+      placeholder="Pesquisar">
+
+      <select id="filtroCategoria">
+
+        <option value="todos">
+          Todas Categorias
+        </option>
+
+        <option>Alimentação</option>
+        <option>Transporte</option>
+        <option>Salário</option>
+        <option>Lazer</option>
+        <option>Estudos</option>
+        <option>Igreja</option>
+        <option>Outros</option>
+
+      </select>
+
+    </section>
+
+    <!-- FORM -->
+
+    <section class="formulario">
+
+      <input
+      type="text"
+      id="descricao"
+      placeholder="Descrição">
+
+      <input
+      type="number"
+      id="valor"
+      placeholder="Valor">
+
+      <select id="tipo">
+
+        <option value="entrada">
+          Receita
+        </option>
+
+        <option value="saida">
+          Despesa
+        </option>
+
+      </select>
+
+      <select id="categoria">
+
+        <option>Alimentação</option>
+        <option>Transporte</option>
+        <option>Salário</option>
+        <option>Lazer</option>
+        <option>Estudos</option>
+        <option>Igreja</option>
+        <option>Outros</option>
+
+      </select>
+
+      <button onclick="adicionarTransacao()">
+        Adicionar
+      </button>
+
+    </section>
+
+    <!-- GRAFICOS -->
+
+    <section class="graficos">
+
+      <div class="grafico-card">
+        <canvas id="graficoPizza"></canvas>
+      </div>
+
+      <div class="grafico-card">
+        <canvas id="graficoLinha"></canvas>
+      </div>
+
+    </section>
+
+    <!-- TABELA -->
+
+    <section class="tabela-box">
+
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>Descrição</th>
+            <th>Categoria</th>
+            <th>Tipo</th>
+            <th>Valor</th>
+            <th>Ações</th>
+          </tr>
+
+        </thead>
+
+        <tbody id="tabela"></tbody>
+
+      </table>
+
+    </section>
+
+  </main>
+
+  <!-- TOAST -->
+
+  <div id="toast"></div>
+
+  <script src="script.js"></script>
+
+</body>
 </html>
