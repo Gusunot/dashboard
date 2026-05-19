@@ -773,9 +773,12 @@ tbody tr:hover{
     font-size:20px;
   }
 
-  .meses{
-    grid-template-columns:repeat(3,1fr);
-  }
+ .meses{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:6px;
+  margin-top:10px;
+}
 
   .conteudo{
     padding:15px;
