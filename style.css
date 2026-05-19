@@ -708,154 +708,195 @@ tbody tr:hover{
   }
 }
 
-/* ==========================================================================
-   SUBSTITUA COMPLETAMENTE DAQUI ATÉ O FINAL DO SEU ARQUIVO
-   ========================================================================== */
+/* RESPONSIVO */
 
-@media (max-width: 900px) {
-  body {
-    flex-direction: column;
+@media(max-width:900px){
+
+  body{
+    flex-direction:column;
   }
 
-  .sidebar {
-    width: 100%;
-    border-right: none;
-    border-bottom: 1px solid var(--border);
+  .sidebar{
+    width:100%;
   }
 
-  .graficos {
-    grid-template-columns: 1fr;
+  .graficos{
+    grid-template-columns:1fr;
   }
 }
 
-@media (max-width: 768px) {
-  /* Forçar a Sidebar a virar topo e reduzir espaços vazios */
-  .sidebar {
-    width: 100% !important;
-    padding: 10px !important;
-    gap: 5px !important;
-    border-right: none !important;
-    border-bottom: 1px solid var(--border) !important;
+/* MOBILE PREMIUM */
+
+@media(max-width:768px){
+
+  body{
+    flex-direction:column;
   }
 
-  .logo {
-    justify-content: center !important;
-    margin-bottom: 5px !important;
-    font-size: 16px !important;
+  .sidebar{
+
+    width:100%;
+
+    height:auto;
+
+    padding:20px;
+
+    border-right:none;
+
+    border-bottom:1px solid var(--border);
   }
 
-  #toggleTema {
-    margin-bottom: 8px !important;
-    padding: 8px !important;
-    font-size: 12px !important;
+  .logo{
+
+    justify-content:center;
+
+    margin-bottom:15px;
   }
 
-  .perfil-box {
-    gap: 5px !important;
-    margin-bottom: 10px !important;
+  #toggleTema{
+
+    margin-bottom:20px;
   }
 
-  .foto {
-    width: 45px !important;
-    height: 45px !important;
-    border-width: 2px !important;
+  .perfil-box{
+
+    flex-direction:row;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:15px;
   }
 
-  #nomeUsuario {
-    font-size: 12px !important;
-    padding: 6px !important;
-    max-width: 150px !important;
+  .foto{
+
+    width:65px;
+    height:65px;
   }
 
-  .ano-box {
-    margin-top: 2px !important;
-    margin-bottom: 6px !important;
-    justify-content: center !important;
-    gap: 15px !important;
+  #nomeUsuario{
+
+    flex:1;
+
+    max-width:180px;
   }
 
-  .ano-box button {
-    width: 28px !important;
-    height: 28px !important;
-    font-size: 10px !important;
+  .ano-box{
+
+    margin-top:20px;
   }
 
-  .ano-box h3 {
-    font-size: 14px !important;
-  }
-  
-  /* ==========================================
-     AQUI ESTÁ A CORREÇÃO CRÍTICA PARA OS MESES
-     ========================================== */
-  .meses {
-    display: grid !important;
-    grid-template-columns: repeat(4, 1fr) !important; /* Força 4 colunas */
-    gap: 3px !important; /* Reduz o espaço ao mínimo para colá-los */
-    margin-top: 4px !important;
-    width: 100% !important;
+  .meses{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(3,1fr);
+
+    gap:10px;
+
+    margin-top:20px;
   }
 
-  .meses button {
-    font-size: 10px !important; /* Fonte pequena para caber em telas estreitas */
-    padding: 5px 2px !important; /* Reduz o enchimento interno do botão */
-    border-radius: 5px !important;
-    transform: none !important; /* Cancela qualquer empurrão lateral anterior */
-    text-align: center !important;
-    width: 100% !important;
-    margin: 0 !important; /* Garante que nenhuma margem invisível os separe */
+  .meses button{
+
+    font-size:13px;
+
+    padding:10px;
   }
 
-  /* AJUSTE DOS TEXTOS GRANDES NOS CARDS */
-  .conteudo {
-    padding: 12px !important;
+  .conteudo{
+
+    padding:18px;
   }
 
-  .topo h1 {
-    font-size: 18px !important;
-    text-align: center !important;
-  }
-  
-  .topo p {
-    font-size: 12px !important;
-    text-align: center !important;
+  .topo{
+
+    text-align:center;
+
+    margin-bottom:20px;
   }
 
-  .cards {
-    grid-template-columns: repeat(2, 1fr) !important; 
-    gap: 8px !important;
+  .topo h1{
+
+    font-size:24px;
   }
 
-  .card {
-    padding: 10px !important;
-    border-radius: 10px !important;
+  .cards{
+
+    grid-template-columns:
+    repeat(2,1fr);
+
+    gap:12px;
   }
 
-  .card h2 {
-    font-size: 15px !important; 
-    margin-top: 4px !important;
+  .card{
+
+    padding:18px;
   }
 
-  .card span {
-    font-size: 11px !important;
+  .card h2{
+
+    font-size:22px;
   }
 
-  /* FORMULÁRIO COMPACTO */
-  .formulario input,
-  .formulario select,
-  .formulario button {
-    font-size: 13px !important;
-    padding: 10px !important;
+  .filtros{
+
+    grid-template-columns:1fr;
+
+    gap:12px;
   }
 
-  .graficos {
-    grid-template-columns: 1fr !important;
+  .formulario{
+
+    grid-template-columns:1fr 1fr;
+
+    gap:12px;
   }
 
-  .grafico-card {
-    height: 190px !important;
+  .formulario input:first-child{
+
+    grid-column:span 2;
   }
-  
-  .footer-sidebar {
-    display: none !important; /* Oculta o rodapé no mobile para economizar tela */
+
+  .formulario select:last-of-type{
+
+    grid-column:span 2;
+  }
+
+  .formulario button{
+
+    grid-column:span 2;
+
+    padding:16px;
+
+    font-size:16px;
+
+    font-weight:bold;
+  }
+
+  .graficos{
+
+    grid-template-columns:1fr;
+
+    gap:15px;
+  }
+
+  .grafico-card{
+
+    height:220px;
+
+    padding:12px;
+  }
+
+  .tabela-box{
+
+    overflow-x:auto;
+  }
+
+  table{
+
+    min-width:650px;
   }
 }
