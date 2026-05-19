@@ -671,3 +671,71 @@ onAuthStateChanged(auth,(user)=>{
     .style.display = 'flex';
   }
 });
+
+async function salvarFirestore(){
+
+  const user = auth.currentUser;
+
+  if(!user) return;
+
+  try{
+
+    await setDoc(
+
+      doc(db,'usuarios',user.uid),
+
+      {
+        dados:dados,
+
+        nome:nomeUsuario.value,
+
+        foto:fotoPerfil.src,
+
+        tema:
+        document.body.classList
+        .contains('light')
+      }
+    );
+
+  }catch(error){
+
+    console.log(error);
+  }
+}
+
+async function carregarDadosFirestore(uid){
+
+  try{
+
+    const referencia =
+    doc(db,'usuarios',uid);
+
+    const documento =
+    await getDoc(referencia);
+
+    if(documento.exists()){
+
+      const info = documento.data();
+
+      dados = info.dados || {};
+
+      nomeUsuario.value =
+      info.nome || 'Usuario';
+
+      fotoPerfil.src =
+      info.foto || fotoPerfil.src;
+
+      if(info.tema){
+
+        document.body.classList
+        .add('light');
+      }
+
+      atualizarTela();
+    }
+
+  }catch(error){
+
+    console.log(error);
+  }
+}
