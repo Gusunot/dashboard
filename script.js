@@ -21,16 +21,10 @@ function inicializarSeletorData() {
   
   if (!selectMes || !selectAno) return;
 
-  const anoCorrente = new Date().getFullYear();
-  
-  // Limpa o select de anos e cria opções (5 anos para trás, 2 para frente)
-  selectAno.innerHTML = '';
-  for (let i = anoCorrente - 5; i <= anoCorrente + 2; i++) {
-    let option = document.createElement('option');
-    option.value = i;
-    option.text = i;
-    selectAno.appendChild(option);
-  }
+  // Em vez de gerar os anos, apenas marcamos o mês e o ano atuais do sistema
+  selectMes.value = dataAtual.getMonth();
+  selectAno.value = dataAtual.getFullYear();
+}
   
   // Sincroniza o valor visual dos seletores com o estado real do app
   selectMes.value = dataAtual.getMonth();
