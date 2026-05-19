@@ -3,13 +3,20 @@ const meses = [
   'Janeiro','Fevereiro','Março','Abril',
   'Maio','Junho','Julho','Agosto',
   'Setembro','Outubro','Novembro','Dezembro'
-
 ];
+
+/* DATA */
+
+let anoAtual = new Date().getFullYear();
 
 let mesAtual = new Date().getMonth();
 
+/* DADOS */
+
 let dados =
 JSON.parse(localStorage.getItem('financePro')) || {};
+
+/* ELEMENTOS */
 
 const tabela =
 document.getElementById('tabela');
@@ -29,10 +36,65 @@ document.getElementById('quantidade');
 const tituloMes =
 document.getElementById('tituloMes');
 
+const anoTexto =
+document.getElementById('anoAtual');
+
 const toast =
 document.getElementById('toast');
 
-/* INICIAR MESES */
+/* PERFIL */
+
+const nomeUsuario =
+document.getElementById('nomeUsuario');
+
+const fotoPerfil =
+document.getElementById('fotoPerfil');
+
+const inputFoto =
+document.getElementById('inputFoto');
+
+/* CARREGAR PERFIL */
+
+nomeUsuario.value =
+localStorage.getItem('nomeUsuario')
+|| 'gusta_ig';
+
+nomeUsuario.addEventListener('input', ()=>{
+
+  localStorage.setItem(
+    'nomeUsuario',
+    nomeUsuario.value
+  );
+});
+
+const fotoSalva =
+localStorage.getItem('fotoPerfil');
+
+if(fotoSalva){
+
+  fotoPerfil.src = fotoSalva;
+}
+
+inputFoto.addEventListener('change',(e)=>{
+
+  const arquivo = e.target.files[0];
+
+  const leitor = new FileReader();
+
+  leitor.onload = ()=>{
+
+    fotoPerfil.src = leitor.result;
+
+    localStorage.setItem(
+      'fotoPerfil',
+      leitor.result
+    );
+  };
+
+  leitor.readAsDataURL(arquivo);
+});
+
+/* MESES */
 
 function iniciarMeses(){
 
@@ -49,22 +111,28 @@ function iniciarMeses(){
     botao.innerHTML = mes;
 
     if(index === mesAtual){
+
       botao.classList.add('ativo');
     }
 
-    botao.onclick = () => trocarMes(index);
+    botao.onclick = ()=>{
+
+      mesAtual = index;
+
+      iniciarMeses();
+
+      atualizarTela();
+    };
 
     lista.appendChild(botao);
   });
 }
 
-/* TROCAR MES */
+/* TROCAR ANO */
 
-function trocarMes(mes){
+function trocarAno(valor){
 
-  mesAtual = mes;
-
-  iniciarMeses();
+  anoAtual += valor;
 
   atualizarTela();
 }
@@ -94,9 +162,26 @@ function mostrarToast(texto){
   },2500);
 }
 
+/* GARANTIR ANO/MES */
+
+function garantirEstrutura(){
+
+  if(!dados[anoAtual]){
+
+    dados[anoAtual] = {};
+  }
+
+  if(!dados[anoAtual][mesAtual]){
+
+    dados[anoAtual][mesAtual] = [];
+  }
+}
+
 /* ADICIONAR */
 
 function adicionarTransacao(){
+
+  garantirEstrutura();
 
   const descricao =
   document.getElementById('descricao').value;
@@ -118,11 +203,7 @@ function adicionarTransacao(){
     return;
   }
 
-  if(!dados[mesAtual]){
-    dados[mesAtual] = [];
-  }
-
-  dados[mesAtual].push({
+  dados[anoAtual][mesAtual].push({
 
     descricao,
     valor,
@@ -145,7 +226,8 @@ function adicionarTransacao(){
 
 function remover(index){
 
-  dados[mesAtual].splice(index,1);
+  dados[anoAtual][mesAtual]
+  .splice(index,1);
 
   salvar();
 
@@ -158,10 +240,11 @@ function remover(index){
 
 function editar(index){
 
-  const item = dados[mesAtual][index];
+  const item =
+  dados[anoAtual][mesAtual][index];
 
   const novaDescricao =
-  prompt('Editar descrição', item.descricao);
+  prompt('Editar descrição',item.descricao);
 
   if(novaDescricao !== null){
 
@@ -170,17 +253,13 @@ function editar(index){
 
   salvar();
 
-  mostrarToast('Transação editada');
-
   atualizarTela();
 }
 
 /* TEMA */
 
-const botaoTema =
-document.getElementById('toggleTema');
-
-botaoTema.onclick = ()=>{
+document.getElementById('toggleTema')
+.onclick = ()=>{
 
   document.body.classList.toggle('light');
 
@@ -204,8 +283,6 @@ function atualizarGraficos(entrada,saida){
 
   if(pizza) pizza.destroy();
   if(linha) linha.destroy();
-
-  /* PIZZA */
 
   pizza = new Chart(
 
@@ -235,40 +312,37 @@ function atualizarGraficos(entrada,saida){
 
         responsive:true,
 
-        maintainAspectRatio:false,
-
-        plugins:{
-          legend:{
-            labels:{
-              color:'#94a3b8'
-            }
-          }
-        }
+        maintainAspectRatio:false
       }
     }
   );
 
-  /* LINHA */
+  const saldoAnual = [];
 
-  const saldoMeses = [];
-
-  for(let i = 0; i < 12; i++){
+  for(let i=0;i<12;i++){
 
     let saldoMes = 0;
 
-    if(dados[i]){
+    if(
+      dados[anoAtual] &&
+      dados[anoAtual][i]
+    ){
 
-      dados[i].forEach(item=>{
+      dados[anoAtual][i]
+      .forEach(item=>{
 
         if(item.tipo === 'entrada'){
+
           saldoMes += item.valor;
+
         }else{
+
           saldoMes -= item.valor;
         }
       });
     }
 
-    saldoMeses.push(saldoMes);
+    saldoAnual.push(saldoMes);
   }
 
   linha = new Chart(
@@ -286,11 +360,12 @@ function atualizarGraficos(entrada,saida){
 
           label:'Saldo',
 
-          data:saldoMeses,
+          data:saldoAnual,
 
           borderColor:'#38bdf8',
 
-          backgroundColor:'rgba(56,189,248,0.1)',
+          backgroundColor:
+          'rgba(56,189,248,0.1)',
 
           fill:true,
 
@@ -302,30 +377,7 @@ function atualizarGraficos(entrada,saida){
 
         responsive:true,
 
-        maintainAspectRatio:false,
-
-        plugins:{
-          legend:{
-            labels:{
-              color:'#94a3b8'
-            }
-          }
-        },
-
-        scales:{
-
-          x:{
-            ticks:{
-              color:'#94a3b8'
-            }
-          },
-
-          y:{
-            ticks:{
-              color:'#94a3b8'
-            }
-          }
-        }
+        maintainAspectRatio:false
       }
     }
   );
@@ -335,10 +387,14 @@ function atualizarGraficos(entrada,saida){
 
 function atualizarTela(){
 
+  garantirEstrutura();
+
   tabela.innerHTML = '';
 
+  anoTexto.innerHTML = anoAtual;
+
   tituloMes.innerHTML =
-  `Dashboard - ${meses[mesAtual]}`;
+  `${meses[mesAtual]} / ${anoAtual}`;
 
   let entrada = 0;
   let saida = 0;
@@ -351,7 +407,8 @@ function atualizarTela(){
   document.getElementById('filtroCategoria')
   .value;
 
-  const lista = (dados[mesAtual] || [])
+  const lista =
+  dados[anoAtual][mesAtual]
   .filter(item=>{
 
     const pesquisaOk =
@@ -404,8 +461,11 @@ function atualizarTela(){
     tabela.appendChild(linha);
 
     if(item.tipo === 'entrada'){
+
       entrada += item.valor;
+
     }else{
+
       saida += item.valor;
     }
   });
