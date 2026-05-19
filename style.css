@@ -145,7 +145,7 @@ body {
   color: var(--text-main);
 }
 
-/* TOPBAR E SELETOR DE PERÍODO */
+/* TOPBAR E SELETOR DE PERÃODO */
 .top-bar h1 { font-size: 1.8rem; font-weight: 700; }
 .periodo-seletor-wrapper {
   display: flex;
@@ -194,35 +194,11 @@ body {
 .card.saidas .icon-box { color: var(--danger); background: rgba(247, 90, 104, 0.1); }
 .card.saldo .icon-box { color: var(--text-main); background: rgba(141, 141, 153, 0.1); }
 
-/* ESTRUTURA DO CORPO (Layout Desktop) */
+/* CORPO DASHBOARD (Layout Desktop PadrÃ£o) */
 .dashboard-body {
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 1.5rem;
-  align-items: start;
-}
-
-.coluna-principal {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-/* Procure por esta classe no seu style.css e substitua por esta: */
-.coluna-lateral {
-  position: sticky;
-  top: 2rem;
-  display: flex;
-  justify-content: center;
-  align-items: start;
-  width: 100%;
-}
-
-/* Adicione também esta regra logo abaixo para garantir que o formulário expanda corretamente */
-.coluna-lateral .form-container {
-  width: 100%;
-  max-width: 400px; /* Evita que o formulário fique esticado demais em telas gigantes */
-}
 }
 
 .grafico-container, .form-container, .extrato-container {
@@ -237,7 +213,7 @@ body {
   font-size: 1.1rem;
 }
 
-/* LIMITAÇÃO DE TAMANHO DO GRÁFICO */
+/* LIMITAÃ‡ÃƒO DE TAMANHO DO GRÃFICO */
 .canvas-wrapper {
   position: relative;
   width: 100%;
@@ -246,7 +222,7 @@ body {
   justify-content: center;
 }
 
-/* FORMULÁRIO */
+/* FORMULÃRIO */
 #formTransacao {
   display: flex;
   flex-direction: column;
@@ -367,28 +343,29 @@ td.saida { color: var(--danger); }
   .periodo-seletor-wrapper { justify-content: center; width: 100%; }
   .periodo-seletor { width: 100%; justify-content: space-between; }
   
-  /* Quebra o grid em fluxo linear de uma coluna */
+  /* FORÃ‡ANDO GRID DE COLUNA ÃšNICA PARA CONTROLAR AS POSIÃ‡Ã•ES DAS LINHAS EXATAMENTE */
   .dashboard-body { 
-    display: flex !important;
-    flex-direction: column !important;
+    display: grid !important; 
+    grid-template-columns: 1fr !important;
     gap: 1.5rem; 
   } 
-
-  .coluna-principal {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-
-  /* Organização visual mobile nativa via CSS Flex Order */
-  .coluna-lateral { order: 1; position: static; }   /* 1º Nova Transação */
-  .coluna-principal { order: 2; }                   /* Próximos elementos */
-  .extrato-container { order: 1; }                  /* 2º Histórico */
-  .grafico-container { order: 2; }                  /* 3º Fluxo de Caixa (Embaixo de tudo!) */
+  
+  /* DestruiÃ§Ã£o de agrupamento herdado e reordenaÃ§Ã£o absoluta */
+  .form-container { 
+    grid-row: 1 !important; 
+  }      /* 1. Nova TransaÃ§Ã£o */
+  
+  .extrato-container { 
+    grid-row: 2 !important; 
+  }   /* 2. HistÃ³rico de TransaÃ§Ãµes */
+  
+  .grafico-container { 
+    grid-row: 3 !important; 
+  }   /* 3. Fluxo de Caixa (Fica embaixo de tudo!) */
   
   .canvas-wrapper { max-height: 240px; }
 
-  /* BANNER FIXO NO RODAPÉ NO MOBILE */
+  /* BANNER FIXO NO RODAPÃ‰ NO MOBILE */
   .pwa-banner {
     top: auto;
     bottom: 0; 
