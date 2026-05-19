@@ -193,7 +193,7 @@ function carregarPerfil() {
   });
 }
 
-// GESTÃO DO PWA (Com escuta e fechamento forçado)
+// GESTÃO COMPLETA PWA (Correção Absoluta Mobile)
 let deferredPrompt;
 function inicializarPWA() {
   if ('serviceWorker' in navigator) {
@@ -231,16 +231,23 @@ function inicializarPWA() {
     });
   }
 
-  // Ação de fechar o banner manualmente (Correção definitiva para cliques e toques)
+  // Função interna unificada para fechar e sumir com o banner
+  function fecharBannerPWA(e) {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation(); // Trava a propagação do clique/toque no mobile
+    }
+    if (banner) {
+      banner.style.display = 'none';
+    }
+    sessionStorage.setItem('pwa_banner_oculto', 'true');
+    console.log('Banner PWA rejeitado e ocultado nesta sessão.');
+  }
+
+  // Captura o fechamento manual aplicando tanto em cliques quanto em toques de tela
   const btnFechar = document.getElementById('btn-fechar-pwa');
   if (btnFechar) {
-    btnFechar.onclick = function(e) {
-      e.preventDefault();
-      e.stopPropagation(); // Evita herança de gatilhos no mobile
-      if (banner) {
-        banner.style.display = 'none';
-      }
-      sessionStorage.setItem('pwa_banner_oculto', 'true');
-    };
+    btnFechar.addEventListener('click', fecharBannerPWA, { passive: false });
+    btnFechar.addEventListener('touchstart', fecharBannerPWA, { passive: false });
   }
 }
