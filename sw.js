@@ -1,12 +1,11 @@
 const CACHE_NAME = "finance-pro-v1";
 
 const urlsToCache = [
-  "./",
-  "./index.html",
-  "./style.css",
-  "./script.js",
-  "https://cdn.jsdelivr.net/npm/chart.js",
-  "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  "/dashboard/",
+  "/dashboard/index.html",
+  "/dashboard/style.css",
+  "/dashboard/script.js",
+  "/dashboard/manifest.json"
 ];
 
 self.addEventListener("install", (event) => {
