@@ -866,4 +866,86 @@ tbody tr:hover{
     padding-top: 10px;
     font-size: 12px;
   }
+  /* ==========================================================================
+   COLE ESTE BLOCO EXATAMENTE NA ÚLTIMA LINHA DO SEU FILE STYLE.CSS
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  
+  /* Forçar a Sidebar a virar topo */
+  .sidebar {
+    width: 100% !important;
+    padding: 12px !important;
+    gap: 8px !important;
+    border-right: none !important;
+    border-bottom: 1px solid var(--border) !important;
+  }
+
+  .logo {
+    justify-content: center !important;
+    margin-bottom: 8px !important;
+    font-size: 18px !important;
+  }
+
+  /* GRADE DOS MESES - SUPER JUNTO E COMPACTO */
+  .meses {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important; 
+    gap: 4px !important; /* Cola os botões um no outro */
+    margin-top: 8px !important;
+  }
+
+  .meses button {
+    font-size: 11px !important; /* Texto pequeno para não quebrar */
+    padding: 6px 2px !important;
+    border-radius: 6px !important;
+    transform: none !important; /* Bloqueia o empurrão lateral */
+    text-align: center !important;
+  }
+
+  /* AJUSTE DOS TEXTOS GRANDES NOS CARDS */
+  .conteudo {
+    padding: 12px !important;
+  }
+
+  .topo h1 {
+    font-size: 20px !important;
+    text-align: center !important;
+  }
+
+  .cards {
+    grid-template-columns: repeat(2, 1fr) !important; /* Divide em duas colunas elegantes */
+    gap: 8px !important;
+  }
+
+  .card {
+    padding: 12px !important;
+    border-radius: 10px !important;
+  }
+
+  .card h2 {
+    font-size: 16px !important; /* Diminui o R$ 0 para caber na tela pequena */
+    margin-top: 4px !important;
+  }
+
+  .card span {
+    font-size: 11px !important;
+  }
+
+  /* FORMULÁRIO COMPACTO */
+  .formulario input,
+  .formulario select,
+  .formulario button {
+    font-size: 14px !important;
+    padding: 10px !important;
+  }
+
+  .graficos {
+    grid-template-columns: 1fr !important;
+  }
+
+  .grafico-card {
+    height: 200px !important;
+  }
+}
 }
