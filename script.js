@@ -11,6 +11,7 @@ const mesesNome = [
 let dados = JSON.parse(localStorage.getItem('finandash_dados')) || {};
 let graficoInstancia = null;
 
+// Inicialização do sistema
 window.addEventListener('DOMContentLoaded', () => {
   inicializarPeriodo();
   carregarPerfil();
@@ -19,6 +20,7 @@ window.addEventListener('DOMContentLoaded', () => {
   inicializarPWA();
 });
 
+// Configuração de Tema (Claro / Escuro)
 function configurarTema() {
   const btnTema = document.getElementById('btn-tema');
   const iconTema = document.getElementById('icon-tema');
@@ -45,12 +47,14 @@ function configurarTema() {
   });
 }
 
+// Inicializa a estrutura de dados para o período atual
 function inicializarPeriodo() {
   if (!dados[anoAtual]) dados[anoAtual] = {};
   if (!dados[anoAtual][mesAtual]) dados[anoAtual][mesAtual] = [];
   document.getElementById('labelPeriodo').innerText = `${mesesNome[mesAtual]} ${anoAtual}`;
 }
 
+// Navegação entre meses
 function mudarMes(direcao) {
   mesAtual += direcao;
   if (mesAtual > 11) { mesAtual = 0; anoAtual++; }
@@ -59,6 +63,7 @@ function mudarMes(direcao) {
   atualizarTela();
 }
 
+// Adiciona uma nova transação
 function adicionarTransacao(e) {
   e.preventDefault();
   const descricao = document.getElementById('descricao').value;
@@ -74,10 +79,12 @@ function adicionarTransacao(e) {
   document.getElementById('formTransacao').reset();
 }
 
+// Salva os dados no localStorage
 function salvar() {
   localStorage.setItem('finandash_dados', JSON.stringify(dados));
 }
 
+// Renderiza a tabela e atualiza os cards de resumo
 function atualizarTela() {
   const transacoes = dados[anoAtual][mesAtual] || [];
   let entradas = 0;
@@ -110,6 +117,7 @@ function atualizarTela() {
   atualizarGrafico(entradas, saidas);
 }
 
+// Edita o nome/descrição de uma transação
 function editar(index) {
   const item = dados[anoAtual][mesAtual][index];
   const novaDescricao = prompt('Editar descrição:', item.descricao);
@@ -121,6 +129,7 @@ function editar(index) {
   }
 }
 
+// Remove uma transação
 function deletar(index) {
   if(confirm("Tem certeza que deseja apagar essa transação?")) {
     dados[anoAtual][mesAtual].splice(index, 1);
@@ -129,6 +138,7 @@ function deletar(index) {
   }
 }
 
+// Controla o Gráfico (Respeitando a altura máxima do CSS)
 function atualizarGrafico(entradas = 0, saidas = 0) {
   const ctx = document.getElementById('graficoFinanceiro').getContext('2d');
   const corTexto = document.body.classList.contains('dark-theme') ? '#e1e1e6' : '#363f5f';
@@ -149,7 +159,7 @@ function atualizarGrafico(entradas = 0, saidas = 0) {
     },
     options: {
       responsive: true,
-      maintainAspectRatio: false, // Permite que ele obedeça a altura máxima do contêiner CSS
+      maintainAspectRatio: false, // Fundamental para obedecer a altura limite do CSS
       plugins: {
         legend: { labels: { color: corTexto, font: { family: 'Poppins' } } }
       }
@@ -157,6 +167,7 @@ function atualizarGrafico(entradas = 0, saidas = 0) {
   });
 }
 
+// Carrega e manipula os dados do Perfil (Nome e Foto)
 function carregarPerfil() {
   const nomeSalvo = localStorage.getItem('user_name');
   const fotoSalva = localStorage.getItem('user_photo');
@@ -182,8 +193,7 @@ function carregarPerfil() {
   });
 }
 
-// GESTÃO PWA ATUALIZADA (Com ação de fechar)
-// GESTÃO PWA ATUALIZADA (Correção do botão fechar)
+// GESTÃO DO PWA (Com escuta e fechamento forçado)
 let deferredPrompt;
 function inicializarPWA() {
   if ('serviceWorker' in navigator) {
@@ -198,13 +208,13 @@ function inicializarPWA() {
     e.preventDefault();
     deferredPrompt = e;
     
-    // Só mostra o banner se o usuário não tiver fechado ele nesta sessão atual
+    // Só exibe se não tiver sido ocultado manualmente nesta sessão
     if (!sessionStorage.getItem('pwa_banner_oculto')) {
-      banner.style.display = 'flex';
+      if (banner) banner.style.display = 'flex';
     }
   });
 
-  // Ação de Instalar
+  // Ação do Botão de Instalar
   const btnInstalar = document.getElementById('btn-instalar-app');
   if (btnInstalar) {
     btnInstalar.addEventListener('click', () => {
@@ -214,20 +224,22 @@ function inicializarPWA() {
           if (choiceResult.outcome === 'accepted') {
             console.log('App Instalado pelo usuário.');
           }
-          banner.style.display = 'none';
+          if (banner) banner.style.display = 'none';
           deferredPrompt = null;
         });
       }
     });
   }
 
-  // Ação de fechar o banner manual (Garantida)
+  // Ação de fechar o banner manualmente (Correção definitiva para cliques e toques)
   const btnFechar = document.getElementById('btn-fechar-pwa');
   if (btnFechar) {
     btnFechar.onclick = function(e) {
       e.preventDefault();
-      e.stopPropagation();
-      banner.style.display = 'none';
+      e.stopPropagation(); // Evita herança de gatilhos no mobile
+      if (banner) {
+        banner.style.display = 'none';
+      }
       sessionStorage.setItem('pwa_banner_oculto', 'true');
     };
   }
