@@ -1,665 +1,331 @@
-const meses=[
+const meses = [
 'Janeiro','Fevereiro','Março','Abril',
 'Maio','Junho','Julho','Agosto',
 'Setembro','Outubro','Novembro','Dezembro'
 ];
 
-let anoAtual=new Date().getFullYear();
-let mesAtual=new Date().getMonth();
+let anoAtual = new Date().getFullYear();
+let mesAtual = new Date().getMonth();
 
-let dados=JSON.parse(localStorage.getItem('financePro'))||{};
+/* DADOS */
+let dados = JSON.parse(localStorage.getItem('financePro')) || {};
 
-/* AUTO BACKUP */
-setInterval(()=>{
-localStorage.setItem('finance_backup',JSON.stringify(dados));
-},5000);
+/* ELEMENTOS */
+const tabela = document.getElementById('tabela');
+const receitas = document.getElementById('receitas');
+const despesas = document.getElementById('despesas');
+const saldo = document.getElementById('saldo');
+const quantidade = document.getElementById('quantidade');
+const tituloMes = document.getElementById('tituloMes');
+const anoTexto = document.getElementById('anoAtual');
 
 /* PERFIL */
-const nomeUsuario=document.getElementById('nomeUsuario');
-nomeUsuario.value=localStorage.getItem('nomeUsuario')||'';
+const nomeUsuario = document.getElementById('nomeUsuario');
+const fotoPerfil = document.getElementById('fotoPerfil');
+const inputFoto = document.getElementById('inputFoto');
 
-nomeUsuario.oninput=()=>{
-localStorage.setItem('nomeUsuario',nomeUsuario.value);
+/* INPUTS */
+const descricao = document.getElementById('descricao');
+const valor = document.getElementById('valor');
+const tipo = document.getElementById('tipo');
+const categoria = document.getElementById('categoria');
+const pesquisa = document.getElementById('pesquisa');
+const filtroCategoria = document.getElementById('filtroCategoria');
+
+/* TOAST */
+const toast = document.getElementById('toast');
+
+/* =========================
+   PERFIL
+========================= */
+
+nomeUsuario.value = localStorage.getItem('nomeUsuario') || '';
+
+nomeUsuario.addEventListener('input', () => {
+localStorage.setItem('nomeUsuario', nomeUsuario.value);
+});
+
+const fotoSalva = localStorage.getItem('fotoPerfil');
+
+if (fotoSalva) {
+fotoPerfil.src = fotoSalva;
+}
+
+inputFoto.addEventListener('change', (e) => {
+const file = e.target.files[0];
+const reader = new FileReader();
+
+reader.onload = () => {
+fotoPerfil.src = reader.result;
+localStorage.setItem('fotoPerfil', reader.result);
 };
 
-/* FOTO */
-inputFoto.onchange=(e)=>{
-let r=new FileReader();
-r.onload=()=>{
-fotoPerfil.src=r.result;
-localStorage.setItem('fotoPerfil',r.result);
-};
-r.readAsDataURL(e.target.files[0]);
-};
+reader.readAsDataURL(file);
+});
 
-/* BASE */
-function getMes(){
-if(!dados[anoAtual])dados[anoAtual]={};
-if(!dados[anoAtual][mesAtual])dados[anoAtual][mesAtual]=[];
+/* =========================
+   ESTRUTURA
+========================= */
+
+function garantirEstrutura() {
+if (!dados[anoAtual]) dados[anoAtual] = {};
+if (!dados[anoAtual][mesAtual]) dados[anoAtual][mesAtual] = [];
+}
+
+function getMes() {
+garantirEstrutura();
 return dados[anoAtual][mesAtual];
 }
 
-/* SAVE */
-function save(){
-localStorage.setItem('financePro',JSON.stringify(dados));
+/* =========================
+   SALVAR
+========================= */
+
+function salvar() {
+localStorage.setItem('financePro', JSON.stringify(dados));
 }
 
-/* ADD */
-function adicionarTransacao(){
-let lista=getMes();
+/* =========================
+   TOAST
+========================= */
 
-lista.push({
-descricao:descricao.value,
-valor:+valor.value,
-tipo:tipo.value,
-categoria:categoria.value
+function mostrarToast(msg) {
+toast.innerText = msg;
+toast.classList.add('show');
+
+setTimeout(() => {
+toast.classList.remove('show');
+}, 2000);
+}
+
+/* =========================
+   ADICIONAR
+========================= */
+
+function adicionarTransacao() {
+
+if (!descricao.value || !valor.value) {
+mostrarToast('Preencha os campos');
+return;
+}
+
+getMes().push({
+descricao: descricao.value,
+valor: parseFloat(valor.value),
+tipo: tipo.value,
+categoria: categoria.value
 });
 
-save();
-render();
+descricao.value = '';
+valor.value = '';
+
+salvar();
+atualizarTela();
+
+mostrarToast('Adicionado!');
 }
 
-/* DELETE */
-function remover(i){
-getMes().splice(i,1);
-save();
-render();
+/* =========================
+   REMOVER
+========================= */
+
+function remover(index) {
+getMes().splice(index, 1);
+salvar();
+atualizarTela();
+mostrarToast('Removido!');
 }
 
-/* RENDER OTIMIZADO */
-function render(){
+/* =========================
+   EDITAR
+========================= */
 
-let lista=getMes();
+function editar(index) {
+let item = getMes()[index];
 
-let entrada=0,saida=0;
+let novo = prompt('Editar descrição', item.descricao);
 
-tabela.innerHTML='';
+if (novo !== null) {
+item.descricao = novo;
+salvar();
+atualizarTela();
+}
+}
 
-lista.forEach((t,i)=>{
+/* =========================
+   ANO / MES
+========================= */
 
-if(t.tipo==='entrada')entrada+=t.valor;
-else saida+=t.valor;
+function trocarAno(v) {
+anoAtual += v;
+atualizarTela();
+}
 
-tabela.innerHTML+=`
+function iniciarMeses() {
+const lista = document.getElementById('listaMeses');
+lista.innerHTML = '';
+
+meses.forEach((m, i) => {
+
+const btn = document.createElement('button');
+btn.innerText = m;
+
+if (i === mesAtual) btn.classList.add('ativo');
+
+btn.onclick = () => {
+mesAtual = i;
+atualizarTela();
+};
+
+lista.appendChild(btn);
+});
+}
+
+/* =========================
+   GRAFICOS
+========================= */
+
+let pizza;
+let linha;
+
+function atualizarGraficos(entrada, saida) {
+
+if (!pizza) {
+pizza = new Chart(document.getElementById('graficoPizza'), {
+type: 'doughnut',
+data: {
+labels: ['Receitas', 'Despesas'],
+datasets: [{
+data: [entrada, saida],
+backgroundColor: ['#22c55e', '#ef4444']
+}]
+},
+options: { responsive: true, maintainAspectRatio: false }
+});
+} else {
+pizza.data.datasets[0].data = [entrada, saida];
+pizza.update();
+}
+
+let saldoMeses = Array(12).fill(0);
+
+for (let i = 0; i < 12; i++) {
+if (dados[anoAtual]?.[i]) {
+dados[anoAtual][i].forEach(t => {
+saldoMeses[i] += t.tipo === 'entrada' ? t.valor : -t.valor;
+});
+}
+}
+
+if (!linha) {
+linha = new Chart(document.getElementById('graficoLinha'), {
+type: 'line',
+data: {
+labels: meses,
+datasets: [{
+label: 'Saldo',
+data: saldoMeses,
+borderColor: '#38bdf8',
+fill: true
+}]
+},
+options: { responsive: true, maintainAspectRatio: false }
+});
+} else {
+linha.data.datasets[0].data = saldoMeses;
+linha.update();
+}
+}
+
+/* =========================
+   TELA
+========================= */
+
+function atualizarTela() {
+
+garantirEstrutura();
+
+let lista = getMes();
+
+let entrada = 0;
+let saida = 0;
+
+tabela.innerHTML = '';
+
+const filtro = pesquisa.value.toLowerCase();
+const cat = filtroCategoria.value;
+
+lista
+.filter(t => {
+return (
+t.descricao.toLowerCase().includes(filtro) &&
+(cat === 'todos' || t.categoria === cat)
+);
+})
+.forEach((t, i) => {
+
+if (t.tipo === 'entrada') entrada += t.valor;
+else saida += t.valor;
+
+tabela.innerHTML += `
 <tr>
 <td>${t.descricao}</td>
 <td>${t.categoria}</td>
 <td>${t.tipo}</td>
 <td>R$ ${t.valor.toFixed(2)}</td>
-<td><button onclick="remover(${i})">X</button></td>
-</tr>`;
+<td>
+<button onclick="editar(${i})">Editar</button>
+<button onclick="remover(${i})">Excluir</button>
+</td>
+</tr>
+`;
 });
 
-receitas.innerText=`R$ ${entrada.toFixed(2)}`;
-despesas.innerText=`R$ ${saida.toFixed(2)}`;
-saldo.innerText=`R$ ${(entrada-saida).toFixed(2)}`;
-quantidade.innerText=lista.length;
+receitas.innerText = `R$ ${entrada.toFixed(2)}`;
+despesas.innerText = `R$ ${saida.toFixed(2)}`;
+saldo.innerText = `R$ ${(entrada - saida).toFixed(2)}`;
+quantidade.innerText = lista.length;
 
-updateCharts(entrada,saida);
+anoTexto.innerText = anoAtual;
+tituloMes.innerText = `${meses[mesAtual]} / ${anoAtual}`;
+
+atualizarGraficos(entrada, saida);
 }
 
-/* CHARTS (SEM RECRIAR DESNECESSÁRIO) */
-let pizza,linha;
+/* =========================
+   EVENTOS
+========================= */
 
-function updateCharts(a,b){
+pesquisa.addEventListener('input', atualizarTela);
+filtroCategoria.addEventListener('change', atualizarTela);
 
-if(!pizza){
+/* =========================
+   EXPORT / IMPORT
+========================= */
 
-pizza=new Chart(graficoPizza,{
-type:'doughnut',
-data:{labels:['Receitas','Despesas'],datasets:[{data:[a,b]}]},
-options:{responsive:true,maintainAspectRatio:false}
-});
-
-}else{
-pizza.data.datasets[0].data=[a,b];
-pizza.update();
-}
-
-let saldoMensal=Array(12).fill(0);
-
-for(let i=0;i<12;i++){
-if(dados[anoAtual] && dados[anoAtual][i]){
-dados[anoAtual][i].forEach(t=>{
-saldoMensal[i]+=t.tipo==='entrada'?t.valor:-t.valor;
-});
-}
-}
-
-if(!linha){
-
-linha=new Chart(graficoLinha,{
-type:'line',
-data:{labels:meses,datasets:[{data:saldoMensal}]},
-options:{responsive:true,maintainAspectRatio:false}
-});
-
-}else{
-linha.data.datasets[0].data=saldoMensal;
-linha.update();
-}
-}
-
-/* EXPORT */
-function exportarDados(){
-let blob=new Blob([JSON.stringify(dados)],{type:'application/json'});
-let a=document.createElement('a');
-a.href=URL.createObjectURL(blob);
-a.download='backup-finance.json';
+function exportarDados() {
+let blob = new Blob([JSON.stringify(dados)], { type: 'application/json' });
+let a = document.createElement('a');
+a.href = URL.createObjectURL(blob);
+a.download = 'backup.json';
 a.click();
 }
 
-/* IMPORT */
-importar.onchange=(e)=>{
-let r=new FileReader();
-r.onload=()=>{
-dados=JSON.parse(r.result);
-save();
-render();
+document.getElementById('importar').addEventListener('change', (e) => {
+let r = new FileReader();
+
+r.onload = () => {
+dados = JSON.parse(r.result);
+salvar();
+atualizarTela();
 };
+
 r.readAsText(e.target.files[0]);
-};
-
-/* INIT */
-render();
-
-const meses = [
-
-  'Janeiro','Fevereiro','Março','Abril',
-  'Maio','Junho','Julho','Agosto',
-  'Setembro','Outubro','Novembro','Dezembro'
-];
-
-/* DATA */
-
-let anoAtual = new Date().getFullYear();
-
-let mesAtual = new Date().getMonth();
-
-/* DADOS */
-
-let dados =
-JSON.parse(localStorage.getItem('financePro')) || {};
-
-/* ELEMENTOS */
-
-const tabela =
-document.getElementById('tabela');
-
-const receitas =
-document.getElementById('receitas');
-
-const despesas =
-document.getElementById('despesas');
-
-const saldo =
-document.getElementById('saldo');
-
-const quantidade =
-document.getElementById('quantidade');
-
-const tituloMes =
-document.getElementById('tituloMes');
-
-const anoTexto =
-document.getElementById('anoAtual');
-
-const toast =
-document.getElementById('toast');
-
-/* PERFIL */
-
-const nomeUsuario =
-document.getElementById('nomeUsuario');
-
-const fotoPerfil =
-document.getElementById('fotoPerfil');
-
-const inputFoto =
-document.getElementById('inputFoto');
-
-/* CARREGAR PERFIL */
-
-nomeUsuario.value =
-localStorage.getItem('nomeUsuario')
-|| '';
-
-nomeUsuario.addEventListener('input', ()=>{
-
-  localStorage.setItem(
-    'nomeUsuario',
-    nomeUsuario.value
-  );
 });
 
-const fotoSalva =
-localStorage.getItem('fotoPerfil');
-
-if(fotoSalva){
-
-  fotoPerfil.src = fotoSalva;
-}
-
-inputFoto.addEventListener('change',(e)=>{
-
-  const arquivo = e.target.files[0];
-
-  const leitor = new FileReader();
-
-  leitor.onload = ()=>{
-
-    fotoPerfil.src = leitor.result;
-
-    localStorage.setItem(
-      'fotoPerfil',
-      leitor.result
-    );
-  };
-
-  leitor.readAsDataURL(arquivo);
-});
-
-/* MESES */
-
-function iniciarMeses(){
-
-  const lista =
-  document.getElementById('listaMeses');
-
-  lista.innerHTML = '';
-
-  meses.forEach((mes,index)=>{
-
-    const botao =
-    document.createElement('button');
-
-    botao.innerHTML = mes;
-
-    if(index === mesAtual){
-
-      botao.classList.add('ativo');
-    }
-
-    botao.onclick = ()=>{
-
-      mesAtual = index;
-
-      iniciarMeses();
-
-      atualizarTela();
-    };
-
-    lista.appendChild(botao);
-  });
-}
-
-/* TROCAR ANO */
-
-function trocarAno(valor){
-
-  anoAtual += valor;
-
-  atualizarTela();
-}
-
-/* SALVAR */
-
-function salvar(){
-
-  localStorage.setItem(
-    'financePro',
-    JSON.stringify(dados)
-  );
-}
-
-/* TOAST */
-
-function mostrarToast(texto){
-
-  toast.innerHTML = texto;
-
-  toast.classList.add('show');
-
-  setTimeout(()=>{
-
-    toast.classList.remove('show');
-
-  },2500);
-}
-
-/* GARANTIR ANO/MES */
-
-function garantirEstrutura(){
-
-  if(!dados[anoAtual]){
-
-    dados[anoAtual] = {};
-  }
-
-  if(!dados[anoAtual][mesAtual]){
-
-    dados[anoAtual][mesAtual] = [];
-  }
-}
-
-/* ADICIONAR */
-
-function adicionarTransacao(){
-
-  garantirEstrutura();
-
-  const descricao =
-  document.getElementById('descricao').value;
-
-  const valor = parseFloat(
-    document.getElementById('valor').value
-  );
-
-  const tipo =
-  document.getElementById('tipo').value;
-
-  const categoria =
-  document.getElementById('categoria').value;
-
-  if(descricao === '' || isNaN(valor)){
-
-    mostrarToast('Preencha os campos');
-
-    return;
-  }
-
-  dados[anoAtual][mesAtual].push({
-
-    descricao,
-    valor,
-    tipo,
-    categoria
-  });
-
-  salvar();
-
-  document.getElementById('descricao').value = '';
-
-  document.getElementById('valor').value = '';
-
-  mostrarToast('Transação adicionada');
-
-  atualizarTela();
-}
-
-/* REMOVER */
-
-function remover(index){
-
-  dados[anoAtual][mesAtual]
-  .splice(index,1);
-
-  salvar();
-
-  mostrarToast('Transação removida');
-
-  atualizarTela();
-}
-
-/* EDITAR */
-
-function editar(index){
-
-  const item =
-  dados[anoAtual][mesAtual][index];
-
-  const novaDescricao =
-  prompt('Editar descrição',item.descricao);
-
-  if(novaDescricao !== null){
-
-    item.descricao = novaDescricao;
-  }
-
-  salvar();
-
-  atualizarTela();
-}
-
-/* TEMA */
-
-document.getElementById('toggleTema')
-.onclick = ()=>{
-
-  document.body.classList.toggle('light');
-
-  localStorage.setItem(
-    'temaClaro',
-    document.body.classList.contains('light')
-  );
-};
-
-if(localStorage.getItem('temaClaro') === 'true'){
-
-  document.body.classList.add('light');
-}
-
-/* GRAFICOS */
-
-let pizza;
-let linha;
-
-function atualizarGraficos(entrada,saida){
-
-  if(pizza) pizza.destroy();
-  if(linha) linha.destroy();
-
-  pizza = new Chart(
-
-    document.getElementById('graficoPizza'),
-
-    {
-      type:'doughnut',
-
-      data:{
-
-        labels:['Receitas','Despesas'],
-
-        datasets:[{
-
-          data:[entrada,saida],
-
-          backgroundColor:[
-            '#22c55e',
-            '#ef4444'
-          ],
-
-          borderWidth:0
-        }]
-      },
-
-      options:{
-
-        responsive:true,
-
-        maintainAspectRatio:false
-      }
-    }
-  );
-
-  const saldoAnual = [];
-
-  for(let i=0;i<12;i++){
-
-    let saldoMes = 0;
-
-    if(
-      dados[anoAtual] &&
-      dados[anoAtual][i]
-    ){
-
-      dados[anoAtual][i]
-      .forEach(item=>{
-
-        if(item.tipo === 'entrada'){
-
-          saldoMes += item.valor;
-
-        }else{
-
-          saldoMes -= item.valor;
-        }
-      });
-    }
-
-    saldoAnual.push(saldoMes);
-  }
-
-  linha = new Chart(
-
-    document.getElementById('graficoLinha'),
-
-    {
-      type:'line',
-
-      data:{
-
-        labels:meses,
-
-        datasets:[{
-
-          label:'Saldo',
-
-          data:saldoAnual,
-
-          borderColor:'#38bdf8',
-
-          backgroundColor:
-          'rgba(56,189,248,0.1)',
-
-          fill:true,
-
-          tension:0.4
-        }]
-      },
-
-      options:{
-
-        responsive:true,
-
-        maintainAspectRatio:false
-      }
-    }
-  );
-}
-
-/* ATUALIZAR */
-
-function atualizarTela(){
-
-  garantirEstrutura();
-
-  tabela.innerHTML = '';
-
-  anoTexto.innerHTML = anoAtual;
-
-  tituloMes.innerHTML =
-  `${meses[mesAtual]} / ${anoAtual}`;
-
-  let entrada = 0;
-  let saida = 0;
-
-  const pesquisa =
-  document.getElementById('pesquisa')
-  .value.toLowerCase();
-
-  const filtroCategoria =
-  document.getElementById('filtroCategoria')
-  .value;
-
-  const lista =
-  dados[anoAtual][mesAtual]
-  .filter(item=>{
-
-    const pesquisaOk =
-    item.descricao.toLowerCase()
-    .includes(pesquisa);
-
-    const categoriaOk =
-    filtroCategoria === 'todos' ||
-    item.categoria === filtroCategoria;
-
-    return pesquisaOk && categoriaOk;
-  });
-
-  lista.forEach((item,index)=>{
-
-    const linha =
-    document.createElement('tr');
-
-    linha.innerHTML = `
-
-      <td>${item.descricao}</td>
-
-      <td>${item.categoria}</td>
-
-      <td>${item.tipo}</td>
-
-      <td>
-        R$ ${item.valor.toFixed(2)}
-      </td>
-
-      <td>
-
-        <button class="editar"
-        onclick="editar(${index})">
-
-          Editar
-
-        </button>
-
-        <button class="excluir"
-        onclick="remover(${index})">
-
-          Excluir
-
-        </button>
-
-      </td>
-    `;
-
-    tabela.appendChild(linha);
-
-    if(item.tipo === 'entrada'){
-
-      entrada += item.valor;
-
-    }else{
-
-      saida += item.valor;
-    }
-  });
-
-  receitas.innerHTML =
-  `R$ ${entrada.toFixed(2)}`;
-
-  despesas.innerHTML =
-  `R$ ${saida.toFixed(2)}`;
-
-  saldo.innerHTML =
-  `R$ ${(entrada - saida).toFixed(2)}`;
-
-  quantidade.innerHTML =
-  lista.length;
-
-  atualizarGraficos(entrada,saida);
-}
-
-/* EVENTOS */
-
-document.getElementById('pesquisa')
-.addEventListener('input', atualizarTela);
-
-document.getElementById('filtroCategoria')
-.addEventListener('change', atualizarTela);
-
-/* INICIAR */
+/* =========================
+   INIT
+========================= */
 
 iniciarMeses();
-
 atualizarTela();
