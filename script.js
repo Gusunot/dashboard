@@ -498,3 +498,65 @@ document.getElementById('filtroCategoria')
 iniciarMeses();
 
 atualizarTela();
+
+async function registrar(){
+
+  const email =
+  document.getElementById('email').value;
+
+  const senha =
+  document.getElementById('senha').value;
+
+  try{
+
+    await createUserWithEmailAndPassword(
+      auth,
+      email,
+      senha
+    );
+
+    mostrarToast('Conta criada');
+
+  }catch(error){
+
+    alert(error.message);
+  }
+}
+
+async function login(){
+
+  const email =
+  document.getElementById('email').value;
+
+  const senha =
+  document.getElementById('senha').value;
+
+  try{
+
+    await signInWithEmailAndPassword(
+      auth,
+      email,
+      senha
+    );
+
+  }catch(error){
+
+    alert(error.message);
+  }
+}
+
+onAuthStateChanged(auth,(user)=>{
+
+  if(user){
+
+    document
+    .getElementById('loginTela')
+    .style.display = 'none';
+
+  }else{
+
+    document
+    .getElementById('loginTela')
+    .style.display = 'flex';
+  }
+});
