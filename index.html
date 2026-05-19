@@ -1,17 +1,14 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Finance Dashboard Pro</title>
+<title>Finance Dashboard</title>
 
-  <link rel="stylesheet" href="style.css">
-
-  <link rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -20,130 +17,88 @@
 
   <div>
 
-    <h2 class="logo">
-      <i class="fa-solid fa-chart-line"></i>
-      FinancePro
-    </h2>
+    <h2 class="logo">FinancePro</h2>
 
-    <button id="toggleTema">Tema</button>
+    <button id="temaBtn">Tema</button>
 
-    <div class="perfil-box">
-
-      <label class="foto">
+    <div class="perfil">
+      <label>
         <img id="fotoPerfil" src="https://i.imgur.com/2DhmtJ4.png">
-        <input type="file" id="inputFoto" hidden>
+        <input type="file" id="fotoInput" hidden>
       </label>
 
-      <input id="nomeUsuario" placeholder="Digite seu nome aqui">
+      <input id="nome" placeholder="Digite seu nome aqui">
     </div>
 
-    <div class="ano-box">
-      <button onclick="trocarAno(-1)">◀</button>
-      <h3 id="anoAtual"></h3>
-      <button onclick="trocarAno(1)">▶</button>
-    </div>
+    <div class="meses" id="meses"></div>
 
-    <div class="meses" id="listaMeses"></div>
-
-    <div class="backup-box">
-      <button onclick="exportarDados()">Exportar</button>
-      <input type="file" id="importFile" hidden>
-      <button onclick="document.getElementById('importFile').click()">Importar</button>
-    </div>
+    <button onclick="exportar()">Exportar</button>
+    <button onclick="document.getElementById('importar').click()">Importar</button>
+    <input type="file" id="importar" hidden>
 
   </div>
 
-  <footer class="footer-sidebar">
-    <strong>gusta_ig</strong>
-  </footer>
+  <footer>gusta_ig</footer>
 
 </aside>
 
-<main class="conteudo">
+<main class="main">
 
-<header class="topo">
-  <h1 id="tituloMes"></h1>
-  <p>Controle financeiro inteligente</p>
-</header>
+<h1 id="titulo"></h1>
 
-<section class="cards">
+<div class="cards">
 
-  <div class="card"><span>Receitas</span><h2 id="receitas">R$ 0</h2></div>
-  <div class="card"><span>Despesas</span><h2 id="despesas">R$ 0</h2></div>
-  <div class="card"><span>Saldo</span><h2 id="saldo">R$ 0</h2></div>
-  <div class="card"><span>Transações</span><h2 id="quantidade">0</h2></div>
+  <div class="card"><p>Receitas</p><h2 id="receitas">0</h2></div>
+  <div class="card"><p>Despesas</p><h2 id="despesas">0</h2></div>
+  <div class="card"><p>Saldo</p><h2 id="saldo">0</h2></div>
+  <div class="card"><p>Qtd</p><h2 id="qtd">0</h2></div>
 
-  <div class="card extra">
-    <span>Maior gasto</span>
-    <h2 id="maiorGasto">R$ 0</h2>
-  </div>
+</div>
 
-</section>
+<div class="form">
 
-<section class="filtros">
+<input id="desc" placeholder="Descrição">
+<input id="valor" type="number" placeholder="Valor">
 
-  <input id="pesquisa" placeholder="Buscar descrição ou valor">
+<select id="tipo">
+<option value="entrada">Entrada</option>
+<option value="saida">Saída</option>
+</select>
 
-  <select id="filtroCategoria">
-    <option value="todos">Todas</option>
-    <option>Alimentação</option>
-    <option>Transporte</option>
-    <option>Salário</option>
-    <option>Lazer</option>
-    <option>Estudos</option>
-    <option>Igreja</option>
-    <option>Outros</option>
-  </select>
+<select id="cat">
+<option>Alimentação</option>
+<option>Transporte</option>
+<option>Outros</option>
+</select>
 
-</section>
+<button onclick="add()">Adicionar</button>
 
-<section class="formulario">
+</div>
 
-  <input id="descricao" placeholder="Descrição">
-  <input id="valor" type="number" placeholder="Valor">
+<div class="graficos">
 
-  <select id="tipo">
-    <option value="entrada">Receita</option>
-    <option value="saida">Despesa</option>
-  </select>
+<canvas id="pizza"></canvas>
+<canvas id="linha"></canvas>
 
-  <select id="categoria">
-    <option>Alimentação</option>
-    <option>Transporte</option>
-    <option>Salário</option>
-    <option>Lazer</option>
-    <option>Estudos</option>
-    <option>Igreja</option>
-    <option>Outros</option>
-  </select>
+</div>
 
-  <button onclick="adicionarTransacao()">Adicionar</button>
+<table>
 
-</section>
+<thead>
+<tr>
+<th>Desc</th>
+<th>Cat</th>
+<th>Tipo</th>
+<th>Valor</th>
+<th>Ação</th>
+</tr>
+</thead>
 
-<section class="graficos">
-  <div class="grafico-card"><canvas id="graficoPizza"></canvas></div>
-  <div class="grafico-card"><canvas id="graficoLinha"></canvas></div>
-</section>
+<tbody id="table"></tbody>
 
-<section class="tabela-box">
-  <table>
-    <thead>
-      <tr>
-        <th>Descrição</th>
-        <th>Categoria</th>
-        <th>Tipo</th>
-        <th>Valor</th>
-        <th>Ações</th>
-      </tr>
-    </thead>
-    <tbody id="tabela"></tbody>
-  </table>
-</section>
+</table>
 
 </main>
-
-<div id="toast"></div>
 
 <script src="script.js"></script>
 
