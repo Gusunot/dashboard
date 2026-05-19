@@ -1,13 +1,519 @@
 *{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial,sans-serif;
+}
+
+:root{
+
+  --bg:#0f172a;
+  --sidebar:#111827;
+  --card:#1e293b;
+
+  --text:#f8fafc;
+  --text2:#94a3b8;
+
+  --primary:#38bdf8;
+
+  --border:#334155;
+
+  --green:#22c55e;
+  --red:#ef4444;
+}
+
+.light{
+
+  --bg:#f1f5f9;
+  --sidebar:#ffffff;
+  --card:#ffffff;
+
+  --text:#0f172a;
+  --text2:#475569;
+
+  --primary:#2563eb;
+
+  --border:#cbd5e1;
+}
+
+body{
+
+  background:var(--bg);
+
+  color:var(--text);
+
+  display:flex;
+
+  min-height:100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+
+  width:270px;
+
+  background:var(--sidebar);
+
+  border-right:1px solid var(--border);
+
+  padding:25px;
+
+  display:flex;
+
+  flex-direction:column;
+
+  justify-content:space-between;
+}
+
+.logo{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:10px;
+
+  margin-bottom:20px;
+}
+
+.logo i{
+  color:var(--primary);
+}
+
+/* BOTAO */
+
+#toggleTema{
+
+  width:100%;
+
+  padding:14px;
+
+  border:none;
+
+  border-radius:12px;
+
+  background:var(--primary);
+
+  color:white;
+
+  cursor:pointer;
+
+  margin-bottom:25px;
+}
+
+/* PERFIL */
+
+.perfil-box{
+
+  display:flex;
+
+  flex-direction:column;
+
+  align-items:center;
+
+  gap:15px;
+
+  margin-bottom:25px;
+}
+
+.foto{
+
+  width:90px;
+  height:90px;
+
+  border-radius:50%;
+
+  overflow:hidden;
+
+  cursor:pointer;
+
+  border:3px solid var(--primary);
+}
+
+.foto img{
+
+  width:100%;
+  height:100%;
+
+  object-fit:cover;
+}
+
+#inputFoto{
+  display:none;
+}
+
+#nomeUsuario{
+
+  width:100%;
+
+  padding:12px;
+
+  border:none;
+
+  border-radius:12px;
+
+  background:var(--card);
+
+  color:var(--text);
+
+  text-align:center;
+}
+
+/* ANO */
+
+.ano-box{
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  margin-bottom:20px;
+}
+
+.ano-box button{
+
+  width:40px;
+  height:40px;
+
+  border:none;
+
+  border-radius:10px;
+
+  background:var(--primary);
+
+  color:white;
+
+  cursor:pointer;
+}
+
+/* MESES */
+
+.meses{
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:10px;
+}
+
+.meses button{
+
+  padding:12px;
+
+  border:none;
+
+  border-radius:10px;
+
+  background:var(--card);
+
+  color:var(--text);
+
+  cursor:pointer;
+}
+
+.meses .ativo{
+
+  background:var(--primary);
+
+  color:white;
+}
+
+/* CONTEUDO */
+
+.conteudo{
+
+  flex:1;
+
+  padding:30px;
+}
+
+/* TOPO */
+
+.topo{
+
+  margin-bottom:30px;
+}
+
+.topo p{
+  color:var(--text2);
+}
+
+/* CARDS */
+
+.cards{
+
+  display:grid;
+
+  grid-template-columns:
+  repeat(auto-fit,minmax(220px,1fr));
+
+  gap:20px;
+}
+
+.card{
+
+  background:var(--card);
+
+  border:1px solid var(--border);
+
+  padding:25px;
+
+  border-radius:18px;
+}
+
+.card span{
+  color:var(--text2);
+}
+
+.card h2{
+
+  margin-top:10px;
+
+  font-size:30px;
+}
+
+/* FILTROS */
+
+.filtros,
+.formulario{
+
+  margin-top:25px;
+
+  display:grid;
+
+  grid-template-columns:
+  repeat(auto-fit,minmax(180px,1fr));
+
+  gap:15px;
+}
+
+.filtros input,
+.filtros select,
+.formulario input,
+.formulario select{
+
+  padding:14px;
+
+  border:none;
+
+  border-radius:12px;
+
+  background:var(--card);
+
+  color:var(--text);
+}
+
+.formulario button{
+
+  border:none;
+
+  border-radius:12px;
+
+  background:var(--primary);
+
+  color:white;
+
+  cursor:pointer;
+}
+
+/* GRAFICOS */
+
+.graficos{
+
+  margin-top:30px;
+
+  display:grid;
+
+  grid-template-columns:1fr 1fr;
+
+  gap:20px;
+}
+
+.grafico-card{
+
+  background:var(--card);
+
+  border:1px solid var(--border);
+
+  border-radius:18px;
+
+  padding:15px;
+
+  height:260px;
+}
+
+/* TABELA */
+
+.tabela-box{
+
+  margin-top:30px;
+
+  background:var(--card);
+
+  border:1px solid var(--border);
+
+  border-radius:18px;
+
+  overflow:auto;
+}
+
+table{
+
+  width:100%;
+
+  border-collapse:collapse;
+}
+
+th,td{
+
+  padding:16px;
+
+  text-align:center;
+}
+
+th{
+
+  background:rgba(255,255,255,0.05);
+}
+
+tr{
+
+  border-bottom:1px solid var(--border);
+}
+
+/* BOTOES */
+
+.editar,
+.excluir{
+
+  border:none;
+
+  padding:8px 12px;
+
+  border-radius:8px;
+
+  color:white;
+
+  cursor:pointer;
+}
+
+.editar{
+  background:var(--green);
+}
+
+.excluir{
+
+  background:var(--red);
+
+  margin-left:5px;
+}
+
+/* FOOTER */
+
+.footer-sidebar{
+
+  text-align:center;
+
+  color:var(--text2);
+
+  font-size:14px;
+}
+
+/* TOAST */
+
+#toast{
+
+  position:fixed;
+
+  right:20px;
+  bottom:20px;
+
+  background:var(--primary);
+
+  color:white;
+
+  padding:15px 25px;
+
+  border-radius:12px;
+
+  opacity:0;
+
+  transition:0.4s;
+}
+
+#toast.show{
+  opacity:1;
+}
+
+/* RESPONSIVO */
+
+@media(max-width:900px){
+
+  body{
+    flex-direction:column;
+  }
+
+  .sidebar{
+    width:100%;
+  }
+
+  .graficos{
+    grid-template-columns:1fr;
+  }
+}
+
+/* ========================= */
+/* MOBILE PREMIUM */
+/* ========================= */
+
+@media(max-width:768px){
+
+  body{
+    flex-direction:column;
+  }
+
+  /* SIDEBAR */
+
+  .sidebar{
+
+    width:100%;
+
+    height:auto;
 
     padding:20px;
+
+    border-right:none;
+
+    border-bottom:1px solid var(--border);
   }
+
+  .logo{
+
+    justify-content:center;
+
+    margin-bottom:15px;
+  }
+
+  #toggleTema{
+
+    margin-bottom:20px;
+  }
+
+  /* PERFIL */
 
   .perfil-box{
 
     flex-direction:row;
 
     justify-content:center;
+
+    align-items:center;
+
+    gap:15px;
   }
 
   .foto{
@@ -16,13 +522,63 @@
     height:65px;
   }
 
+  #nomeUsuario{
+
+    flex:1;
+
+    max-width:180px;
+  }
+
+  /* ANO */
+
+  .ano-box{
+
+    margin-top:20px;
+  }
+
+  /* MESES */
+
   .meses{
 
     display:grid;
 
     grid-template-columns:
     repeat(3,1fr);
+
+    gap:10px;
+
+    margin-top:20px;
   }
+
+  .meses button{
+
+    font-size:13px;
+
+    padding:10px;
+  }
+
+  /* CONTEUDO */
+
+  .conteudo{
+
+    padding:18px;
+  }
+
+  /* TOPO */
+
+  .topo{
+
+    text-align:center;
+
+    margin-bottom:20px;
+  }
+
+  .topo h1{
+
+    font-size:24px;
+  }
+
+  /* CARDS */
 
   .cards{
 
@@ -32,14 +588,41 @@
     gap:12px;
   }
 
+  .card{
+
+    padding:18px;
+
+    border-radius:16px;
+
+    transition:0.3s;
+  }
+
+  .card:hover{
+
+    transform:translateY(-3px);
+  }
+
   .card h2{
 
     font-size:22px;
   }
 
+  /* FILTROS */
+
+  .filtros{
+
+    grid-template-columns:1fr;
+
+    gap:12px;
+  }
+
+  /* FORMULARIO */
+
   .formulario{
 
     grid-template-columns:1fr 1fr;
+
+    gap:12px;
   }
 
   .formulario input:first-child{
@@ -55,16 +638,46 @@
   .formulario button{
 
     grid-column:span 2;
+
+    padding:16px;
+
+    font-size:16px;
+
+    font-weight:bold;
   }
+
+  /* GRAFICOS */
 
   .graficos{
 
     grid-template-columns:1fr;
+
+    gap:15px;
   }
 
   .grafico-card{
 
     height:220px;
+
+    padding:12px;
+
+    border-radius:16px;
+
+    transition:0.3s;
+  }
+
+  .grafico-card:hover{
+
+    transform:translateY(-3px);
+  }
+
+  /* TABELA */
+
+  .tabela-box{
+
+    overflow-x:auto;
+
+    border-radius:16px;
   }
 
   table{
@@ -72,8 +685,72 @@
     min-width:650px;
   }
 
-  .login-box{
+  /* SCROLLBONITO */
 
-    width:90%;
+  ::-webkit-scrollbar{
+
+    height:6px;
+    width:6px;
   }
+
+  ::-webkit-scrollbar-thumb{
+
+    background:var(--primary);
+
+    border-radius:10px;
+  }
+
+  /* ANIMAÃ‡Ã•ES */
+
+  .card,
+  .grafico-card,
+  .tabela-box,
+  .sidebar,
+  .meses button{
+
+    animation:fadeUp 0.5s ease;
+  }
+
+  @keyframes fadeUp{
+
+    from{
+
+      opacity:0;
+
+      transform:translateY(15px);
+    }
+
+    to{
+
+      opacity:1;
+
+      transform:translateY(0);
+    }
+  }
+
+  /* EFEITOS */
+
+  .card,
+  .grafico-card,
+  .tabela-box,
+  .meses button{
+
+    box-shadow:
+    0 4px 20px rgba(0,0,0,0.15);
+  }
+
+  /* BOTÃ•ES */
+
+  button{
+
+    transition:
+    transform 0.2s,
+    opacity 0.2s;
+  }
+
+  button:active{
+
+    transform:scale(0.97);
+  }
+
 }
