@@ -10,6 +10,12 @@
 
   <link rel="stylesheet" href="style.css">
 
+  <link rel="manifest" href="manifest.json">
+
+<meta name="theme-color" content="#3b82f6">
+
+<link rel="apple-touch-icon" href="icon.png">
+
   <link rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
@@ -17,6 +23,12 @@
 
 </head>
 
+  <script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('service-worker.js');
+}
+</script>
+  
 <body>
 
   <!-- SIDEBAR -->
