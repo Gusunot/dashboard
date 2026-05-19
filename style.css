@@ -10,16 +10,16 @@
   --bg:#0f172a;
   --sidebar:#111827;
   --card:#1e293b;
-  --card2:#0f172a;
 
   --text:#f8fafc;
   --text2:#94a3b8;
 
   --primary:#38bdf8;
-  --green:#22c55e;
-  --red:#ef4444;
 
   --border:#334155;
+
+  --green:#22c55e;
+  --red:#ef4444;
 }
 
 .light{
@@ -27,7 +27,6 @@
   --bg:#f1f5f9;
   --sidebar:#ffffff;
   --card:#ffffff;
-  --card2:#e2e8f0;
 
   --text:#0f172a;
   --text2:#475569;
@@ -38,9 +37,13 @@
 }
 
 body{
+
   background:var(--bg);
+
   color:var(--text);
+
   display:flex;
+
   min-height:100vh;
 }
 
@@ -48,30 +51,37 @@ body{
 
 .sidebar{
 
-  width:260px;
+  width:270px;
+
   background:var(--sidebar);
 
   border-right:1px solid var(--border);
 
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-
   padding:25px;
+
+  display:flex;
+
+  flex-direction:column;
+
+  justify-content:space-between;
 }
 
 .logo{
 
   display:flex;
+
   align-items:center;
+
   gap:10px;
 
-  margin-bottom:30px;
+  margin-bottom:20px;
 }
 
 .logo i{
   color:var(--primary);
 }
+
+/* BOTAO */
 
 #toggleTema{
 
@@ -80,6 +90,7 @@ body{
   padding:14px;
 
   border:none;
+
   border-radius:12px;
 
   background:var(--primary);
@@ -91,65 +102,122 @@ body{
   margin-bottom:25px;
 }
 
+/* PERFIL */
+
+.perfil-box{
+
+  display:flex;
+
+  flex-direction:column;
+
+  align-items:center;
+
+  gap:15px;
+
+  margin-bottom:25px;
+}
+
+.foto{
+
+  width:90px;
+  height:90px;
+
+  border-radius:50%;
+
+  overflow:hidden;
+
+  cursor:pointer;
+
+  border:3px solid var(--primary);
+}
+
+.foto img{
+
+  width:100%;
+  height:100%;
+
+  object-fit:cover;
+}
+
+#inputFoto{
+  display:none;
+}
+
+#nomeUsuario{
+
+  width:100%;
+
+  padding:12px;
+
+  border:none;
+
+  border-radius:12px;
+
+  background:var(--card);
+
+  color:var(--text);
+
+  text-align:center;
+}
+
+/* ANO */
+
+.ano-box{
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  margin-bottom:20px;
+}
+
+.ano-box button{
+
+  width:40px;
+  height:40px;
+
+  border:none;
+
+  border-radius:10px;
+
+  background:var(--primary);
+
+  color:white;
+
+  cursor:pointer;
+}
+
 /* MESES */
 
 .meses{
 
   display:flex;
+
   flex-direction:column;
+
   gap:10px;
 }
 
 .meses button{
 
-  background:transparent;
-
-  border:1px solid var(--border);
-
-  color:var(--text);
-
   padding:12px;
+
+  border:none;
 
   border-radius:10px;
 
-  cursor:pointer;
-
-  transition:0.3s;
-}
-
-.meses button:hover{
   background:var(--card);
+
+  color:var(--text);
+
+  cursor:pointer;
 }
 
 .meses .ativo{
 
   background:var(--primary);
-  color:white;
-}
-
-/* PERFIL */
-
-.perfil{
-
-  display:flex;
-  align-items:center;
-  gap:15px;
-
-  margin-top:30px;
-}
-
-.foto{
-
-  width:50px;
-  height:50px;
-
-  border-radius:50%;
-
-  background:var(--primary);
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
 
   color:white;
 }
@@ -162,6 +230,8 @@ body{
 
   padding:30px;
 }
+
+/* TOPO */
 
 .topo{
 
@@ -196,15 +266,14 @@ body{
 }
 
 .card span{
-
   color:var(--text2);
-  font-size:14px;
 }
 
 .card h2{
 
   margin-top:10px;
-  font-size:28px;
+
+  font-size:30px;
 }
 
 /* FILTROS */
@@ -227,26 +296,26 @@ body{
 .formulario input,
 .formulario select{
 
-  background:var(--card);
-
-  border:1px solid var(--border);
-
-  color:var(--text);
-
   padding:14px;
 
+  border:none;
+
   border-radius:12px;
+
+  background:var(--card);
+
+  color:var(--text);
 }
 
 .formulario button{
 
   border:none;
 
+  border-radius:12px;
+
   background:var(--primary);
 
   color:white;
-
-  border-radius:12px;
 
   cursor:pointer;
 }
@@ -274,7 +343,7 @@ body{
 
   padding:15px;
 
-  height:280px;
+  height:260px;
 }
 
 /* TABELA */
@@ -295,18 +364,20 @@ body{
 table{
 
   width:100%;
+
   border-collapse:collapse;
 }
 
 th,td{
 
   padding:16px;
+
   text-align:center;
 }
 
 th{
 
-  background:var(--card2);
+  background:rgba(255,255,255,0.05);
 }
 
 tr{
@@ -314,61 +385,42 @@ tr{
   border-bottom:1px solid var(--border);
 }
 
-.editar{
+/* BOTOES */
 
-  background:var(--green);
+.editar,
+.excluir{
 
   border:none;
-
-  color:white;
 
   padding:8px 12px;
 
   border-radius:8px;
 
+  color:white;
+
   cursor:pointer;
+}
+
+.editar{
+  background:var(--green);
 }
 
 .excluir{
 
   background:var(--red);
 
-  border:none;
-
-  color:white;
-
-  padding:8px 12px;
-
-  border-radius:8px;
-
-  cursor:pointer;
-
-  margin-left:8px;
+  margin-left:5px;
 }
 
 /* FOOTER */
 
-footer{
-
-  margin-top:40px;
+.footer-sidebar{
 
   text-align:center;
 
   color:var(--text2);
 
-  padding-bottom:20px;
-}
-
-.foto img{
-
-  width:50px;
-  height:50px;
-
-  border-radius:50%;
-
-  object-fit:cover;
-
-  border:2px solid var(--primary);
+  font-size:14px;
 }
 
 /* TOAST */
@@ -412,5 +464,4 @@ footer{
   .graficos{
     grid-template-columns:1fr;
   }
-  
 }
