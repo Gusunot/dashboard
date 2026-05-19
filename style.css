@@ -725,7 +725,7 @@ tbody tr:hover{
   }
 }
 
-/* RESPONSIVO MOBILE CORRIGIDO (FOTO, NOME E MESES ORGANIZADOS) */
+/* RESPONSIVO MOBILE CORRIGIDO (FOTO FIXA E RESPIRO DE LAYOUT) */
 @media(max-width:768px){
 
   body{
@@ -735,71 +735,75 @@ tbody tr:hover{
   .sidebar{
     width:100%;
     height:auto;
-    padding:20px 20px 25px 20px; /* Aumenta um pouco o espaço no fundo */
+    padding: 20px 20px 30px 20px; /* Mais espaço no fundo da barra */
     border-right:none;
     border-bottom:1px solid var(--border);
-    gap:10px; /* Cria um distanciamento padrão seguro entre os blocos */
+    display: flex;
+    flex-direction: column;
+    gap: 12px; /* Garante distância uniforme entre todos os blocos internos */
   }
 
   .logo{
     justify-content:center;
-    margin-bottom:12px;
+    margin-bottom:10px;
   }
 
   #toggleTema{
-    margin-bottom:15px;
+    margin-bottom:10px;
     padding:12px;
   }
 
-  /* BLOCO DE PERFIL REORGANIZADO */
+  /* CAIXA DE PERFIL - ALINHAMENTO LADO A LADO SEGURO */
   .perfil-box{
-    flex-direction:row;
-    justify-content:center;
-    align-items:center;
-    gap:12px;
-    margin-bottom:15px;
-    padding: 0 10px; /* Margem interna para não encostar nas bordas da tela */
+    flex-direction:row !important; /* Mantém lado a lado */
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    width: 100%;
   }
 
   .foto{
-    width:55px;  /* Tamanho ideal: nem gigante, nem sumindo */
-    height:55px;
-    flex-shrink:0; /* Impede o navegador de amassar a foto redonda */
+    width: 50px !important;  /* Tamanho fixo perfeito para mobile */
+    height: 50px !important; /* Tamanho fixo perfeito para mobile */
+    min-width: 50px;         /* Força o navegador a respeitar o tamanho */
+    min-height: 50px;        /* Força o navegador a respeitar o tamanho */
+    flex-shrink: 0;          /* Impede que o flexbox amasse a foto */
     border: 2px solid var(--primary);
   }
 
   #nomeUsuario{
-    flex:1;
-    max-width:200px; /* Permite um espaço confortável para escrita */
+    flex: 1;
+    max-width: 220px; 
     padding: 10px;
     font-size: 14px;
-    text-align: left; /* Alinhamento à esquerda combina melhor ao lado da foto */
+    text-align: left;
   }
 
   /* CAIXA DO ANO */
   .ano-box{
-    margin-top:10px;
-    margin-bottom:10px;
+    margin-top: 10px;
+    margin-bottom: 5px;
     justify-content: center;
-    gap: 20px; /* Aproxima os botões de avançar/voltar do texto do ano */
+    gap: 25px;
   }
   
   .ano-box button {
-    width: 35px;
-    height: 35px;
+    width: 36px;
+    height: 36px;
   }
 
-  /* GRADE DE MESES (MANTENDO O VISUAL QUE VOCÊ GOSTA) */
+  /* GRADE DE MESES */
   .meses{
     display:grid;
-    grid-template-columns: repeat(4, 1fr); /* Mudado para 4 colunas para distribuir melhor a altura */
-    gap: 6px;
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 8px;
     margin-top: 10px;
   }
 
   .meses button{
-    font-size:11px; /* Ajuste sutil na fonte para caber em 4 colunas perfeitamente */
-    padding:8px 4px;
+    font-size:11px; 
+    padding:10px 4px;
     text-align: center;
   }
 
