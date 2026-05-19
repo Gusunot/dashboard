@@ -779,21 +779,39 @@ tbody tr:hover{
   display:flex;
   flex-wrap:wrap;
   justify-content:center;
-  gap:6px;
-  margin-top:10px;
+  gap:4px;
+  margin-top:8px;
 }
 
 .meses button{
-  font-size:10px;
-  padding:5px 8px;
-  border-radius:8px;
+  font-size:9px;
+  padding:4px 6px;
+  border-radius:6px;
   width:auto;
-  min-width:70px;
+  min-width:unset;
+  flex:0 0 auto;
 }
 
   .conteudo{
     padding:15px;
   }
+
+  .formulario{
+  grid-template-columns:1fr;
+  gap:10px;
+}
+
+.formulario input,
+.formulario select{
+  font-size:14px;
+  padding:14px;
+}
+
+.formulario button{
+  padding:14px;
+  font-size:16px;
+  font-weight:bold;
+}
 
   .topo{
     text-align:center;
