@@ -308,8 +308,9 @@ td.saida { color: var(--danger); }
   border-radius: 50%;
   width: 28px;
   height: 28px;
+  z-index: 10002; /* Mantém o X acima de tudo no mobile */
 }
-.btn-pwa-fechar span { font-size: 1.1rem; pointer-events: none; } /* Impede cliques fantasmas no ícone interno */
+.btn-pwa-fechar span { font-size: 1.1rem; pointer-events: none; } 
 .btn-pwa-fechar:hover { background: rgba(247, 90, 104, 0.2); }
 .btn-pwa-fechar:hover span { color: var(--danger); }
 
@@ -337,7 +338,7 @@ td.saida { color: var(--danger); }
   .menu { flex-direction: row; justify-content: space-around; }
   .menu button { justify-content: center; font-size: 0.9rem; padding: 0.6rem; }
 
-  /* GESTÃO DE ORDEM DE ELEMENTOS NO CELULAR */
+  /* GESTÃO DE ORDEM DE ELEMENTOS NO CELULAR (FORÇADA COMPLETA) */
   .main-content { display: flex; flex-direction: column; }
   
   .top-bar { order: 1; }
@@ -345,18 +346,19 @@ td.saida { color: var(--danger); }
   .periodo-seletor { width: 100%; justify-content: space-between; }
   .cards-grid { order: 3; }
   
-  /* Desmembrando o grid original para ordenar no mobile */
-  .dashboard-body { display: contents; } 
-  .form-container { order: 4; }         /* 1º: Nova Transação */
-  .extrato-container { order: 5; }      /* 2º: Histórico de Transações */
-  .grafico-container { order: 6; }      /* 3º: Fluxo de Caixa no final */
+  .dashboard-body { display: flex; flex-direction: column; gap: 1.5rem; } 
+  
+  /* Ajuste preciso das posições solicitadas */
+  .form-container { order: 4 !important; }      /* 1º: Nova Transação */
+  .extrato-container { order: 5 !important; }   /* 2º: Histórico de Transações */
+  .grafico-container { order: 6 !important; }   /* 3º: Fluxo de Caixa no final de tudo */
   
   .canvas-wrapper { max-height: 240px; }
 
-  /* ADAPTAÇÃO DO BANNER PWA COMO BARRA FIXA DE RODAPÉ NO MOBILE (Evita erros de toque) */
+  /* BANNER FIXADO NO RODAPÉ NO MOBILE COM ISOLAMENTO DE TOQUE */
   .pwa-banner {
     top: auto;
-    bottom: 0; /* Fixa de forma limpa na base da tela */
+    bottom: 0; 
     left: 0;
     transform: none;
     width: 100%;
@@ -364,8 +366,14 @@ td.saida { color: var(--danger); }
     border-radius: 0;
     border: none;
     border-top: 1px solid var(--primary);
-    padding: 0.8rem 1rem;
+    padding: 0.9rem 1.2rem;
     box-shadow: 0 -4px 15px rgba(0,0,0,0.5);
   }
   .pwa-banner p { font-size: 0.75rem; }
+  
+  .btn-pwa-fechar {
+    margin-left: 0.5rem;
+    width: 32px;
+    height: 32px;
+  }
 }
