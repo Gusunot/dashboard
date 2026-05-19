@@ -725,8 +725,7 @@ tbody tr:hover{
   }
 }
 
-/* MOBILE PREMIUM */
-
+/* RESPONSIVO MOBILE CORRIGIDO (FOTO, NOME E MESES ORGANIZADOS) */
 @media(max-width:768px){
 
   body{
@@ -734,169 +733,143 @@ tbody tr:hover{
   }
 
   .sidebar{
-
     width:100%;
-
     height:auto;
-
-    padding:20px;
-
+    padding:20px 20px 25px 20px; /* Aumenta um pouco o espaço no fundo */
     border-right:none;
-
     border-bottom:1px solid var(--border);
+    gap:10px; /* Cria um distanciamento padrão seguro entre os blocos */
   }
 
   .logo{
-
     justify-content:center;
-
-    margin-bottom:15px;
+    margin-bottom:12px;
   }
 
   #toggleTema{
-
-    margin-bottom:20px;
+    margin-bottom:15px;
+    padding:12px;
   }
 
+  /* BLOCO DE PERFIL REORGANIZADO */
   .perfil-box{
-
     flex-direction:row;
-
     justify-content:center;
-
     align-items:center;
-
-    gap:15px;
+    gap:12px;
+    margin-bottom:15px;
+    padding: 0 10px; /* Margem interna para não encostar nas bordas da tela */
   }
 
   .foto{
-
-    width:65px;
-    height:65px;
+    width:55px;  /* Tamanho ideal: nem gigante, nem sumindo */
+    height:55px;
+    flex-shrink:0; /* Impede o navegador de amassar a foto redonda */
+    border: 2px solid var(--primary);
   }
 
   #nomeUsuario{
-
     flex:1;
-
-    max-width:180px;
+    max-width:200px; /* Permite um espaço confortável para escrita */
+    padding: 10px;
+    font-size: 14px;
+    text-align: left; /* Alinhamento à esquerda combina melhor ao lado da foto */
   }
 
+  /* CAIXA DO ANO */
   .ano-box{
-
-    margin-top:20px;
+    margin-top:10px;
+    margin-bottom:10px;
+    justify-content: center;
+    gap: 20px; /* Aproxima os botões de avançar/voltar do texto do ano */
+  }
+  
+  .ano-box button {
+    width: 35px;
+    height: 35px;
   }
 
+  /* GRADE DE MESES (MANTENDO O VISUAL QUE VOCÊ GOSTA) */
   .meses{
-
     display:grid;
-
-    grid-template-columns:
-    repeat(3,1fr);
-
-    gap:10px;
-
-    margin-top:20px;
+    grid-template-columns: repeat(4, 1fr); /* Mudado para 4 colunas para distribuir melhor a altura */
+    gap: 6px;
+    margin-top: 10px;
   }
 
   .meses button{
-
-    font-size:13px;
-
-    padding:10px;
+    font-size:11px; /* Ajuste sutil na fonte para caber em 4 colunas perfeitamente */
+    padding:8px 4px;
+    text-align: center;
   }
 
+  /* CONTEÚDO E CARDS */
   .conteudo{
-
     padding:18px;
   }
 
   .topo{
-
     text-align:center;
-
     margin-bottom:20px;
   }
 
   .topo h1{
-
     font-size:24px;
   }
 
   .cards{
-
-    grid-template-columns:
-    repeat(2,1fr);
-
+    grid-template-columns: repeat(2, 1fr);
     gap:12px;
   }
 
   .card{
-
     padding:18px;
   }
 
   .card h2{
-
     font-size:22px;
   }
 
   .filtros{
-
     grid-template-columns:1fr;
-
     gap:12px;
   }
 
   .formulario{
-
     grid-template-columns:1fr 1fr;
-
     gap:12px;
   }
 
   .formulario input:first-child{
-
     grid-column:span 2;
   }
 
   .formulario select:last-of-type{
-
     grid-column:span 2;
   }
 
   .formulario button{
-
     grid-column:span 2;
-
     padding:16px;
-
     font-size:16px;
-
     font-weight:bold;
   }
 
   .graficos{
-
     grid-template-columns:1fr;
-
     gap:15px;
   }
 
   .grafico-card{
-
     height:220px;
-
     padding:12px;
   }
 
   .tabela-box{
-
     overflow-x:auto;
   }
 
   table{
-
     min-width:650px;
   }
 }
