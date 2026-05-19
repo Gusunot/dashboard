@@ -194,7 +194,7 @@ body {
 .card.saidas .icon-box { color: var(--danger); background: rgba(247, 90, 104, 0.1); }
 .card.saldo .icon-box { color: var(--text-main); background: rgba(141, 141, 153, 0.1); }
 
-/* CORPO DASHBOARD */
+/* CORPO DASHBOARD (Layout Desktop) */
 .dashboard-body {
   display: grid;
   grid-template-columns: 2fr 1fr;
@@ -213,11 +213,11 @@ body {
   font-size: 1.1rem;
 }
 
-/* LIMITAÇÃO DE TAMANHO DO GRÁFICO (Correção Desktop) */
+/* LIMITAÇÃO DE TAMANHO DO GRÁFICO */
 .canvas-wrapper {
   position: relative;
   width: 100%;
-  max-height: 280px; /* Impede que o gráfico cresça exageradamente */
+  max-height: 280px;
   display: flex;
   justify-content: center;
 }
@@ -262,62 +262,59 @@ td.saida { color: var(--danger); }
 .btn-acao:hover { background: var(--bg-primary); }
 
 
-/* PWA BANNER ATUALIZADO (Super discreto, menor e compacto) */
+/* PWA BANNER (Estilo Compacto Superior para Desktop) */
 .pwa-banner {
   position: fixed;
   top: 12px;
   left: 50%;
   transform: translateX(-50%);
   background-color: #202024;
-  border: 1px solid var(--border);
-  padding: 0.5rem 1rem;
-  border-radius: 30px; /* Formato de pílula moderno */
+  border: 1px solid var(--primary);
+  padding: 0.6rem 1.2rem;
+  border-radius: 30px;
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 1.5rem;
   z-index: 10000;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.6);
   width: auto;
   max-width: 90%;
   justify-content: space-between;
 }
-.pwa-conteudo {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-.icon-pwa-mini { color: var(--primary); font-size: 1.2rem; }
-.pwa-banner p { font-size: 0.8rem; font-weight: 500; color: #fff; white-space: nowrap; }
+.pwa-conteudo { display: flex; align-items: center; gap: 0.5rem; }
+.icon-pwa-mini { color: var(--primary); font-size: 1.3rem; }
+.pwa-banner p { font-size: 0.85rem; font-weight: 500; color: #fff; white-space: nowrap; }
 
-.pwa-acoes {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-}
+.pwa-acoes { display: flex; align-items: center; gap: 0.8rem; }
 .btn-pwa {
   background: var(--primary);
   color: white;
   border: none;
-  padding: 0.3rem 0.8rem;
+  padding: 0.4rem 1rem;
   border-radius: 20px;
   font-weight: 600;
   cursor: pointer;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
 }
 .btn-pwa-fechar {
-  background: transparent;
+  background: rgba(255,255,255,0.05);
   border: none;
   color: var(--text-muted);
   cursor: pointer;
   display: flex;
   align-items: center;
-  padding: 2px;
+  justify-content: center;
+  padding: 6px;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
 }
-.btn-pwa-fechar span { font-size: 1.1rem; }
+.btn-pwa-fechar span { font-size: 1.1rem; pointer-events: none; } /* Impede cliques fantasmas no ícone interno */
+.btn-pwa-fechar:hover { background: rgba(247, 90, 104, 0.2); }
 .btn-pwa-fechar:hover span { color: var(--danger); }
 
 
-/* RESPONSIVIDADE */
+/* RESPONSIVIDADE E RENOVAÇÃO DO FLUXO MOBILE */
 @media (max-width: 768px) {
   .container { flex-direction: column; }
   
@@ -334,27 +331,41 @@ td.saida { color: var(--danger); }
     gap: 1.2rem;
     background: var(--bg-secondary);
   }
-  .perfil-box .foto {
-    width: 110px;
-    height: 110px;
-  }
-  .perfil-box input[type="text"] {
-    font-size: 1.2rem;
-    width: 80%;
-  }
+  .perfil-box .foto { width: 110px; height: 110px; }
+  .perfil-box input[type="text"] { font-size: 1.2rem; width: 80%; }
 
-  .menu {
-    flex-direction: row;
-    justify-content: space-around;
-  }
-  .menu button {
-    justify-content: center;
-    font-size: 0.9rem;
-    padding: 0.6rem;
-  }
+  .menu { flex-direction: row; justify-content: space-around; }
+  .menu button { justify-content: center; font-size: 0.9rem; padding: 0.6rem; }
 
-  .dashboard-body { grid-template-columns: 1fr; }
-  .canvas-wrapper { max-height: 240px; } /* Altura levemente menor no mobile */
-  .periodo-seletor-wrapper { justify-content: center; width: 100%; }
+  /* GESTÃO DE ORDEM DE ELEMENTOS NO CELULAR */
+  .main-content { display: flex; flex-direction: column; }
+  
+  .top-bar { order: 1; }
+  .periodo-seletor-wrapper { order: 2; justify-content: center; width: 100%; }
   .periodo-seletor { width: 100%; justify-content: space-between; }
+  .cards-grid { order: 3; }
+  
+  /* Desmembrando o grid original para ordenar no mobile */
+  .dashboard-body { display: contents; } 
+  .form-container { order: 4; }         /* 1º: Nova Transação */
+  .extrato-container { order: 5; }      /* 2º: Histórico de Transações */
+  .grafico-container { order: 6; }      /* 3º: Fluxo de Caixa no final */
+  
+  .canvas-wrapper { max-height: 240px; }
+
+  /* ADAPTAÇÃO DO BANNER PWA COMO BARRA FIXA DE RODAPÉ NO MOBILE (Evita erros de toque) */
+  .pwa-banner {
+    top: auto;
+    bottom: 0; /* Fixa de forma limpa na base da tela */
+    left: 0;
+    transform: none;
+    width: 100%;
+    max-width: 100%;
+    border-radius: 0;
+    border: none;
+    border-top: 1px solid var(--primary);
+    padding: 0.8rem 1rem;
+    box-shadow: 0 -4px 15px rgba(0,0,0,0.5);
+  }
+  .pwa-banner p { font-size: 0.75rem; }
 }
