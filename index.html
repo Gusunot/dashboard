@@ -60,13 +60,31 @@
         <h1>Visão Geral</h1>
       </header>
       
-      <div class="periodo-seletor-wrapper">
-        <div class="periodo-seletor">
-          <button onclick="mudarMes(-1)"><span class="material-icons-round">chevron_left</span></button>
-          <span id="labelPeriodo">Janeiro 2026</span>
-          <button onclick="mudarMes(1)"><span class="material-icons-round">chevron_right</span></button>
-        </div>
-      </div>
+     <!-- Substitua a div 'periodo-seletor-wrapper' por esta: -->
+<div class="periodo-seletor-wrapper">
+  <div class="periodo-seletor">
+    <!-- Seletor de Mês -->
+    <select id="selectMes" onchange="atualizarPeriodoPorSelect()">
+      <option value="0">Janeiro</option>
+      <option value="1">Fevereiro</option>
+      <option value="2">Março</option>
+      <option value="3">Abril</option>
+      <option value="4">Maio</option>
+      <option value="5">Junho</option>
+      <option value="6">Julho</option>
+      <option value="7">Agosto</option>
+      <option value="8">Setembro</option>
+      <option value="9">Outubro</option>
+      <option value="10">Novembro</option>
+      <option value="11">Dezembro</option>
+    </select>
+
+    <!-- Seletor de Ano -->
+    <select id="selectAno" onchange="atualizarPeriodoPorSelect()">
+      <!-- Anos serão gerados dinamicamente via JS para evitar código travado -->
+    </select>
+  </div>
+</div>
 
       <!-- CARDS DE RESUMO -->
       <section class="cards-grid">
