@@ -27,7 +27,7 @@
 
       <h2 class="logo">
         <i class="fa-solid fa-chart-line"></i>
-        Meus gastos
+        FinancePro
       </h2>
 
       <button id="toggleTema">
@@ -35,34 +35,74 @@
         Tema
       </button>
 
+      <!-- PERFIL -->
+
+      <div class="perfil-box">
+
+        <label for="inputFoto" class="foto">
+
+          <img id="fotoPerfil"
+          src="https://i.imgur.com/2DhmtJ4.png">
+
+        </label>
+
+        <input
+        type="file"
+        id="inputFoto"
+        accept="image/*">
+
+        <input
+        type="text"
+        id="nomeUsuario"
+        placeholder="Seu nome">
+
+      </div>
+
+      <!-- ANO -->
+
+      <div class="ano-box">
+
+        <button onclick="trocarAno(-1)">
+          ◀
+        </button>
+
+        <h3 id="anoAtual"></h3>
+
+        <button onclick="trocarAno(1)">
+          ▶
+        </button>
+
+      </div>
+
+      <!-- MESES -->
+
       <div class="meses" id="listaMeses"></div>
 
     </div>
 
-    <div class="perfil">
+    <footer class="footer-sidebar">
 
-      <div class="foto">
-        <img src="sua-foto2.jpg">
-      </div>
+      Desenvolvido por
+      <strong>gusta_ig</strong>
 
-      <div>
-        <h3>GUSTA_IG</h3>
-        <p>Dashboard Financeiro</p>
-      </div>
-
-    </div>
+    </footer>
 
   </aside>
 
-  <!-- CONTEÚDO -->
+  <!-- CONTEUDO -->
 
   <main class="conteudo">
 
     <header class="topo">
 
       <div>
+
         <h1 id="tituloMes"></h1>
-        <p>Controle financeiro inteligente</p>
+
+        <p>
+          Controle financeiro inteligente
+        </p>
+
       </div>
 
     </header>
@@ -100,7 +140,7 @@
       <input
       type="text"
       id="pesquisa"
-      placeholder="Pesquisar...">
+      placeholder="Pesquisar">
 
       <select id="filtroCategoria">
 
@@ -135,8 +175,15 @@
       placeholder="Valor">
 
       <select id="tipo">
-        <option value="entrada">Receita</option>
-        <option value="saida">Despesa</option>
+
+        <option value="entrada">
+          Receita
+        </option>
+
+        <option value="saida">
+          Despesa
+        </option>
+
       </select>
 
       <select id="categoria">
@@ -195,16 +242,9 @@
 
     </section>
 
-    <!-- FOOTER -->
-
-    <footer>
-
-      Desenvolvido por
-      <strong>Gustavo</strong>
-
-    </footer>
-
   </main>
+
+  <!-- TOAST -->
 
   <div id="toast"></div>
 
