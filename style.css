@@ -208,9 +208,20 @@ body {
   gap: 1.5rem;
 }
 
+/* Procure por esta classe no seu style.css e substitua por esta: */
 .coluna-lateral {
   position: sticky;
   top: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  width: 100%;
+}
+
+/* Adicione também esta regra logo abaixo para garantir que o formulário expanda corretamente */
+.coluna-lateral .form-container {
+  width: 100%;
+  max-width: 400px; /* Evita que o formulário fique esticado demais em telas gigantes */
 }
 
 .grafico-container, .form-container, .extrato-container {
