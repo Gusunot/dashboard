@@ -1,252 +1,144 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Finance Dashboard Pro</title>
-
+  <title>Dashboard Financeiro</title>
   <link rel="stylesheet" href="style.css">
-
-  <link rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
   <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#3b82f6">
-  
+  <!-- Chart.js para os Gráficos -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+  <!-- Google Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+  <meta name="theme-color" content="#121214">
 </head>
+<body class="dark-theme">
 
-<body>
+  <!-- AVISO DE INSTALAÇÃO PWA -->
+  <div id="pwa-install-banner" class="pwa-banner" style="display: none;">
+    <p>Instale nosso app para acessar offline!</p>
+    <button id="btn-instalar-app" class="btn-pwa">Instalar</button>
+  </div>
 
-  <!-- SIDEBAR -->
+  <div class="container">
+    <!-- BARRA LATERAL (SIDEBAR) -->
+    <aside class="sidebar">
+      <div class="logo">
+        <span class="material-icons-round">account_balance_wallet</span>
+        <h2>Finan<span>Dash</span></h2>
+      </div>
 
-  <aside class="sidebar">
+      <div class="perfil-box">
+        <label for="inputFoto" class="foto">
+          <img id="fotoPerfil" src="https://i.imgur.com/2DhmtJ4.png" alt="Foto de Perfil">
+        </label>
+        <input type="file" id="inputFoto" accept="image/*" style="display: none;">
+        <input type="text" id="nomeUsuario" placeholder="Seu Nome" value="Usuário"> 
+      </div>
 
-    
-<!-- Botão de Instalação PWA (Fica oculto por padrão no CSS) -->
-<button id="btnInstalar" style="display: none; background: #22c55e; margin-bottom: 25px;">
-  <i class="fa-solid fa-download"></i> Baixar Aplicativo
-</button>
-    
-    <div>
-
-      <h2 class="logo">
-        <i class="fa-solid fa-chart-line"></i>
-        FinancePro
-      </h2>
-
-      <button id="toggleTema">
-        <i class="fa-solid fa-moon"></i>
-        Tema
-      </button>
-
-      <!-- PERFIL -->
-
-     <!-- PERFIL -->
-<div class="perfil-box">
-  <label for="inputFoto" class="foto">
-    <img id="fotoPerfil" src="https://i.imgur.com/2DhmtJ4.png">
-  </label>
-  <input type="file" id="inputFoto" accept="image/*">
-  <!-- CORRIGIDO: Fechamento do input adicionado antes da div -->
-  <input type="text" id="nomeUsuario" placeholder="Digite seu nome aqui"> 
-</div>
-
-      <!-- ANO -->
-
-      <div class="ano-box">
-
-        <button onclick="trocarAno(-1)">
-          ◀
+      <nav class="menu">
+        <button class="active" id="btn-dashboard">
+          <span class="material-icons-round">dashboard</span> Dashboard
         </button>
-
-        <h3 id="anoAtual"></h3>
-
-        <button onclick="trocarAno(1)">
-          ▶
+        <button id="btn-tema">
+          <span class="material-icons-round" id="icon-tema">light_mode</span> Alternar Tema
         </button>
+      </nav>
+    </aside>
 
-      </div>
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="main-content">
+      <header class="top-bar">
+        <h1>Visão Geral</h1>
+        <!-- SELETOR DE MÊS/ANO -->
+        <div class="periodo-seletor">
+          <button onclick="mudarMes(-1)"><span class="material-icons-round">chevron_left</span></button>
+          <span id="labelPeriodo">Janeiro 2026</span>
+          <button onclick="mudarMes(1)"><span class="material-icons-round">chevron_right</span></button>
+        </div>
+      </header>
 
-      <!-- MESES -->
+      <!-- CARDS DE RESUMO -->
+      <section class="cards-grid">
+        <div class="card entradas">
+          <div class="card-info">
+            <h3>Receitas</h3>
+            <h2 id="totalEntradas">R$ 0,00</h2>
+          </div>
+          <span class="material-icons-round icon-box">arrow_upward</span>
+        </div>
 
-      <div class="meses" id="listaMeses"></div>
+        <div class="card saidas">
+          <div class="card-info">
+            <h3>Despesas</h3>
+            <h2 id="totalSaidas">R$ 0,00</h2>
+          </div>
+          <span class="material-icons-round icon-box">arrow_downward</span>
+        </div>
 
-    </div>
+        <div class="card saldo">
+          <div class="card-info">
+            <h3>Saldo Atual</h3>
+            <h2 id="totalSaldo">R$ 0,00</h2>
+          </div>
+          <span class="material-icons-round icon-box">attach_money</span>
+        </div>
+      </section>
 
-    <footer class="footer-sidebar">
+      <!-- ÁREA DO GRÁFICO E FORMULÁRIO -->
+      <section class="dashboard-body">
+        <div class="grafico-container">
+          <h3>Fluxo de Caixa</h3>
+          <canvas id="graficoFinanceiro"></canvas>
+        </div>
 
-      Desenvolvido por
-      <strong>gusta_ig</strong>
+        <div class="form-container">
+          <h3>Nova Transação</h3>
+          <form id="formTransacao" onsubmit="adicionarTransacao(event)">
+            <input type="text" id="descricao" placeholder="Descrição" required>
+            <input type="number" id="valor" step="0.01" placeholder="Valor (R$)" required>
+            
+            <select id="tipo" required>
+              <option value="entrada">Receita (+)</option>
+              <option value="saida">Despesa (-)</option>
+            </select>
 
-    </footer>
+            <select id="categoria" required>
+              <option value="Salário">Salário</option>
+              <option value="Alimentação">Alimentação</option>
+              <option value="Transporte">Transporte</option>
+              <option value="Lazer">Lazer</option>
+              <option value="Outros">Outros</option>
+            </select>
 
-  </aside>
+            <button type="submit" class="btn-enviar">Adicionar</button>
+          </form>
+        </div>
+      </section>
 
-  <!-- CONTEUDO -->
-
-  <main class="conteudo">
-
-    <header class="topo">
-
-      <div>
-
-        <h1 id="tituloMes"></h1>
-
-        <p>
-          Controle financeiro inteligente
-        </p>
-
-      </div>
-
-    </header>
-
-    <!-- CARDS -->
-
-    <section class="cards">
-
-      <div class="card">
-        <span>Receitas</span>
-        <h2 id="receitas">R$ 0</h2>
-      </div>
-
-      <div class="card">
-        <span>Despesas</span>
-        <h2 id="despesas">R$ 0</h2>
-      </div>
-
-      <div class="card">
-        <span>Saldo</span>
-        <h2 id="saldo">R$ 0</h2>
-      </div>
-
-      <div class="card">
-        <span>Transações</span>
-        <h2 id="quantidade">0</h2>
-      </div>
-
-    </section>
-
-    <!-- FILTROS -->
-
-    <section class="filtros">
-
-      <input
-      type="text"
-      id="pesquisa"
-      placeholder="Pesquisar">
-
-      <select id="filtroCategoria">
-
-        <option value="todos">
-          Todas Categorias
-        </option>
-
-        <option>Alimentação</option>
-        <option>Transporte</option>
-        <option>Salário</option>
-        <option>Lazer</option>
-        <option>Estudos</option>
-        <option>Igreja</option>
-        <option>Outros</option>
-
-      </select>
-
-    </section>
-
-    <!-- FORM -->
-
-    <section class="formulario">
-
-      <input
-      type="text"
-      id="descricao"
-      placeholder="Descrição">
-
-      <input
-      type="number"
-      id="valor"
-      placeholder="Valor">
-
-      <select id="tipo">
-
-        <option value="entrada">
-          Receita
-        </option>
-
-        <option value="saida">
-          Despesa
-        </option>
-
-      </select>
-
-      <select id="categoria">
-
-        <option>Alimentação</option>
-        <option>Transporte</option>
-        <option>Salário</option>
-        <option>Lazer</option>
-        <option>Estudos</option>
-        <option>Igreja</option>
-        <option>Outros</option>
-
-      </select>
-
-      <button onclick="adicionarTransacao()">
-        Adicionar
-      </button>
-
-    </section>
-
-    <!-- GRAFICOS -->
-
-    <section class="graficos">
-
-      <div class="grafico-card">
-        <canvas id="graficoPizza"></canvas>
-      </div>
-
-      <div class="grafico-card">
-        <canvas id="graficoLinha"></canvas>
-      </div>
-
-    </section>
-
-    <!-- TABELA -->
-
-    <section class="tabela-box">
-
-      <table>
-
-        <thead>
-
-          <tr>
-            <th>Descrição</th>
-            <th>Categoria</th>
-            <th>Tipo</th>
-            <th>Valor</th>
-            <th>Ações</th>
-          </tr>
-
-        </thead>
-
-        <tbody id="tabela"></tbody>
-
-      </table>
-
-    </section>
-
-  </main>
-
-  <!-- TOAST -->
-
-  <div id="toast"></div>
+      <!-- EXTRATO / TABELA -->
+      <section class="extrato-container">
+        <h3>Histórico de Transações</h3>
+        <div class="tabela-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Descrição</th>
+                <th>Categoria</th>
+                <th>Valor</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="tabelaCorpo">
+              <!-- Inserido via JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
 
   <script src="script.js"></script>
-
 </body>
 </html>
