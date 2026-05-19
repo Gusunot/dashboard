@@ -498,3 +498,7 @@ document.getElementById('filtroCategoria')
 iniciarMeses();
 
 atualizarTela();
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("./sw.js");
+}
