@@ -85,9 +85,16 @@
             </select>
 
             <!-- Menu Suspenso de Ano (Alimentado via JS) -->
-            <select id="selectAno" onchange="atualizarPeriodoPorSelect()">
-              <!-- Injetado dinamicamente via Script -->
-            </select>
+           <!-- Substitua o select do Ano por este bloco fixo no seu index.html -->
+<select id="selectAno" onchange="atualizarPeriodoPorSelect()">
+  <option value="2024">2024</option>
+  <option value="2025">2025</option>
+  <option value="2026" selected>2026</option>
+  <option value="2027">2027</option>
+  <option value="2028">2028</option>
+  <option value="2029">2029</option>
+  <option value="2030">2030</option>
+</select>
           </div>
         </div>
       </header>
