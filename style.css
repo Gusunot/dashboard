@@ -465,3 +465,292 @@ tr{
     grid-template-columns:1fr;
   }
 }
+
+/* ========================= */
+/* MOBILE PREMIUM */
+/* ========================= */
+
+@media(max-width:768px){
+
+  body{
+    flex-direction:column;
+  }
+
+  /* SIDEBAR */
+
+  .sidebar{
+
+    width:100%;
+
+    height:auto;
+
+    padding:20px;
+
+    border-right:none;
+
+    border-bottom:1px solid var(--border);
+  }
+
+  .logo{
+
+    justify-content:center;
+
+    margin-bottom:15px;
+  }
+
+  #toggleTema{
+
+    margin-bottom:20px;
+  }
+
+  /* PERFIL */
+
+  .perfil-box{
+
+    flex-direction:row;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:15px;
+  }
+
+  .foto{
+
+    width:65px;
+    height:65px;
+  }
+
+  #nomeUsuario{
+
+    flex:1;
+
+    max-width:180px;
+  }
+
+  /* ANO */
+
+  .ano-box{
+
+    margin-top:20px;
+  }
+
+  /* MESES */
+
+  .meses{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(3,1fr);
+
+    gap:10px;
+
+    margin-top:20px;
+  }
+
+  .meses button{
+
+    font-size:13px;
+
+    padding:10px;
+  }
+
+  /* CONTEUDO */
+
+  .conteudo{
+
+    padding:18px;
+  }
+
+  /* TOPO */
+
+  .topo{
+
+    text-align:center;
+
+    margin-bottom:20px;
+  }
+
+  .topo h1{
+
+    font-size:24px;
+  }
+
+  /* CARDS */
+
+  .cards{
+
+    grid-template-columns:
+    repeat(2,1fr);
+
+    gap:12px;
+  }
+
+  .card{
+
+    padding:18px;
+
+    border-radius:16px;
+
+    transition:0.3s;
+  }
+
+  .card:hover{
+
+    transform:translateY(-3px);
+  }
+
+  .card h2{
+
+    font-size:22px;
+  }
+
+  /* FILTROS */
+
+  .filtros{
+
+    grid-template-columns:1fr;
+
+    gap:12px;
+  }
+
+  /* FORMULARIO */
+
+  .formulario{
+
+    grid-template-columns:1fr 1fr;
+
+    gap:12px;
+  }
+
+  .formulario input:first-child{
+
+    grid-column:span 2;
+  }
+
+  .formulario select:last-of-type{
+
+    grid-column:span 2;
+  }
+
+  .formulario button{
+
+    grid-column:span 2;
+
+    padding:16px;
+
+    font-size:16px;
+
+    font-weight:bold;
+  }
+
+  /* GRAFICOS */
+
+  .graficos{
+
+    grid-template-columns:1fr;
+
+    gap:15px;
+  }
+
+  .grafico-card{
+
+    height:220px;
+
+    padding:12px;
+
+    border-radius:16px;
+
+    transition:0.3s;
+  }
+
+  .grafico-card:hover{
+
+    transform:translateY(-3px);
+  }
+
+  /* TABELA */
+
+  .tabela-box{
+
+    overflow-x:auto;
+
+    border-radius:16px;
+  }
+
+  table{
+
+    min-width:650px;
+  }
+
+  /* SCROLLBONITO */
+
+  ::-webkit-scrollbar{
+
+    height:6px;
+    width:6px;
+  }
+
+  ::-webkit-scrollbar-thumb{
+
+    background:var(--primary);
+
+    border-radius:10px;
+  }
+
+  /* ANIMAÇÕES */
+
+  .card,
+  .grafico-card,
+  .tabela-box,
+  .sidebar,
+  .meses button{
+
+    animation:fadeUp 0.5s ease;
+  }
+
+  @keyframes fadeUp{
+
+    from{
+
+      opacity:0;
+
+      transform:translateY(15px);
+    }
+
+    to{
+
+      opacity:1;
+
+      transform:translateY(0);
+    }
+  }
+
+  /* EFEITOS */
+
+  .card,
+  .grafico-card,
+  .tabela-box,
+  .meses button{
+
+    box-shadow:
+    0 4px 20px rgba(0,0,0,0.15);
+  }
+
+  /* BOTÕES */
+
+  button{
+
+    transition:
+    transform 0.2s,
+    opacity 0.2s;
+  }
+
+  button:active{
+
+    transform:scale(0.97);
+  }
+
+}
