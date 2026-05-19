@@ -743,6 +743,13 @@ tbody tr:hover{
     gap: 12px; /* Garante distância uniforme entre todos os blocos internos */
   }
 
+  #btnInstalar {
+  margin-bottom: 12px !important;
+  padding: 12px !important;
+  font-size: 14px !important;
+  font-weight: bold;
+}
+  
   .logo{
     justify-content:center;
     margin-bottom:10px;
