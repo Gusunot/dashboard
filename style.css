@@ -145,12 +145,14 @@ body {
   color: var(--text-main);
 }
 
-/* TOPBAR E SELETOR DE PERÍODO */
+/* TOPBAR E SELETOR DE PERÍODO (Mês / Ano) */
 .top-bar h1 { font-size: 1.8rem; font-weight: 700; }
+
 .periodo-seletor-wrapper {
   display: flex;
   justify-content: flex-start;
 }
+
 .periodo-seletor {
   display: flex;
   align-items: center;
@@ -161,7 +163,7 @@ body {
   border: 1px solid var(--border);
   box-shadow: 0 2px 5px var(--shadow);
 }
-/* Estilização dos novos selects de data */
+
 .periodo-seletor select {
   background: var(--bg-primary);
   color: var(--text-main);
@@ -173,14 +175,9 @@ body {
   cursor: pointer;
   outline: none;
 }
+
 .periodo-seletor select:focus {
   border-color: var(--primary);
-}
-
-@media (max-width: 768px) {
-  .periodo-seletor-wrapper { justify-content: center; width: 100%; }
-  .periodo-seletor { width: 100%; justify-content: space-stretch; }
-  .periodo-seletor select { flex: 1; text-align: center; }
 }
 
 /* CARDS RESUMO */
@@ -220,7 +217,6 @@ body {
   gap: 1.5rem;
 }
 
-/* Procure por esta classe no seu style.css e substitua por esta: */
 .coluna-lateral {
   position: sticky;
   top: 2rem;
@@ -230,10 +226,9 @@ body {
   width: 100%;
 }
 
-/* Adicione também esta regra logo abaixo para garantir que o formulário expanda corretamente */
 .coluna-lateral .form-container {
   width: 100%;
-  max-width: 400px; /* Evita que o formulário fique esticado demais em telas gigantes */
+  max-width: 400px;
 }
 
 .grafico-container, .form-container, .extrato-container {
@@ -376,9 +371,9 @@ td.saida { color: var(--danger); }
   }
 
   .periodo-seletor-wrapper { justify-content: center; width: 100%; }
-  .periodo-seletor { width: 100%; justify-content: space-between; }
+  .periodo-seletor { width: 100%; gap: 0.5rem; }
+  .periodo-seletor select { flex: 1; text-align: center; }
   
-  /* Quebra o grid em fluxo linear de uma coluna */
   .dashboard-body { 
     display: flex !important;
     flex-direction: column !important;
@@ -391,15 +386,13 @@ td.saida { color: var(--danger); }
     gap: 1.5rem;
   }
 
-  /* Organização visual mobile nativa via CSS Flex Order */
-  .coluna-lateral { order: 1; position: static; }   /* 1º Nova Transação */
-  .coluna-principal { order: 2; }                   /* Próximos elementos */
-  .extrato-container { order: 1; }                  /* 2º Histórico */
-  .grafico-container { order: 2; }                  /* 3º Fluxo de Caixa (Embaixo de tudo!) */
+  .coluna-lateral { order: 1; position: static; }   
+  .coluna-principal { order: 2; }                   
+  .extrato-container { order: 1; }                  
+  .grafico-container { order: 2; }                  
   
   .canvas-wrapper { max-height: 240px; }
 
-  /* BANNER FIXO NO RODAPÉ NO MOBILE */
   .pwa-banner {
     top: auto;
     bottom: 0; 
