@@ -47,18 +47,34 @@ atualizarGrafico();
 });
 }
 
-// Inicializa a estrutura de dados para o período atual
+// 1. Faz os menus suspensos começarem marcados no mês/ano atuais do sistema
 function inicializarPeriodo() {
-if (!dados[anoAtual]) dados[anoAtual] = {};
-if (!dados[anoAtual][mesAtual]) dados[anoAtual][mesAtual] = [];
-document.getElementById('labelPeriodo').innerText = `${mesesNome[mesAtual]} ${anoAtual}`;
+  if (!dados[anoAtual]) dados[anoAtual] = {};
+  if (!dados[anoAtual][mesAtual]) dados[anoAtual][mesAtual] = [];
+  
+  // Atualiza os seletores visuais na tela
+  document.getElementById('selectMes').value = mesAtual;
+  document.getElementById('selectAno').value = anoAtual;
 }
 
-// Navegação entre meses (Limitada de 2026 até 2035)
+// 2. Nova função executada sempre que você escolhe um mês ou ano diferente na tela
+function atualizarPeriodoPorSelect() {
+  mesAtual = parseInt(document.getElementById('selectMes').value);
+  anoAtual = parseInt(document.getElementById('selectAno').value);
+  
+  // Garante que a estrutura de dados exista para o ano/mês escolhido
+  if (!dados[anoAtual]) dados[anoAtual] = {};
+  if (!dados[anoAtual][mesAtual]) dados[anoAtual][mesAtual] = [];
+  
+  // Atualiza os valores da tela e o gráfico para o novo período
+  atualizarTela();
+}
+
+// 3. Substitua a antiga mudarMes por esta para evitar erros caso o sistema chame ela
 function mudarMes(direcao) {
-  // Calcula o que seria o próximo mês e ano antes de aplicar a mudança
-  let proximoMes = mesAtual + direcao;
-  let proximoAno = anoAtual;
+  // Como agora usamos selects, essa função não é mais necessária pelas setas
+  console.log("Navegação agora é feita via menu suspenso.");
+}
 
   if (proximoMes > 11) { 
     proximoMes = 0; 
