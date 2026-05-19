@@ -1,202 +1,203 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Controle Financeiro Pessoal</title>
-  <!-- Google Fonts & Icons -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-  <!-- Seu Arquivo CSS -->
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Controle Financeiro Pessoal</title>
+<!-- Google Fonts & Icons -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+<!-- Seu Arquivo CSS -->
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- Banner PWA para Dispositivos Móveis/Instalação -->
-  <div id="pwaBanner" class="pwa-banner">
-    <div class="pwa-conteudo">
-      <span class="material-symbols-outlined icon-pwa-mini">account_balance_wallet</span>
-      <p>Instalar App de Finanças?</p>
-    </div>
-    <div class="pwa-acoes">
-      <button id="btnPwaInstalar" class="btn-pwa">Instalar</button>
-      <button id="btnPwaFechar" class="btn-pwa-fechar">
-        <span class="material-symbols-outlined">close</span>
-      </button>
-    </div>
-  </div>
+<!-- Banner PWA para Dispositivos Móveis/Instalação -->
+<div id="pwaBanner" class="pwa-banner">
+<div class="pwa-conteudo">
+<span class="material-symbols-outlined icon-pwa-mini">account_balance_wallet</span>
+<p>Instalar App de Finanças?</p>
+</div>
+<div class="pwa-acoes">
+<button id="btnPwaInstalar" class="btn-pwa">Instalar</button>
+<button id="btnPwaFechar" class="btn-pwa-fechar">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+</div>
 
-  <div class="container">
-    <!-- BARRA LATERAL (SIDEBAR) -->
-    <aside class="sidebar">
-      <div class="logo">
-        <span class="material-symbols-outlined">account_balance_wallet</span>
-        <h2>Sói<span>Finanças</span></h2>
-      </div>
+<div class="container">
+<!-- BARRA LATERAL (SIDEBAR) -->
+<aside class="sidebar">
+<div class="logo">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<h2>Sói<span>Finanças</span></h2>
+</div>
 
-      <!-- Caixa de Perfil do Usuário -->
-      <div class="perfil-box">
-        <div class="foto" onclick="document.getElementById('inputFoto').click()">
-          <img id="fotoPerfil" src="https://via.placeholder.com/90" alt="Foto de Perfil">
-          <div class="overlay-foto">
-            <span class="material-symbols-outlined">photo_camera</span>
-          </div>
-        </div>
-        <input type="file" id="inputFoto" accept="image/*" style="display: none;" onchange="atualizarFotoPerfil(this)">
-        <input type="text" id="nomeUsuario" value="Seu Nome" onchange="salvarNomeUsuario(this.value)">
-      </div>
+<!-- Caixa de Perfil do Usuário -->
+<div class="perfil-box">
+<div class="foto" onclick="document.getElementById('inputFoto').click()">
+<img id="fotoPerfil" src="https://via.placeholder.com/90" alt="Foto de Perfil">
+<div class="overlay-foto">
+<span class="material-symbols-outlined">photo_camera</span>
+</div>
+</div>
+<input type="file" id="inputFoto" accept="image/*" style="display: none;" onchange="atualizarFotoPerfil(this)">
+<input type="text" id="nomeUsuario" value="Seu Nome" onchange="salvarNomeUsuario(this.value)">
+</div>
 
-      <!-- Menu de Navegação -->
-      <nav class="menu">
-        <button class="active">
-          <span class="material-symbols-outlined">dashboard</span>
-          Dashboard
-        </button>
-        <button onclick="alternarTema()">
-          <span class="material-symbols-outlined">contrast</span>
-          Mudar Tema
-        </button>
-      </nav>
-    </aside>
+<!-- Menu de Navegação -->
+<nav class="menu">
+<button class="active">
+<span class="material-symbols-outlined">dashboard</span>
+Dashboard
+</button>
+<button onclick="alternarTema()">
+<span class="material-symbols-outlined">contrast</span>
+Mudar Tema
+</button>
+</nav>
+</aside>
 
-    <!-- CONTEÚDO PRINCIPAL (MAIN CONTENT) -->
-    <main class="main-content">
-      <!-- Topo com Título e o Seletor de Mês/Ano Separados -->
-      <header class="top-bar">
-        <h1>Visão Geral</h1>
-        <div class="periodo-seletor-wrapper">
-          <div class="periodo-seletor">
-            <!-- Menu Suspenso de Mês -->
-            <select id="selectMes" onchange="atualizarPeriodoPorSelect()">
-              <option value="0">Janeiro</option>
-              <option value="1">Fevereiro</option>
-              <option value="2">Março</option>
-              <option value="3">Abril</option>
-              <option value="4">Maio</option>
-              <option value="5">Junho</option>
-              <option value="6">Julho</option>
-              <option value="7">Agosto</option>
-              <option value="8">Setembro</option>
-              <option value="9">Outubro</option>
-              <option value="10">Novembro</option>
-              <option value="11">Dezembro</option>
-            </select>
+<!-- CONTEÚDO PRINCIPAL (MAIN CONTENT) -->
+<main class="main-content">
+<!-- Topo com Título e o Seletor de Mês/Ano Separados -->
+<header class="top-bar">
+<h1>Visão Geral</h1>
+<div class="periodo-seletor-wrapper">
+<div class="periodo-seletor">
+<!-- Menu Suspenso de Mês -->
+<select id="selectMes" onchange="atualizarPeriodoPorSelect()">
+<option value="0">Janeiro</option>
+<option value="1">Fevereiro</option>
+<option value="2">Março</option>
+<option value="3">Abril</option>
+<option value="4">Maio</option>
+<option value="5">Junho</option>
+<option value="6">Julho</option>
+<option value="7">Agosto</option>
+<option value="8">Setembro</option>
+<option value="9">Outubro</option>
+<option value="10">Novembro</option>
+<option value="11">Dezembro</option>
+</select>
 
-            <!-- Menu Suspenso de Ano Fixo (2026 até 2035) -->
+<!-- Menu Suspenso de Ano (Alimentado via JS) -->
             <select id="selectAno" onchange="atualizarPeriodoPorSelect()">
-              <option value="2026" selected>2026</option>
-              <option value="2027">2027</option>
-              <option value="2028">2028</option>
-              <option value="2029">2029</option>
-              <option value="2030">2030</option>
-              <option value="2031">2031</option>
-              <option value="2032">2032</option>
-              <option value="2033">2033</option>
-              <option value="2034">2034</option>
-              <option value="2035">2035</option>
+              <!-- Injetado dinamicamente via Script -->
             </select>
-          </div>
-        </div>
-      </header>
+           <!-- Substitua o select do Ano por este bloco fixo no seu index.html -->
+<select id="selectAno" onchange="atualizarPeriodoPorSelect()">
+  <option value="2024">2024</option>
+  <option value="2025">2025</option>
+  <option value="2026" selected>2026</option>
+  <option value="2027">2027</option>
+  <option value="2028">2028</option>
+  <option value="2029">2029</option>
+  <option value="2030">2030</option>
+</select>
+</div>
+</div>
+</header>
 
-      <!-- CARDS INFORMATIVOS (Resumo de Valores) -->
-      <section class="cards-grid">
-        <div class="card entradas">
-          <div>
-            <h3>Entradas</h3>
-            <h2 id="totalEntradas">R$ 0,00</h2>
-          </div>
-          <div class="icon-box">
-            <span class="material-symbols-outlined">arrow_circle_up</span>
-          </div>
-        </div>
+<!-- CARDS INFORMATIVOS (Resumo de Valores) -->
+<section class="cards-grid">
+<div class="card entradas">
+<div>
+<h3>Entradas</h3>
+<h2 id="totalEntradas">R$ 0,00</h2>
+</div>
+<div class="icon-box">
+<span class="material-symbols-outlined">arrow_circle_up</span>
+</div>
+</div>
 
-        <div class="card saidas">
-          <div>
-            <h3>Saídas</h3>
-            <h2 id="totalSaidas">R$ 0,00</h2>
-          </div>
-          <div class="icon-box">
-            <span class="material-symbols-outlined">arrow_circle_down</span>
-          </div>
-        </div>
+<div class="card saidas">
+<div>
+<h3>Saídas</h3>
+<h2 id="totalSaidas">R$ 0,00</h2>
+</div>
+<div class="icon-box">
+<span class="material-symbols-outlined">arrow_circle_down</span>
+</div>
+</div>
 
-        <div class="card saldo">
-          <div>
-            <h3>Saldo Atual</h3>
-            <h2 id="totalSaldo">R$ 0,00</h2>
-          </div>
-          <div class="icon-box">
-            <span class="material-symbols-outlined">payments</span>
-          </div>
-        </div>
-      </section>
+<div class="card saldo">
+<div>
+<h3>Saldo Atual</h3>
+<h2 id="totalSaldo">R$ 0,00</h2>
+</div>
+<div class="icon-box">
+<span class="material-symbols-outlined">payments</span>
+</div>
+</div>
+</section>
 
-      <!-- CORPO DO DASHBOARD -->
-      <div class="dashboard-body">
-        <!-- Coluna da Esquerda (Principal) -->
-        <div class="coluna-principal">
-          <!-- Bloco do Gráfico -->
-          <div class="grafico-container">
-            <h3>Fluxo de Caixa</h3>
-            <div class="canvas-wrapper">
-              <canvas id="graficoFinancas"></canvas>
-            </div>
-          </div>
+<!-- CORPO DO DASHBOARD (Layout dividido em Colunas no Desktop) -->
+<div class="dashboard-body">
+<!-- Coluna da Esquerda (Principal) -->
+<div class="coluna-principal">
+<!-- Bloco do Gráfico -->
+<div class="grafico-container">
+<h3>Fluxo de Caixa</h3>
+<div class="canvas-wrapper">
+<canvas id="graficoFinancas"></canvas>
+</div>
+</div>
 
-          <!-- Bloco do Extrato/Histórico -->
-          <div class="extrato-container">
-            <h3>Histórico de Transações</h3>
-            <div class="tabela-wrapper">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Descrição</th>
-                    <th>Valor</th>
-                    <th>Categoria</th>
-                    <th>Ações</th>
-                  </tr>
-                </thead>
-                <tbody id="corpoTabela">
-                  <!-- Linhas inseridas dinamicamente via JS -->
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
+<!-- Bloco do Extrato/Histórico -->
+<div class="extrato-container">
+<h3>Histórico de Transações</h3>
+<div class="tabela-wrapper">
+<table>
+<thead>
+<tr>
+<th>Descrição</th>
+<th>Valor</th>
+<th>Categoria</th>
+<th>Ações</th>
+</tr>
+</thead>
+<tbody id="corpoTabela">
+<!-- Linhas inseridas dinamicamente via JS -->
+</tbody>
+</table>
+</div>
+</div>
+</div>
 
-        <!-- Coluna da Direita (Lateral / Centralizada) -->
-        <aside class="coluna-lateral">
-          <div class="form-container">
-            <h3>Nova Transação</h3>
-            <form id="formTransacao" onsubmit="adicionarTransacao(event)">
-              <input type="text" id="descTransacao" placeholder="Descrição (Ex: Salário, Mercado)" required>
-              <input type="number" id="valorTransacao" placeholder="Valor (R$)" step="0.01" required>
-              <select id="tipoTransacao" required>
-                <option value="entrada">Entrada</option>
-                <option value="saida">Saída</option>
-              </select>
-              <select id="categoriaTransacao" required>
-                <option value="Salário">Salário</option>
-                <option value="Alimentação">Alimentação</option>
-                <option value="Moradia">Moradia</option>
-                <option value="Transporte">Transporte</option>
-                <option value="Lazer">Lazer</option>
-                <option value="Outros">Outros</option>
-              </select>
-              <button type="submit" class="btn-enviar">Adicionar</button>
-            </form>
-          </div>
-        </aside>
-      </div>
-    </main>
-  </div>
+<!-- Coluna da Direita (Lateral / Centralizada) -->
+<aside class="coluna-lateral">
+<div class="form-container">
+<h3>Nova Transação</h3>
+<form id="formTransacao" onsubmit="adicionarTransacao(event)">
+<input type="text" id="descTransacao" placeholder="Descrição (Ex: Salário, Mercado)" required>
+<input type="number" id="valorTransacao" placeholder="Valor (R$)" step="0.01" required>
+<select id="tipoTransacao" required>
+<option value="entrada">Entrada</option>
+<option value="saida">Saída</option>
+</select>
+<select id="categoriaTransacao" required>
+<option value="Salário">Salário</option>
+<option value="Alimentação">Alimentação</option>
+<option value="Moradia">Moradia</option>
+<option value="Transporte">Transporte</option>
+<option value="Lazer">Lazer</option>
+<option value="Outros">Outros</option>
+</select>
+<button type="submit" class="btn-enviar">Adicionar</button>
+</form>
+</div>
+</aside>
+</div>
+</main>
+</div>
 
-  <!-- Inclusão do Chart.js para rodar os gráficos -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <!-- Seu Arquivo JavaScript -->
-  <script src="script.js"></script>
+<!-- Inclusão do Chart.js para rodar os gráficos -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- Seu Arquivo JavaScript -->
+<script src="script.js"></script>
 </body>
 </html>
