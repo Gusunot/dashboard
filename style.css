@@ -1,83 +1,124 @@
-/* BASE */
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
-
-:root{
---bg:#0f172a;
---card:#1e293b;
---text:#f8fafc;
---primary:#3b82f6;
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
 }
 
 body{
-background:var(--bg);
-color:var(--text);
 display:flex;
 min-height:100vh;
-transition:.3s;
+background:#0f172a;
+color:#fff;
 }
 
-/* SIDEBAR */
 .sidebar{
 width:260px;
-background:var(--card);
+background:#111827;
 padding:20px;
 display:flex;
 flex-direction:column;
 justify-content:space-between;
 }
 
-/* PERFIL */
-.foto img{width:70px;height:70px;border-radius:50%}
-#nomeUsuario{padding:10px;width:100%}
+.logo{margin-bottom:20px}
 
-/* MES */
+.perfil img{
+width:70px;
+height:70px;
+border-radius:50%;
+display:block;
+margin-bottom:10px;
+}
+
+#nome{
+width:100%;
+padding:10px;
+border:none;
+border-radius:8px;
+}
+
 .meses{
 display:flex;
-overflow-x:auto;
-gap:10px;
-padding:10px 0;
+flex-wrap:wrap;
+gap:5px;
+margin:10px 0;
 }
 
 .meses button{
-flex:0 0 auto;
-padding:8px;
-border-radius:8px;
-background:#111;
-color:#fff;
+padding:5px;
+font-size:12px;
 }
 
-/* MAIN */
-.conteudo{flex:1;padding:20px}
+.main{
+flex:1;
+padding:20px;
+}
 
-/* CARDS */
 .cards{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+grid-template-columns:repeat(4,1fr);
 gap:10px;
+margin-bottom:20px;
 }
 
 .card{
-background:var(--card);
+background:#1e293b;
 padding:15px;
-border-radius:12px;
-transition:.2s;
+border-radius:10px;
 }
 
-.card:hover{transform:translateY(-3px)}
-
-/* FORM */
-.formulario{
+.form{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+grid-template-columns:repeat(5,1fr);
 gap:10px;
-margin-top:20px;
+margin-bottom:20px;
 }
 
-/* TABLE */
-table{width:100%;margin-top:20px}
+.form input,
+.form select{
+padding:10px;
+border:none;
+border-radius:8px;
+}
 
-/* MOBILE */
+button{
+padding:10px;
+border:none;
+border-radius:8px;
+background:#3b82f6;
+color:#fff;
+cursor:pointer;
+}
+
+.graficos{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+margin:20px 0;
+}
+
+table{
+width:100%;
+background:#1e293b;
+border-collapse:collapse;
+}
+
+th,td{
+padding:10px;
+text-align:center;
+border-bottom:1px solid #334155;
+}
+
 @media(max-width:768px){
-.sidebar{width:100%}
+
 body{flex-direction:column}
+
+.sidebar{width:100%}
+
+.cards{grid-template-columns:repeat(2,1fr)}
+
+.form{grid-template-columns:1fr}
+
+.graficos{grid-template-columns:1fr}
 }
