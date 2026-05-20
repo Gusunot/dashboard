@@ -100,61 +100,70 @@
 </div>
 </section>
 
-<!-- ÁREA DO GRÁFICO E FORMULÁRIO -->
-<section class="dashboard-body">
-<div class="grafico-container">
-<h3>Fluxo de Caixa</h3>
-<div class="canvas-wrapper">
-<canvas id="graficoFinanceiro"></canvas>
-</div>
-</div>
+<!-- CORPO DO DASHBOARD -->
+      <section class="dashboard-body">
+        
+        <!-- COLUNA DA ESQUERDA (NO DESKTOP) -->
+        <div class="coluna-principal">
+          <!-- 1. HISTÓRICO DE TRANSAÇÕES -->
+          <div class="extrato-container">
+            <h3>Histórico de Transações</h3>
+            <div class="tabela-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Descrição</th>
+                    <th>Categoria</th>
+                    <th>Valor</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="tabelaCorpo">
+                  <!-- Inserido via JavaScript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
 
-<div class="form-container">
-<h3>Nova Transação</h3>
-<form id="formTransacao" onsubmit="adicionarTransacao(event)">
-<input type="text" id="descricao" placeholder="Descrição" required>
-<input type="number" id="valor" step="0.01" placeholder="Valor (R$)" required>
+          <!-- 2. FLUXO DE CAIXA (Agora posicionado abaixo do histórico!) -->
+          <div class="grafico-container">
+            <h3>Fluxo de Caixa</h3>
+            <div class="canvas-wrapper">
+              <canvas id="graficoFinanceiro"></canvas>
+            </div>
+          </div>
+        </div>
 
-<select id="tipo" required>
-<option value="entrada">Receita (+)</option>
-<option value="saida">Despesa (-)</option>
-</select>
+        <!-- COLUNA DA DIREITA / FORMULÁRIO (NO DESKTOP) -->
+        <div class="coluna-lateral">
+          <div class="form-container">
+            <h3>Nova Transação</h3>
+            <form id="formTransacao" onsubmit="adicionarTransacao(event)">
+              <input type="text" id="descricao" placeholder="Descrição" required>
+              <input type="number" id="valor" step="0.01" placeholder="Valor (R$)" required>
+              
+              <select id="tipo" required>
+                <option value="entrada">Receita (+)</option>
+                <option value="saida">Despesa (-)</option>
+              </select>
 
-<select id="categoria" required>
-<option value="Salário">Salário</option>
-<option value="Alimentação">Alimentação</option>
-<option value="Transporte">Transporte</option>
-<option value="Lazer">Lazer</option>
-<option value="Outros">Outros</option>
-</select>
+              <select id="categoria" required>
+                <option value="Salário">Salário</option>
+                <option value="Alimentação">Alimentação</option>
+                <option value="Transporte">Transporte</option>
+                <option value="Lazer">Lazer</option>
+                <option value="Outros">Outros</option>
+              </select>
 
-<button type="submit" class="btn-enviar">Adicionar</button>
-</form>
-</div>
-</section>
+              <button type="submit" class="btn-enviar">Adicionar</button>
+            </form>
+          </div>
+        </div>
 
-<!-- EXTRATO / TABELA -->
-<section class="extrato-container">
-<h3>Histórico de Transações</h3>
-<div class="tabela-wrapper">
-<table>
-<thead>
-<tr>
-<th>Descrição</th>
-<th>Categoria</th>
-<th>Valor</th>
-<th>Ações</th>
-</tr>
-</thead>
-<tbody id="tabelaCorpo">
-<!-- Inserido via JavaScript -->
-</tbody>
-</table>
-</div>
-</section>
-</main>
-</div>
+      </section>
+    </main>
+  </div>
 
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
