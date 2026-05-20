@@ -142,6 +142,11 @@ localStorage.setItem('finandash_dados', JSON.stringify(dados));
 
 // Renderiza a tabela e atualiza os cards de resumo
 function atualizarTela() {
+  const { totalEntradas, totalSaidas } = calcularTotaisAno();
+const saldoAno = totalEntradas - totalSaidas;
+
+document.getElementById('totalAno').innerText =
+  `R$ ${saldoAno.toFixed(2)}`;
 const transacoes = dados[anoAtual][mesAtual] || [];
 let entradas = 0;
 let saidas = 0;
