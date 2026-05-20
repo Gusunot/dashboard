@@ -341,72 +341,95 @@ z-index: 10010;
 .btn-pwa-fechar:hover { background: rgba(247, 90, 104, 0.2); }
 .btn-pwa-fechar:hover span { color: var(--danger); }
 
-/* RESPONSIVIDADE MOBILE */
+/* RESPONSIVIDADE MOBILE CORRIGIDA */
 @media (max-width: 768px) {
-.container { flex-direction: column; }
+  .container { 
+    flex-direction: column; 
+  }
 
-.sidebar { 
-width: 100%; 
-border-right: none; 
-border-bottom: 1px solid var(--border); 
-padding: 1.5rem;
-gap: 1.5rem;
-}
+  .sidebar { 
+    width: 100%; 
+    border-right: none; 
+    border-bottom: 1px solid var(--border); 
+    padding: 1.5rem;
+    gap: 1.5rem;
+  }
 
-.perfil-box {
-padding: 1.5rem;
-gap: 1.2rem;
-background: var(--bg-secondary);
-}
-.perfil-box .foto { width: 110px; height: 110px; }
-.perfil-box input[type="text"] { font-size: 1.2rem; width: 80%; }
+  .perfil-box {
+    padding: 1.5rem;
+    gap: 1.2rem;
+    background: var(--bg-secondary);
+  }
+  .perfil-box .foto { width: 110px; height: 110px; }
+  .perfil-box input[type="text"] { font-size: 1.2rem; width: 80%; }
 
-.menu { flex-direction: row; justify-content: space-around; }
-.menu button { justify-content: center; font-size: 0.9rem; padding: 0.6rem; }
+  .menu { flex-direction: row; justify-content: space-around; }
+  .menu button { justify-content: center; font-size: 0.9rem; padding: 0.6rem; }
 
-.main-content {
-padding: 1rem;
-}
-
-.periodo-seletor-wrapper { justify-content: center; width: 100%; }
-.periodo-seletor { width: 100%; justify-content: space-between; }
-
-  /* Quebra o grid em fluxo linear de uma coluna */
-  /* FORÃ‡ANDO GRID DE COLUNA ÃšNICA PARA CONTROLAR AS POSIÃ‡Ã•ES DAS LINHAS EXATAMENTE */
-.dashboard-body { 
-    display: flex !important;
-    flex-direction: column !important;
-    display: grid !important; 
-    grid-template-columns: 1fr !important;
-gap: 1.5rem; 
-} 
-
-  .coluna-principal {
+  /* Transforma o container do conteúdo em Flex para ordenar os blocos filhos */
+  .main-content {
+    padding: 1rem;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
   }
 
-  /* Organização visual mobile nativa via CSS Flex Order */
-  .coluna-lateral { order: 1; position: static; }   /* 1º Nova Transação */
-  .coluna-principal { order: 2; }                   /* Próximos elementos */
-  .extrato-container { order: 1; }                  /* 2º Histórico */
-  .grafico-container { order: 2; }                  /* 3º Fluxo de Caixa (Embaixo de tudo!) */
+  /* Define a ordem de exibição absoluta no Mobile */
+  .top-bar { order: 1; }
+  .periodo-seletor-wrapper { order: 2; justify-content: center; width: 100%; }
+  .periodo-seletor { width: 100%; justify-content: space-between; }
+  .cards-grid { order: 3; }
   
-  /* DestruiÃ§Ã£o de agrupamento herdado e reordenaÃ§Ã£o absoluta */
-  .form-container { 
-    grid-row: 1 !important; 
-  }      /* 1. Nova TransaÃ§Ã£o */
-  
-  .extrato-container { 
-    grid-row: 2 !important; 
-  }   /* 2. HistÃ³rico de TransaÃ§Ãµes */
-  
-  .grafico-container { 
-    grid-row: 3 !important; 
-  }   /* 3. Fluxo de Caixa (Fica embaixo de tudo!) */
+  /* A área que envolve o Formulário e o Gráfico vira uma coluna simples */
+  .dashboard-body { 
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1.5rem;
+    order: 4; /* Fica responsável por renderizar o formulário e o gráfico */
+  }
 
-.canvas-wrapper { max-height: 240px; }
+  /* Dentro de .dashboard-body, o formulário aparece primeiro e o gráfico por último */
+  .coluna-lateral { order: 1; position: static; }   /* Nova Transação */
+  .coluna-principal { order: 3; }                   /* Fluxo de Caixa (Gráfico) */
+
+  /* O Histórico de transações sai de baixo e assume o meio do app */
+  .extrato-container { 
+    order: 5; /* Colocado estrategicamente para listar após o formulário na árvore do flex principal */
+  }
+
+  /* Reordenando a exibição final da árvore do .main-content:
+     1. Top-bar
+     2. Seletor de Período
+     3. Cards de Resumo
+     4. Formulário (Via .dashboard-body order 4 -> .coluna-lateral order 1)
+     5. Histórico de Transações (.extrato-container order 5)
+     6. Gráfico / Fluxo de Caixa (Via .dashboard-body order 4 -> .coluna-principal order 3)
+  */
+  .main-content > .top-bar { order: 1; }
+  .main-content > .periodo-seletor-wrapper { order: 2; }
+  .main-content > .cards-grid { order: 3; }
+  .main-content > .dashboard-body { order: 4; }
+  .main-content > .extrato-container { order: 5; }
+  
+  /* Ajuste interno fino para o Gráfico no mobile */
+  .canvas-wrapper { max-height: 240px; }
+
+  /* BANNER FIXO NO RODAPÉ NO MOBILE */
+  .pwa-banner {
+    top: auto;
+    bottom: 0; 
+    left: 0;
+    transform: none;
+    width: 100%;
+    max-width: 100%;
+    border-radius: 0;
+    border: none;
+    border-top: 1px solid var(--primary);
+    padding: 1rem 1.2rem;
+    box-shadow: 0 -4px 15px rgba(0,0,0,0.5);
+  }
+  .pwa-banner p { font-size: 0.75rem; }
+}
 
   /* BANNER FIXO NO RODAPÉ NO MOBILE */
   /* BANNER FIXO NO RODAPÃ‰ NO MOBILE */
