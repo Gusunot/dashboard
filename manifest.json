@@ -9,14 +9,14 @@
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "https://tse1.mm.bing.net/th/id/OIP.c_N52i10cvMfq6Ia2AeCcwHaFj?rs=1&pid=ImgDetMain&o=7&rm=3",
+      "src": "https://i.pinimg.com/736x/23/73/27/237327dc8ee1d75c782cf006a456c7e5.jpg",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/jpg"
     },
     {
-      "src": "https://tse1.mm.bing.net/th/id/OIP.c_N52i10cvMfq6Ia2AeCcwHaFj?rs=1&pid=ImgDetMain&o=7&rm=3",
+      "src": "https://i.pinimg.com/736x/23/73/27/237327dc8ee1d75c782cf006a456c7e5.jpg",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/jpg"
     }
   ]
 }
