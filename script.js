@@ -47,34 +47,24 @@ atualizarGrafico();
 });
 }
 
-// 1. Faz os menus suspensos começarem marcados no mês/ano atuais do sistema
+// Inicializa a estrutura de dados para o período atual
 function inicializarPeriodo() {
-  if (!dados[anoAtual]) dados[anoAtual] = {};
-  if (!dados[anoAtual][mesAtual]) dados[anoAtual][mesAtual] = [];
-  
-  // Atualiza os seletores visuais na tela
-  document.getElementById('selectMes').value = mesAtual;
-  document.getElementById('selectAno').value = anoAtual;
+if (!dados[anoAtual]) dados[anoAtual] = {};
+if (!dados[anoAtual][mesAtual]) dados[anoAtual][mesAtual] = [];
+document.getElementById('labelPeriodo').innerText = `${mesesNome[mesAtual]} ${anoAtual}`;
 }
 
-// 2. Nova função executada sempre que você escolhe um mês ou ano diferente na tela
-function atualizarPeriodoPorSelect() {
-  mesAtual = parseInt(document.getElementById('selectMes').value);
-  anoAtual = parseInt(document.getElementById('selectAno').value);
-  
-  // Garante que a estrutura de dados exista para o ano/mês escolhido
-  if (!dados[anoAtual]) dados[anoAtual] = {};
-  if (!dados[anoAtual][mesAtual]) dados[anoAtual][mesAtual] = [];
-  
-  // Atualiza os valores da tela e o gráfico para o novo período
-  atualizarTela();
-}
-
-// 3. Substitua a antiga mudarMes por esta para evitar erros caso o sistema chame ela
+// Navegação entre meses
+// Navegação entre meses (Limitada de 2026 até 2035)
 function mudarMes(direcao) {
-  // Como agora usamos selects, essa função não é mais necessária pelas setas
-  console.log("Navegação agora é feita via menu suspenso.");
-}
+mesAtual += direcao;
+if (mesAtual > 11) { mesAtual = 0; anoAtual++; }
+if (mesAtual < 0) { mesAtual = 11; anoAtual--; }
+inicializarPeriodo();
+atualizarTela();
+  // Calcula o que seria o próximo mês e ano antes de aplicar a mudança
+  let proximoMes = mesAtual + direcao;
+  let proximoAno = anoAtual;
 
   if (proximoMes > 11) { 
     proximoMes = 0; 
@@ -131,14 +121,14 @@ else saidas += item.valor;
 
 const tr = document.createElement('tr');
 tr.innerHTML = `
-     <td>${item.descricao}</td>
-     <td><span class="tag-cat">${item.categoria}</span></td>
-     <td class="${item.tipo}">${item.tipo === 'entrada' ? '+' : '-'} R$ ${item.valor.toFixed(2)}</td>
-     <td>
-       <button class="btn-acao edit" onclick="editar(${index})"><span class="material-icons-round">edit</span></button>
-       <button class="btn-acao delete" onclick="deletar(${index})"><span class="material-icons-round">delete</span></button>
-     </td>
-   `;
+    <td>${item.descricao}</td>
+    <td><span class="tag-cat">${item.categoria}</span></td>
+    <td class="${item.tipo}">${item.tipo === 'entrada' ? '+' : '-'} R$ ${item.valor.toFixed(2)}</td>
+    <td>
+      <button class="btn-acao edit" onclick="editar(${index})"><span class="material-icons-round">edit</span></button>
+      <button class="btn-acao delete" onclick="deletar(${index})"><span class="material-icons-round">delete</span></button>
+    </td>
+  `;
 tabelaCorpo.appendChild(tr);
 });
 
@@ -193,8 +183,8 @@ borderWidth: 0
 },
 options: {
 responsive: true,
-      maintainAspectRatio: false, // Fundamental para obedecer a altura limite do CSS
-      maintainAspectRatio: false,
+maintainAspectRatio: false, // Fundamental para obedecer a altura limite do CSS
+maintainAspectRatio: false,
 plugins: {
 legend: { labels: { color: corTexto, font: { family: 'Poppins' } } }
 }
@@ -245,16 +235,16 @@ window.addEventListener('beforeinstallprompt', (e) => {
 e.preventDefault();
 deferredPrompt = e;
 
-    // Só exibe se não tiver sido ocultado manualmente nesta sessão
-    // Só exibe se não foi ocultado na sessão atual
+// Só exibe se não tiver sido ocultado manualmente nesta sessão
+// Só exibe se não foi ocultado na sessão atual
 if (!sessionStorage.getItem('pwa_banner_oculto')) {
-      if (banner) banner.style.display = 'flex';
-      if (banner) banner.style.setProperty('display', 'flex', 'important');
+if (banner) banner.style.display = 'flex';
+if (banner) banner.style.setProperty('display', 'flex', 'important');
 }
 });
 
-  // Ação do Botão de Instalar
-  // Ação de Instalação
+// Ação do Botão de Instalar
+// Ação de Instalação
 const btnInstalar = document.getElementById('btn-instalar-app');
 if (btnInstalar) {
 btnInstalar.addEventListener('click', () => {
@@ -262,34 +252,34 @@ if (deferredPrompt) {
 deferredPrompt.prompt();
 deferredPrompt.userChoice.then((choiceResult) => {
 if (choiceResult.outcome === 'accepted') {
-            console.log('App Instalado pelo usuário.');
-            console.log('App instalado.');
+console.log('App Instalado pelo usuário.');
+console.log('App instalado.');
 }
-          if (banner) banner.style.display = 'none';
-          if (banner) banner.style.setProperty('display', 'none', 'important');
+if (banner) banner.style.display = 'none';
+if (banner) banner.style.setProperty('display', 'none', 'important');
 deferredPrompt = null;
 });
 }
 });
 }
 
-  // Função interna unificada para fechar e sumir com o banner
-  // Função estrita de Fechamento do Banner
+// Função interna unificada para fechar e sumir com o banner
+// Função estrita de Fechamento do Banner
 function fecharBannerPWA(e) {
 if (e) {
 e.preventDefault();
-      e.stopPropagation(); // Impede o clique de se espalhar para o botão de baixo
-      e.stopPropagation();
+e.stopPropagation(); // Impede o clique de se espalhar para o botão de baixo
+e.stopPropagation();
 }
-    sessionStorage.setItem('pwa_banner_oculto', 'true');
+sessionStorage.setItem('pwa_banner_oculto', 'true');
 if (banner) {
-      banner.style.display = 'none';
-      banner.style.setProperty('display', 'none', 'important');
+banner.style.display = 'none';
+banner.style.setProperty('display', 'none', 'important');
 }
-    sessionStorage.setItem('pwa_banner_oculto', 'true');
+sessionStorage.setItem('pwa_banner_oculto', 'true');
 }
 
-  // Captura o fechamento manual aplicando tanto em cliques quanto em toques de tela diretos
+// Captura o fechamento manual aplicando tanto em cliques quanto em toques de tela diretos
 const btnFechar = document.getElementById('btn-fechar-pwa');
 if (btnFechar) {
 btnFechar.addEventListener('click', fecharBannerPWA, { passive: false });
