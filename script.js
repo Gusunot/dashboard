@@ -47,6 +47,37 @@ atualizarGrafico();
 });
 }
 
+function atualizarManifestComIcone(imagemBase64) {
+  const manifest = {
+    name: "Dashboard+",
+    short_name: "Dashboard+",
+    start_url: "./index.html",
+    display: "standalone",
+    background_color: "#121214",
+    theme_color: "#121214",
+    icons: [
+      {
+        src: imagemBase64,
+        sizes: "192x192",
+        type: "image/png"
+      },
+      {
+        src: imagemBase64,
+        sizes: "512x512",
+        type: "image/png"
+      }
+    ]
+  };
+
+  const blob = new Blob([JSON.stringify(manifest)], {
+    type: "application/json"
+  });
+
+  const url = URL.createObjectURL(blob);
+
+  document.getElementById("manifest-link").setAttribute("href", url);
+}
+
 // Inicializa a estrutura de dados para o período atual
 function inicializarPeriodo() {
 if (!dados[anoAtual]) dados[anoAtual] = {};
@@ -248,6 +279,7 @@ const reader = new FileReader();
 reader.onloadend = () => {
 imgFoto.src = reader.result;
 localStorage.setItem('user_photo', reader.result);
+  atualizarManifestComIcone(reader.result);
 }
 reader.readAsDataURL(file);
 }
