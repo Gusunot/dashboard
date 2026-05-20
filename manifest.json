@@ -9,12 +9,12 @@
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "https://i.pinimg.com/736x/23/73/27/237327dc8ee1d75c782cf006a456c7e5.jpg",
+      "src": "https://i.pinimg.com/736x/c9/8c/12/c98c12093d990a68c8792486141867a2--dagobert-duck-uncle-scrooge.jpg",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "https://i.pinimg.com/736x/23/73/27/237327dc8ee1d75c782cf006a456c7e5.jpg",
+      "src": "https://i.pinimg.com/736x/c9/8c/12/c98c12093d990a68c8792486141867a2--dagobert-duck-uncle-scrooge.jpg",
       "sizes": "512x512",
       "type": "image/png"
     }
