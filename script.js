@@ -54,6 +54,39 @@ if (!dados[anoAtual][mesAtual]) dados[anoAtual][mesAtual] = [];
 document.getElementById('labelPeriodo').innerText = `${mesesNome[mesAtual]} ${anoAtual}`;
 }
 
+function calcularTotaisAno() {
+  let totalEntradas = 0;
+  let totalSaidas = 0;
+
+  if (!dados[anoAtual]) return { totalEntradas, totalSaidas };
+
+  for (let mes = 0; mes < 12; mes++) {
+    if (dados[anoAtual][mes]) {
+      dados[anoAtual][mes].forEach(item => {
+        if (item.tipo === "entrada") {
+          totalEntradas += item.valor;
+        } else {
+          totalSaidas += item.valor;
+        }
+      });
+    }
+  }
+
+
+  return { totalEntradas, totalSaidas };
+}
+
+function atualizarResumoAnual() {
+  const { totalEntradas, totalSaidas } = calcularTotaisAno();
+  const saldo = totalEntradas - totalSaidas;
+
+  console.log("Resumo do ano:", {
+    entradas: totalEntradas,
+    saidas: totalSaidas,
+    saldo
+  });
+}
+
 // Navegação entre meses
 // Navegação entre meses (Limitada de 2026 até 2035)
 function mudarMes(direcao) {
