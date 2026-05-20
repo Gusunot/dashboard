@@ -90,33 +90,30 @@ function atualizarResumoAnual() {
 // Navegação entre meses
 // Navegação entre meses (Limitada de 2026 até 2035)
 function mudarMes(direcao) {
-mesAtual += direcao;
-if (mesAtual > 11) { mesAtual = 0; anoAtual++; }
-if (mesAtual < 0) { mesAtual = 11; anoAtual--; }
-inicializarPeriodo();
-atualizarTela();
-  // Calcula o que seria o próximo mês e ano antes de aplicar a mudança
   let proximoMes = mesAtual + direcao;
   let proximoAno = anoAtual;
 
-  if (proximoMes > 11) { 
-    proximoMes = 0; 
-    proximoAno++; 
-  }
-  if (proximoMes < 0) { 
-    proximoMes = 11; 
-    proximoAno--; 
+  if (proximoMes > 11) {
+    proximoMes = 0;
+    proximoAno++;
   }
 
-  // Bloqueio estrito: Só atualiza se estiver entre 2026 e 2035
-  if (proximoAno >= 2026 && proximoAno <= 2035) {
-    mesAtual = proximoMes;
-    anoAtual = proximoAno;
-    inicializarPeriodo();
-    atualizarTela();
-  } else {
-    console.log("Limite de data atingido (2026 - 2035)");
+  if (proximoMes < 0) {
+    proximoMes = 11;
+    proximoAno--;
   }
+
+  // limite de anos
+  if (proximoAno < 2026 || proximoAno > 2045) {
+    console.log("Limite de data atingido (2026 - 2045)");
+    return;
+  }
+
+  mesAtual = proximoMes;
+  anoAtual = proximoAno;
+
+  inicializarPeriodo();
+  atualizarTela();
 }
 
 // Adiciona uma nova transação
