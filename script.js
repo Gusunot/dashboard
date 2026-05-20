@@ -76,6 +76,20 @@ function calcularTotaisAno() {
   return { totalEntradas, totalSaidas };
 }
 
+function atualizarPreviewIconeApp() {
+  const foto = localStorage.getItem("user_photo");
+
+  if (!foto) return;
+
+  // preview visual (opcional)
+  document.querySelector("link[rel='manifest']").href = "manifest.json";
+
+  console.log("Preview do ícone atualizado (visual apenas)");
+
+ atualizarPreviewIconeApp();
+}
+
+ 
 function atualizarResumoAnual() {
   const { totalEntradas, totalSaidas } = calcularTotaisAno();
   const saldo = totalEntradas - totalSaidas;
